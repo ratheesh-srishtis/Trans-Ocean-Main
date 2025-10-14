@@ -727,7 +727,9 @@ const EditProfile = ({ employeeObject }) => {
 
       if (response.status === true) {
         setOpenPopUp(true);
-        setMessage(response.message);
+        setMessage(
+          "Updated Successfully Once HR Approves the changes you will see the changes in your profile"
+        );
         fileInputRefPassport.current.value = "";
         fileInputRefContract.current.value = "";
         fileInputRefVisa.current.value = "";
