@@ -1,0 +1,72 @@
+.submitpaymentbutton {
+    color: #ffffff;
+    background-color: #1ebbee;
+    border-color: #1ebbee;
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+  }
+  .choosepermi{
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+  .checkboxrole{
+    margin-right: 8px;
+  }
+  .permissionfont{
+    font-size: 13px;
+  }
+  .permissionlist{
+    display: flex;
+    
+  }
+  .btnrole{
+    margin-top: 15px;
+  }
+  .btnuser{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+  }
+ .textarea{
+  resize: none;
+ }
+ .portseet{
+  margin-left:15px;
+ }
+ .funpermission{
+  margin-left: 59px;
+ }
+ .settpermission{
+  margin-left: 64px;
+ }
+ .addcusheight{
+  
+  font-size: 0.7rem;
+ }
+ .cusnameheight{
+  height:48px;
+ }
+ .password_icon_confirmpass{
+  position: absolute;
+  bottom: 3px;
+  right: 10px;
+  cursor:pointer;
+ }
+ .password_icon_adduser{
+  position: absolute;
+  bottom: 25px;
+  right: 10px;
+  cursor:pointer;
+ }
+ span.required {
+  color: red;
+  background: none;
+}
+
+.qqformaddquestion{
+  font-size: 13px;
+}
+.bankaddresssize{
+  font-size: 13px;
+}

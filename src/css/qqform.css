@@ -1,0 +1,30 @@
+.color {
+  color: blue;
+}
+.que{
+  margin-top: 20px;
+}
+.spacolo{
+  color: #007bc1;
+}
+.tab{
+  border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;
+}
+.styltabl{
+  border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #ffffff;
+}
+.tabstl{
+  border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #ffffff; width:150px;
+}
+.tabsplstyl{
+  border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #ffffff; color: rgb(7, 204, 7); width:150px;
+}
+.grade{
+  color: red;
+  margin-left: 20px;
+}
+.greport{
+  display: flex;
+  justify-content: end;
+ 
+}

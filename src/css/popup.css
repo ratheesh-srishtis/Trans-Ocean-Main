@@ -1,0 +1,212 @@
+.popupbackground {
+  width: 100%;
+  height: 100%;
+  background-color: #191919e6;
+  position: fixed;
+  display: flex;
+  z-index: 99999999999999999;
+  left: 0;
+  box-shadow: var(--Paper-shadow);
+  top: 0;
+  justify-content: center;
+  align-items: center;
+}
+.generate-buttona{
+  max-width: 100%;
+  width: 89px;
+  display: flex;
+  justify-content: center;
+  margin-right: 0px;
+  background-color: #0dcaf0;
+  color:white;
+}
+.formlabelcolor::-webkit-input-placeholder { /* Chrome */
+  color: #636c7277;
+}
+.formlabelcolor::-ms-input-placeholder { /* IE 10+ */
+  color: #636c7277;
+}
+.formlabelcolor::-moz-placeholder { /* Firefox 19+ */
+  color: #636c7277;
+  opacity: 1;
+}
+.formlabelcolor::-moz-placeholder { /* Firefox 4 - 18 */
+  color: #636c7277;
+  opacity: 1;
+}
+.btncancel{
+  max-width: 100%;
+  width: 89px;
+  display: flex;
+  justify-content: center;
+  margin-right: 10px;
+  background-color: #ffffff;
+  border-color: #1ebbee;
+  color:#1ebbee;
+}
+.popupcontainermain {
+  width: 500px;
+  max-width: 92%;
+  /* min-height: 12rem;
+  min-height: 12rem; */
+  border-radius: 15px;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #000000;
+}
+.popupcontainermain .logo-header {
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 0;
+  max-height: 100px;
+
+}
+.savechangesfooter{
+  margin-top: 20px;
+}
+.popupcontainermain .logo-header img {
+  max-width: 100%;
+  height:129px;
+}
+.popupcontainermain .message {
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 18px;
+  color: #000000;
+}
+.popupcontainermain .message p {
+  font-weight: bold;
+  margin: 10px 0;
+}
+.dashed {
+  border-style: dashed;
+  border-width: 2px;
+  border-radius: 10px;
+  flex-direction: column;
+  display: flex;
+  padding: 0 10px 10px;
+}
+.containerBox {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+}
+.ridge {
+  border-style: ridge;
+  border-width: 2px;
+  border-radius: 10px;
+  flex-direction: column;
+  display: flex;
+  padding: 0 10px 10px;
+}
+.chooseTemples .tempArrow {
+  font-weight: 100 !important;
+  margin: 10px 0 15px !important;
+  font-size: 54px;
+  height: 50px;
+  line-height: 52px;
+}
+.chooseTemples .containerBox .ridge,
+.chooseTemples .containerBox .dashed {
+  width: 200px;
+  max-width: 100%;
+}
+.chooseTemples .logo-header h2 {
+  font-size: 30px;
+  margin: 5px 0 0;
+  color: #403f49;
+}
+.chooseTemples .logo-header p {
+  margin: 5px 0 0;
+  color: #403f49;
+  font-size: 15px;
+}
+.templatebg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: flex;
+  z-index: 99999999999999999999999999;
+  justify-content: center;
+  align-items: center;
+}
+.templatcontainer {
+  width: 40%;
+  height: 10%;
+  max-width: 100%;
+  min-height: 10rem;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 15px #070f1f;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-self: center;
+  align-self: center;
+  border: 3px solid #007ac1;
+}
+.templatcontainer.chooseTemples {
+  box-shadow: 0 0 5px #0000003d;
+  border: 0;
+  padding: 15px;
+  width: 550px;
+  max-width: 92%;
+  height: auto;
+}
+.chooseTemples .topTitle {
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  font-size: 24px;
+  margin: 5px 0 0;
+  padding: 0;
+}
+.chooseTemples .header_pop {
+  text-align: center;
+  border-bottom: 1px solid #505f7945;
+  margin: 0 0 20px;
+}
+.chooseTemples .header_pop > p {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  margin: 3px 0 10px;
+  padding: 0;
+}
+.chooseTemples .message .ridge,
+.chooseTemples .message .dashed {
+  text-align: center;
+  cursor: pointer;
+}
+.chooseTemples .containerBox {
+  padding: 15px;
+  margin: 0 0 20px;
+}
+.add-button {
+  background-color: #1ebbee;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  font-size: larger;
+}
+
+.cust .labelhead{
+  padding-left: 65px;
+}
+
+@media only screen and (max-width: 600px) {
+  .chooseTemples .message {
+    padding: 25px 0 0;
+  }
+  .popuchooseTemples .containerBox {
+    flex-direction: column;
+  }
+  .popupcontainermain {
+    width: 80%; /* Adjust the width for mobile */
+    height: 10rem; /* Adjust the height for mobile */
+    min-height: 10rem; /* Adjust min-height for mobile */
+  }
+}

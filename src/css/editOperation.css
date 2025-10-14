@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+
+.job-no {
+    background-color: #fff;
+    padding: 15px;
+}
+.jobrow {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 5px;
+  }
+.charge {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rectangle {
+    align-items: center;
+    background-color: #5c5c5c25;
+    border: 2px solid #007bc1;
+    border-radius: 50px;
+    display: flex;
+    height: 2px;
+    justify-content: center;
+    margin-top: 18px;
+    width: 100%;
+}
+.addserv{
+margin-top: 17px;
+}
+.serviceaddbtn{
+    height:34px;
+}
+.opsnumber {
+    align-items: normal;
+    display: flex;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.opsfontweight {
+    color: #000000;
+    margin-left: 5px;
+}
+
+.ops-date {
+    margin-left: 19px;
+}
+.remarkfontsize{
+    font-size: 0.8rem;
+}
+
+.opsdate {
+    display: flex;
+    margin-left: 20px;
+    font-size: 14px;
+    align-items: center;
+}
+.documentsfsize{
+    font-size: 13px;
+}
+.btnfsize{
+    font-size: 13px;
+}
+.vendor-item {
+  display: inline-block;
+  padding: 4px 16px;
+  margin: 2px 6px 2px 0;
+  background-color: #0dcaf0;
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+  border: 1px solid #000000;
+  transition: background 0.2s;
+}
+.vendor-item:hover {
+  background-color: #0dcaf0;
+  color: #ffffff;
+}
+
+.submbtn{
+    width:100%;
+    display:flex;
+    justify-content: center;
+    color: #ffffff;
+    background-color: #1ebbee;
+    border-color: #1ebbee;
+    align-items: center;
+    height:37px;
+}
+.btnjobrole{
+    margin-top: 24px;
+}
+.statuss{
+    height: 38px;
+}
+.statusscustomer{
+    height: 34px;
+   width: 156px;
+}
+.statusscostcustomer{
+    height: 34px;
+   width: 264px;
+}
+.temp-btn{
+    width:100%;
+    height:31px;
+    display: flex;
+    justify-content: center !important;
+}
+.templatelink{
+    font-size: 0.8rem;
+}
+.tempgenerated{
+    font-size: 0.85rem;
+    color: #007bc1;
+    cursor: pointer;
+}
+.templateouter{
+    padding: 10px;
+    border: 1px solid rgba(164, 164, 164, 0.421);
+
+    border-radius: 5px;
+    height: 75px; /* Set the fixed width of the div */
+  white-space: nowrap; /* Prevents wrapping of inline elements */
+  overflow-x: auto; /* Enables horizontal scrolling */
+
+}
+.templateouterupdatechhharge{
+    padding: 10px;
+ margin:12px;
+    width:97%; 
+    border: 1px solid rgba(164, 164, 164, 0.421);   
+    border-radius: 5px;
+    height: 75px; /* Set the fixed width of the div */
+  white-space: nowrap; /* Prevents wrapping of inline elements */
+  overflow-x: auto; /* Enables horizontal scrolling */
+
+}
+.icondown{
+    padding-right: 15px;
+    cursor: pointer;
+}
+.iconpdf{
+    padding-right: 15px;
+    cursor: pointer;
+}
+.updatechargremakrs{
+    font-size: 12px;
+}
+.docuplo{
+    margin-top: -4px;
+}
+.linheight{
+    height: 74px;
+    line-height: 5.5;
+}

@@ -1,0 +1,83 @@
+.costcenterfontsize {
+  font-size: 12px;
+  margin-left: 0px;
+  width: 100%;
+}
+
+.costcenterinput {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.margincostcenter {
+  margin-left: 26px;
+}
+
+.pettymargin {
+  margin-left: 15px;
+}
+
+.costcenterport {
+  font-size: 12px;
+}
+
+.vesselboxcostcenter {
+  font-size: 12px;
+  height: 35px;
+  padding-right: 34px !important;
+  width: 100%;
+  max-width: 274px;
+}
+
+.costcenterportname {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.MuiDataGrid-columnHeader {
+  background-color: #eee;
+}
+
+.hide-column {
+  color: #fff !important;
+}
+
+.date-input {
+  height: 38px !important;
+  font-size: 0.8rem !important;
+}
+
+.costcenterinputmdd {
+  margin-right: 10px;
+}
+
+.costcenterfontsizemd {
+  margin-left: -14px;
+}
+
+.costcenterportname {
+  margin-left: 10px;
+}
+
+.filbtnjobccbrkup,
+.filbtnjobmd {
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .filbtnjobmd {
+    margin-top: 8px;
+  }
+
+  .costcenterfontsize {
+    margin-left: 0px;
+  }
+
+  .costcenterportname {
+    margin-left: 0px;
+  }
+}

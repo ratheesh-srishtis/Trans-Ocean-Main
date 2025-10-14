@@ -1,0 +1,85 @@
+.avatar {
+  width: 34px;
+  height: 34px;
+  margin-right: 20px;
+}
+
+.notifimessage {
+ font-size: 14px;
+cursor: pointer;
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+}
+
+.notifidate {
+  font-size: 10px;
+  padding-top: 5px;
+}
+
+.notifiborder {
+  border-bottom: 1px solid #eee;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.imagenotifi {
+  background-color: #e2e8f0;
+  height: 39px;
+  width: 42px;
+  border: solid 1px #e2e8f0;
+  border-radius: 50%;
+  position: relative;
+}
+
+.namenotifi {
+  position: relative;
+  font-weight: bold;
+  font-size: 15px;
+  color: #73839b;
+  right: 31px;
+  top: 9px;
+}
+
+.vewall {
+  font-size: 13px;
+  color: rgb(15, 94, 240);
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.notifidots {
+  display: flex;
+  justify-content: end;
+  color: red;
+  margin-right:19px;
+  cursor: pointer;
+}
+
+.viewmorenotifi {
+  background-color: #e2e8f0;
+  color: #73839b;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.notificationbell {
+  position: relative;
+}
+.expirydate{
+  color:red !important;
+}
+.hrtable{
+  border:1px solid #cdcdcd !important; 
+}
+.notifidotshr {
+  display: flex;
+  justify-content: center;
+  color: red;
+  margin-right:32px;
+  cursor: pointer;
+}

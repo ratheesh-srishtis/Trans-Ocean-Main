@@ -1,0 +1,147 @@
+/* Responsive horizontal scroll for DataGrid parent */
+
+.pettybutton {
+  margin-left: 20px;
+  height: 34px;
+  width: 100px;
+}
+
+.datepickerpetty {
+  margin-left: 5px;
+  width: 100px;
+}
+
+.datepetty {
+  height: 24px;
+  font-size: 14px !important;
+}
+
+.employeepetty {
+  margin-left: 22px;
+}
+
+.filtermainpetty {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 148px;
+  height: 35px;
+ 
+  max-width: 100%;
+
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.mdpettymonth {
+  position: relative;
+  border: 1px solid #80808041;
+  /* width: 148px; */
+  height: 35px;
+  max-width: 100%;
+  margin-left: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.ffbyemployepetty {
+  margin-right: 10px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar {
+  min-height: 40px !important;
+}
+.form-label {
+  margin-bottom: 0rem;
+}
+
+.date-input {
+  height: 38px !important;
+  font-size: 0.8rem !important;
+}
+
+.filtermainpettymd {
+  border: 1px solid #80808041;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding-left: 7px;
+}
+
+.filtercostcentermd {
+  padding: 0 10px;
+  height: 33px;
+  border: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  font-size: 12px;
+}
+
+.mmonthcostmd {
+  font-size: 12px;
+  height: 34px;
+}
+
+.statusscustomermd {
+  height: 34px;
+  font-size: 12px;
+}
+
+.vesselboxcostcentermd {
+  font-size: 12px;
+  color: black !important;
+}
+.excelmdpetty {
+  margin-left: 20px;
+}
+.monthfontpeety {
+  font-size: 12px;
+  height: 35px;
+  width: 100%;
+  min-width: 233px;
+}
+.ffemployepetty {
+  font-size: 12px;
+  height: 35px;
+  min-width: 317px;
+  width: 100%;
+}
+
+.filbtnjob {
+  color: white;
+  font-size: 13px;
+  font-size: 13px;
+  justify-content: center;
+  display: flex;
+  margin-left: 10px;
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .filbtnjobmd {
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    font-size: 13px;
+    margin-left: 0px;
+    justify-content: center;
+    color: white;
+    font-size: 13px;
+  }
+  .mmonthcostmd {
+    font-size: 12px;
+    height: 34px;
+    margin-bottom: 0px;
+  }
+  .excelmdpetty {
+    margin-left: 0px;
+  }
+
+  .bansummary-datepicker {
+    font-size: 12px !important;
+    width: 100%;
+    min-width: 286px;
+  }
+}

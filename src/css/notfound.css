@@ -1,0 +1,41 @@
+.notfoundobject{
+   
+}
+.pagenotfound {
+    font-size: 66px;
+    line-height: 73px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    margin-top: 26px;
+    color: rgb(112, 112, 112);
+}
+.shipimg{
+    position: relative;
+}
+.doesnotexist{
+    font-size: 15px;
+    font-weight: 500;
+}
+.fouzerofour {
+    font-size: 122px;
+    font-weight: 800;
+    top: 260px;
+    color: rgb(10, 38, 182);
+    left: 821px;
+    position: absolute;
+}
+
+@media (max-width: 768px) {
+  .fouzerofour {
+    font-size: 106px;
+    top: 273px;
+    font-weight: bold;
+    left: 88px;
+  }
+
+  .shipimg {
+    position: relative;
+    height: 236px;
+    margin-top: 94px;
+  }
+}

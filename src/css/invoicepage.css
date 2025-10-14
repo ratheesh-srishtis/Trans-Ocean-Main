@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+
+
+.templateouterinvoice{
+    padding: 5px;
+    border: 1px solid rgba(164, 164, 164, 0.421);
+    border-radius: 5px;
+    height: 60px; /* Set the fixed width of the div */
+    white-space: nowrap; /* Prevents wrapping of inline elements */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    width: 217px;
+}
+
+.templateouterinvoice .file_actions{
+    position: sticky;
+    right: -6px;
+    background: white;
+    padding: 0px 5px 0px 5px;
+}
+
+.icondowninvoice{
+    padding-right: 5px;
+    cursor: pointer;
+}
+.iconpdfinvoice{
+    padding-right: 5px;
+    cursor: pointer;
+}
+.invoiceeyee{
+    font-size: 12px;
+}
+.invoicetrash{
+    font-size: 12px;
+}
+.tdstylinvoice{
+    border-bottom: 1px solid #ddd; padding: 8px; text-align: left;
+    border-left: 1px solid #ddd;
+    font-size: 12px;
+}
+.tdstylinvoicecharge{
+    border-bottom: 1px solid #ddd; padding: 8px; text-align: left;
+    border-left: 1px solid #ddd;
+    font-size: 12px; width:203px;
+}
+.tdstylwidtinvoice{
+    border-bottom: 1px solid #ddd; padding: 8px; text-align: left; width:60px; border-left: 1px solid #ddd;
+}
+.tabheadinvoice{
+    border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f2f2f2; font-size: 12px;
+}
+.PortofCallCountryinvoice {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 12px;
+    background-color: #f2f2f2;
+}
+.PortofCallCountryinvoicedatetime{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 12px;
+    width:150px;
+    background-color: #f2f2f2;
+}
+.PortofCallinvoiceslno{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 12px;
+    width:54px;
+    background-color: #f2f2f2;
+}
+.pocstylinvoice {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 12px;
+}
+.docwidth{
+    width:120px;
+}

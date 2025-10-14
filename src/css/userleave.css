@@ -1,0 +1,58 @@
+/* User Leave Tabs and Form Styles */
+.user-leave-container {
+  max-width: 520px;
+  margin: 40px auto;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.1);
+  padding: 32px 28px 24px 28px;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.apply-leave-form .form-group {
+  margin-bottom: 20px;
+}
+
+.apply-leave-form label {
+  font-weight: 500;
+  margin-bottom: 7px;
+  display: block;
+  color: #34495e;
+}
+
+.apply-leave-form .form-control {
+  border-radius: 6px;
+  border: 1px solid #bfc9d2;
+  padding: 8px 12px;
+  font-size: 1rem;
+  background: #f8f9fa;
+}
+
+.apply-leave-form textarea.form-control {
+  resize: vertical;
+}
+
+.apply-leave-form .btn-success {
+  font-weight: bold;
+  font-size: 1.08rem;
+  padding: 10px 36px;
+  margin-top: 10px;
+}
+
+.leave-report-content {
+  padding: 18px 0 0 0;
+}
+.empty-report {
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+  margin-top: 18px;
+}

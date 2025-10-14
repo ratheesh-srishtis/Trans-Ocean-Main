@@ -1,0 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.headvoucher {
+  display: flex;
+  justify-content: center !important;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+.downloadbutnvoucher {
+  display: flex;
+  justify-content: end !important;
+  font-weight: bold;
+  position: absolute;
+  top: -2px;
+  right: 0px;
+  font-size: 30px;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+.headheadvoucher {
+  position: relative;
+}
+.voucherdateandnumber {
+  display: flex;
+  justify-content: space-between;
+}
+.voucherpadding {
+  padding: 0px 70px;
+}
+.voucherpart {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  padding: 8px;
+  width: 700px;
+}
+.voucherpartone {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  padding: 8px;
+  width: 400px;
+}
+.voucherpartthree {
+  border-right: 1px solid black;
+  padding: 10px;
+  width: 400px;
+}
+.voucherpartfour {
+  border-left: 1px solid black;
+  padding: 10px;
+  width: 400px;
+}
+.voucheraccount {
+  padding-left: 50px;
+}
+.datefilterpaym {
+  height: 35px;
+}
+.dateffont {
+  font-size: 12px !important;
+  color: black;
+  padding-bottom: 13px !important;
+}
+.nopayment {
+  margin-left: 15px;
+}
+.footimgviewvoucher {
+  max-height: 145px;
+  display: flex;
+  max-width: 866px;
+  justify-content: center;
+}
+.voucherprinting {
+  font-weight: bold;
+  padding-left: 100px;
+  padding-bottom: 25px;
+}
+.voucherprintingnew {
+  font-weight: bold;
+  padding-left: 43px;
+}
+.voucherprintingnew2 {
+  font-weight: bold;
+  padding-left: 93px;
+}
+.voucherprint {
+  font-weight: bold;
+  padding-left: 55px;
+}
+.voucheramountrate {
+  padding-bottom: 25px;
+  border-left: 1px solid black;
+}
+.vouchertable {
+  padding: 10px 100px;
+}
+.vouchertablebody {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+.voucherth {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  background-color: #c5d9f1;
+  min-width: 0px;
+  max-width: 100%;
+}
+.voucherimg {
+  max-height: 100px;
+  max-width: 150px;
+  display: flex;
+  align-items: center;
+}
+.voucherimgone {
+  max-height: 100px;
+  max-width: 300px;
+}
+.paddv {
+  padding: 10px 20px;
+  margin-top: 30px;
+}
+.locationvoucher {
+  height: 14px;
+  width: 12px;
+}
+.locvoucher {
+  font-size: 12px;
+  color: #007bc1;
+}
+.voucherflex {
+  display: flex;
+  justify-content: space-between;
+}
+.landvoucher {
+  height: 14px;
+  width: 14px;
+  margin-left: 10px;
+}
+.mailvoucher {
+  height: 14px;
+  width: 18px;
+}
+.webvoucher {
+  height: 14px;
+  width: 12px;
+}
+.voucherflexone {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.imgvouchimg {
+  height: 50px;
+  width: 431px;
+}
+.td {
+  padding: 0px;
+}
+@media only screen and (max-width: 767px) {
+}

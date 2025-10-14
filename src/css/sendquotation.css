@@ -1,0 +1,41 @@
+.addcharges {
+  margin: 300px;
+  border: 1px solid red;
+  border-radius: 30px;
+  padding: 20px;
+}
+.papershadow{
+  box-shadow: none !important;
+    border: 1px solid #e9ecef;
+}
+
+.add-button {
+  background-color: #007ac1;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  font-size: larger;
+}
+.btn:hover {
+  color: #007ac1;
+  background-color: #ffffff;
+  border-color: #007ac1;
+}
+.required {
+  color: red;
+}
+
+.rectangle-quotation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e9ecef;
+  padding-left: 30px;
+  padding-right: 20px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+}

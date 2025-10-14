@@ -1,0 +1,251 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.addcharges {
+  padding: 20px;
+}
+
+.headname {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  padding-right: 20px;
+  margin-bottom: 15px;
+}
+
+.headnamevendor {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  padding-right: 38px;
+  margin-bottom: 15px;
+}
+.Callhead {
+  font-size: 16px;
+  font-weight: bold;
+  padding-right: 20px;
+  margin-bottom: 15px;
+}
+
+.rectangle {
+  margin-top: 18px;
+  background-color: #5c5c5c25;
+  border: 2px solid #007bc1;
+  border-radius: 50px;
+  width: 100%;
+  height: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.charge img {
+  height: 37px;
+}
+
+.customerrectangle {
+  border: 1px solid #5c5c5c25;
+  border-radius: 50px;
+  width: 938px;
+  height: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.customerhead {
+  display: flex;
+}
+
+.editicon {
+  color: #007ac1;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.required {
+  color: red;
+}
+
+.deleteicon {
+  color: red;
+  cursor: pointer;
+}
+
+.remarks {
+  height: 50px;
+}
+
+.add-button {
+  background-color: #007ac1;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  font-size: larger;
+}
+
+.firstfooter {
+  display: flex;
+  justify-content: center;
+}
+
+.pvendor {
+  margin-top: 10px;
+}
+
+.btn:hover {
+  color: #007ac1;
+  background-color: #ffffff;
+  border-color: #007ac1;
+}
+
+.tablehead {
+  background-color: #007ac1;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  /* margin-top: 20px; */
+  font-size: 17px;
+  margin-bottom: 30px;
+}
+.qty {
+  /* margin: 250px; */
+}
+
+.marinehead {
+  font-size: medium;
+  font-weight: 500;
+}
+
+.marineBold {
+  font-weight: 700;
+}
+
+.subh {
+  margin-bottom: 10px;
+  margin-left: 70px;
+}
+
+.subheadremarks {
+  margin-top: 30px;
+  margin-left: 70px;
+}
+
+.subvalue {
+  margin-left: 10px;
+}
+
+.marineseperation {
+  border: 1px solid rgba(0, 0, 0, 0.158);
+}
+
+.marinetable {
+  border: 1px solid #007ac1;
+  margin-top: 30px;
+  border-radius: 12px;
+  padding-bottom: 30px;
+}
+
+.marinetable .row .marinehead {
+  padding-left: 15px;
+}
+
+.marinetable .table_seperation {
+  border-right: 2px solid rgb(151, 151, 151);
+  padding-bottom: 6px;
+}
+
+.marinetable .remark_value {
+  word-wrap: break-word;
+ 
+}
+
+.subhvendor {
+  margin-bottom: 10px;
+  margin-left: 70px;
+}
+.qtywidth {
+  width: 358px;
+}
+.tablesep {
+  display: flex;
+}
+
+.cancel-button {
+  border-color: #007ac1;
+  padding: 10px 20px 10px 20px;
+  color: #007ac1;
+  font-size: larger;
+  margin: 20px;
+}
+
+.save-button {
+  background-color: #007ac1;
+  padding: 10px 20px 10px 20px;
+  color: #ffffff;
+  font-size: larger;
+  margin: 20px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.createtable tr td {
+  font-size: 12px;
+}
+
+@media screen and (min-device-width: 481px) and (max-device-width: 768px) {
+}
+
+@media only screen and (max-width: 1280px) {
+  .createtable th {
+    font-size: 13px;
+  }
+
+  .createtable tr td {
+    font-size: 12px;
+    background-color: #f1f1f1;
+  }
+}
+
+.invalid {
+  font-size: 12px;
+  color: red;
+  font-family: sans-serif;
+  padding-top: 6px;
+}
+
+.left-spc {
+  padding-left: 10px;
+  padding-right: 2px;
+}
+
+.quantitypadding {
+  margin-right: 14px;
+  width: 273px;
+  padding-right: 0px;
+}
+.remarkfontsizeupdate {
+  font-size: 0.7rem;
+}
+.vendor-class {
+  align-items: baseline !important;
+}
+.bold-row td {
+  font-weight: bolder;
+}
+
+.read-only-textarea {
+  cursor: default !important;
+}
+
+.form-check-label {
+  padding-left: 10px;
+}
+.vendor-charges {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.vendor-row {
+  padding: 20px;
+}

@@ -1,0 +1,19 @@
+.mm{
+    margin-right: 15px;
+}
+.provisionspace{
+    margin-right: 10px;
+}
+.provisionborder{
+    border:1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin-top: 20px;
+   
+}
+.provisionmar{
+    margin-left: 25px;
+}
+.reddangerbttn{
+    height:33px;
+}

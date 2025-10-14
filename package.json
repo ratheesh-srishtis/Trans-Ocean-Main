@@ -1,0 +1,76 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://hybrid.sicsglobal.com/project/transocean/",
+  "dependencies": {
+    "@date-io/date-fns": "^3.0.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.5",
+    "@mui/lab": "^6.0.0-beta.13",
+    "@mui/material": "^6.1.5",
+    "@mui/x-data-grid": "^7.21.0",
+    "@mui/x-date-pickers": "^7.22.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.2.0",
+    "dayjs": "^1.11.13",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.7.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "moment": "^2.30.1",
+    "multiselect-react-dropdown": "^2.0.25",
+    "react": "^18.3.1",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-datepicker": "^7.5.0",
+    "react-datetime": "^3.2.0",
+    "react-dom": "^18.3.1",
+    "react-flatpickr": "^3.10.13",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-loader-spinner": "^6.1.6",
+    "react-multi-select-component": "^4.3.4",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.9.0",
+    "react-toastify": "^10.0.6",
+    "sweetalert2": "^11.14.4",
+    "to-words": "^4.2.0",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "dotenv-cli": "^8.0.0",
+    "env-cmd": "^10.1.0"
+  }
+}

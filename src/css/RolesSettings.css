@@ -1,0 +1,30 @@
+.submit-button {
+    color: #ffffff;
+    background-color: #1ebbee;
+    border-color: #1ebbee;
+    display: flex;
+    justify-content: end;
+  }
+  .choosepermi{
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+  .checkboxrole{
+    margin-right: 8px;
+  }
+  .permissionfont{
+    font-size: 13px;
+  }
+  .permissionlist{
+    display: flex;
+    
+  }
+  .btnrole{
+    margin-top: 15px;
+  }
+  .btnuser{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+  }
+ 

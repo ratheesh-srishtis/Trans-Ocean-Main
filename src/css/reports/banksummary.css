@@ -1,0 +1,165 @@
+.banksummarybank {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.datebank {
+  width: 100px;
+}
+
+.banksummarypayment {
+  margin-left: 15px;
+}
+
+.datepickerbank {
+  margin-left: 5px;
+  width: 100px;
+}
+
+.bansummary-datepicker {
+  font-size: 12px !important;
+}
+
+.bankdown {
+  margin-left: 92px;
+}
+
+.statusscustomernew {
+  height: 34px;
+  width: 251px;
+}
+.statusscustomerbybank {
+    height: 34px;
+    width: 100%;
+    min-width: 329px;
+}
+
+.statusscustomername {
+  height: 34px;
+  width: 200px;
+}
+
+.filbyemployeebank {
+  height: 34px;
+  width: 221px;
+}
+
+.ffemploye {
+  margin-left: 07px;
+}
+
+.chooseemployeee {
+  margin-left: 15px;
+}
+
+/* input box styling */
+.custom-date-input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  min-width:312px;
+  font-size: 14px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* popup calendar styling */
+.custom-calendar.react-datepicker {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.custom-calendar .react-datepicker__day--selected,
+.custom-calendar .react-datepicker__day--in-selecting-range,
+.custom-calendar .react-datepicker__day--in-range {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.custom-calendar .react-datepicker__close-icon::after {
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+/* Style only for this instance */
+.custom-date-input-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.custom-date-input-container .react-datepicker__close-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.custom-date-input-container .react-datepicker__close-icon::after {
+  background-color: #ef4444;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.filbtnjobbanksmry {
+  color: white;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+}
+.banksmrymar-right{
+  margin-right:20px;
+}
+@media (max-width: 576px) {
+  .btn-group-responsive {
+    flex-direction: column !important;
+    align-items: stretch;
+  }
+
+  .filbtnjobbanksmry {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+  }
+  .banksmrymar-right{
+  margin-right:20px;
+  margin-left: 20px;
+}
+
+}
+
+@media (max-width: 768px) {
+  .btn-group-responsive {
+    flex-direction: column !important;
+    align-items: stretch;
+  }
+
+  .filbtnjobbanksmry {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+  }
+  .banksummarybank {
+  display: flex;
+  align-items: center;
+  margin-left: 0px;
+}
+.filbtnjobbanksmry {
+  color: white;
+  font-size: 13px;
+  display: flex;
+  width:100%;
+  justify-content: center;
+}
+}

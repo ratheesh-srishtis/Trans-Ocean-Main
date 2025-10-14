@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.pda-no {
+    background-color: #ffffff;
+    padding: 15px;
+}
+
+.charge {
+    display: flex;
+    justify-content: space-between;
+}
+.pdafontweight{
+    color:#929292;
+}
+
+.rectangle {
+    align-items: center;
+    background-color: #5c5c5c25;
+    border: 2px solid #007bc1;
+    border-radius: 50px;
+    display: flex;
+    height: 2px;
+    justify-content: center;
+    margin-top: 18px;
+    width: 100%;
+}
+.pdarow {
+    display: flex;
+    justify-content: start;
+}
+.pdanumber {
+    align-items: normal;
+    display: flex;
+    font-size: 14px;
+    margin-top: 8px;
+}
+.pdadate {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+    margin-left: 20px;
+}
+.viewhead{
+    font-size: 15px;
+    margin-top: 15px;
+}
+.viewans{
+    font-weight: bolder;
+    color:#929292;
+}
+.viewquocontent{
+    display: flex;
+
+}

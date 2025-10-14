@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.tableheading {
+  font-size: 12px;
+}
+.tablebody {
+  font-size: 12px;
+}
+.note {
+  color: Black;
+  background-color: Yellow;
+  padding-left: 5px;
+}
+.subnote {
+  font-size: 10px;
+  padding-top: 0px;
+  padding-bottom: 10px;
+}
+.payment {
+  font-size: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: bolder;
+}
+.amount {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+  font-weight: bolder;
+  font-size: 15px;
+}
+.stileone {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+}
+.stiletwo {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.stilethree {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+  background-color: #f2f2f2;
+}
+.stilefour {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  background-color: #f2f2f2;
+}
+.stilefive {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #c5d9f1;
+}
+.location {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #c5d9f1;
+  min-width: 580px;
+  max-width: 100%;
+}
+.vesselpdf {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #c5d9f1;
+  min-width: 116px;
+  max-width: 100%;
+}
+.column {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+.ref {
+  text-align: left;
+  background-color: #ffffff;
+  min-width: 145px;
+  max-width: 100%;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.dateinvoice {
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  background-color: #ffffff;
+  min-width: 145px;
+  max-width: 100%;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.tabl {
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: #ffffff;
+  min-width: 145px;
+  max-width: 100%;
+}
+.codefda {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #ffffff;
+  min-width: 210px;
+  max-width: 100%;
+}
+.totba {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  background-color: #ffffff;
+  min-width: 180px;
+  max-width: 100%;
+}
+.vatin {
+  display: flex;
+  justify-content: end;
+}
+.tax {
+  color: rgb(7, 109, 199);
+}
+.taxinvoice {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  max-width: 100%;
+}
+.stilesix {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: #c5d9f1;
+  min-width: 59px;
+  max-width: 100%;
+}
+.imgone {
+  max-height: 50px;
+  max-width: 50px;
+}
+.padd {
+  padding: 12px;
+}
+.imgtwo {
+  max-height: 50px;
+  max-width: 50px;
+  display: flex;
+  align-items: center;
+}
+.stileseven {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  background-color: #c5d9f1;
+  min-width: 0px;
+  max-width: 100%;
+}
+.stileeight {
+  display: flex;
+  background-color: #c5d9f1;
+  justify-content: space-between;
+}
+@media only screen and (max-width: 767px) {
+}

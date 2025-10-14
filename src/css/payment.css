@@ -1,0 +1,424 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.sortpayment {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 200px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+}
+.filterpayment {
+  align-items: center;
+  margin-left: 10px;
+}
+.filterbypayment {
+  margin-right: 5px;
+}
+.paymentpdafontweight {
+  margin-left: 8px;
+}
+.paymentcustomer {
+  height: 51px;
+}
+.customerpayment {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+.paymentbycus {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+.paymentbycuscost {
+  display: flex;
+  align-items: center;
+  margin-left: 18px;
+}
+.addressnewemployee {
+  font-size: 13px;
+}
+.employeeadd {
+  display: flex;
+  justify-content: end;
+}
+.totalinvocie {
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 12px;
+}
+.totalinvociecustomer {
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 0.7rem;
+}
+.amountpayment {
+  font-weight: bold;
+  margin-left: 13px;
+  color: rgb(109, 109, 109);
+  margin-right: 9px;
+  font-size: 13px;
+}
+.paymeamount {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.paymentbtn {
+  margin-left: 15px;
+}
+.statusspayment {
+  height: 34px;
+  width: 156px;
+}
+
+.payment-page .searchWrapper {
+  width: 356px;
+  font-size: smaller;
+}
+
+.voucheramount {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.datebycustomerpayment {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 128px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: 0px;
+}
+.cusbydate {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  margin-left: 7px;
+}
+.voucherbypayment {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 273px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  height: 35px;
+  align-items: center;
+  margin-left: 10px;
+}
+.mmonthcus {
+  font-size: 0.7rem;
+  height: 34px;
+  margin-right: 32px;
+}
+.jobporrte {
+  margin-left: 20px;
+}
+.nonvalue {
+  margin-right: -46px;
+}
+.form-labele {
+  font-size: 0.7rem;
+  margin-bottom: 0rem;
+}
+.filterbycustpayment {
+  margin-right: 5px;
+}
+.payment-page {
+  height: 10px;
+}
+.balancedue {
+  height: 31px;
+}
+.monthcustomerpay {
+  width: 135px;
+}
+.statussbycustomer {
+  height: 34px;
+}
+.paymedatepaymentpage {
+  font-size: 12px;
+}
+.statusscustomervendor {
+  height: 34px;
+  width: 130px;
+}
+.statusscustomerbypayment {
+  height: 34px;
+  width: 253px;
+}
+.employe {
+  width: 275px;
+  height: 33px;
+}
+.marginvoucher {
+  margin-right: 30px;
+}
+.newemployee {
+  font-size: 25px;
+  font-weight: bold;
+}
+.pleaseinfo {
+  font-size: 12px;
+}
+.paymentcustomermargin {
+  margin-left: 55px;
+}
+.templateoutergeneral {
+  padding: 10px;
+  border: 1px solid rgba(164, 164, 164, 0.421);
+  border-radius: 5px;
+  height: 75px; /* Set the fixed width of the div */
+  white-space: nowrap; /* Prevents wrapping of inline elements */
+  overflow-x: auto; /* Enables horizontal scrolling */
+}
+.Personal {
+  background-color: rgb(216, 216, 216);
+  padding: 8px;
+}
+.documentemployee {
+  font-size: 11px;
+}
+.filteremployee {
+  padding: 0px 10px;
+  align-items: center;
+  height: 33px;
+  border: 0px;
+  font-size: 0.7rem;
+  border: 0 !important;
+  box-shadow: inherit !important;
+  outline: 0 !important;
+}
+.remmfont {
+  font-size: 13px;
+}
+.employeewidthsearch {
+  width: 294px;
+  height: 34px;
+}
+.borderbtwagreements {
+  border-bottom: 1px solid rgb(204, 204, 204);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.passport {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(204, 204, 204);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.contract {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(204, 204, 204);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.minusemployee {
+  color: #ffa412;
+  margin-left: 12px;
+  cursor: pointer;
+}
+.addleave {
+  margin-right: 20px;
+}
+.addrecep {
+  margin-right: 10px;
+}
+.plusbutton {
+  margin-top: 14px;
+  color: #1ebbee;
+  font-size: 32px;
+}
+.hrsetting {
+  display: flex;
+  margin: 20px;
+}
+.Workingdays {
+  background-color: #fff4de;
+  border: 0px;
+  padding: 100px 180px;
+  border-radius: 20px;
+  margin-right: 50px;
+  font-weight: bold;
+  font-size: 18px;
+}
+.designationadd {
+  background-color: #ffe2e5;
+  border: 0px;
+  padding: 100px 180px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
+.mmonthpayment {
+  font-size: 12px;
+  height: 34px;
+  margin-right: 32px;
+}
+.searchemployee {
+  border: 1px solid #80808041;
+  width: 150px;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 13px;
+}
+.searchmainemployee {
+  position: relative;
+  margin-right: 20px;
+}
+.uploadheightgd {
+  height: 32px;
+}
+.documentnewstyle {
+}
+.remarkeditpeety {
+  font-size: 0.8rem !important;
+}
+/* Position the eye icon at top-right of input */
+.password-toggle {
+  position: absolute;
+  top: 31px;
+  right: 20px;
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 1.2rem;
+  z-index: 2;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Change color on hover */
+.password-toggle:hover {
+  color: #000;
+}
+
+/* Add padding to input so text doesn't overlap icon */
+.form-control.vessel-voyage {
+  padding-right: 2.5rem;
+}
+
+/* Leave Count Cards Styles */
+.leave-cards-container {
+  padding: 0 15px;
+}
+
+.leave-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 20px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.leave-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.leave-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.leave-card-header,
+.leave-card-body {
+  position: relative;
+  z-index: 2;
+}
+
+.leave-card-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.leave-count {
+  margin: 10px 0 5px 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+.leave-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+/* Different color schemes for each card */
+.annual-leave {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.casual-leave {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.sick-leave {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.emergency-leave {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .leave-card {
+    margin-bottom: 15px;
+    height: 120px;
+    padding: 15px;
+  }
+
+  .leave-count {
+    font-size: 28px;
+  }
+
+  .leave-card-title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .leave-cards-container {
+    padding: 0 10px;
+  }
+
+  .leave-card {
+    height: 110px;
+    padding: 12px;
+  }
+
+  .leave-count {
+    font-size: 24px;
+  }
+}

@@ -1,0 +1,509 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.pdacontent {
+  background: #efefef;
+  width: 100%;
+  /* padding: 20px; */
+}
+
+.form-select:focus,
+.form-control:focus {
+  border: 1px solid rgb(138, 138, 138);
+  box-shadow: 0 0 0 0.25rem rgba(72, 72, 72, 0.25);
+}
+
+/* .form-select option{
+  color:rgb(139, 139, 139) !important;
+} */
+
+.form-label {
+  font-size: 0.8rem;
+  margin-bottom: 0rem;
+}
+
+.btn {
+  text-align: start;
+}
+
+.pdadate {
+  display: flex;
+  margin-left: 20px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.pdadate label {
+  word-wrap: none;
+}
+
+.customerbox {
+  /* padding: 10px; */
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.btn-color {
+  background-color: #007ac12d;
+  border-color: #007ac1fb;
+}
+
+.badge-text {
+  color: #007ac1fb;
+}
+
+.pda-no {
+  background-color: #ffffff;
+  padding: 15px;
+  /* border-radius: 10px; */
+}
+
+.charge {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pdanumber {
+  display: flex;
+  align-items: normal;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.draft-pda {
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #007bc1;
+  background-color: #e6f2f9;
+  padding-top: 5px;
+  padding-right: 5px;
+  margin-left: 16px;
+}
+
+.pdafontweight {
+  margin-left: 8px;
+}
+
+.back {
+  background-color: #ffffff;
+}
+.opstablewidth {
+  width: 25%;
+}
+.draft {
+  border-color: #007ac1;
+  color: #007ac1;
+  background-color: #007ac11e;
+}
+
+.book {
+  color: #007ac1;
+}
+
+.circle {
+  color: #007ac1;
+  height: 200px;
+  width: 30px;
+}
+
+.statusbadge {
+}
+
+.statusbadge {
+}
+
+.radio {
+  position: relative;
+  color: #000000;
+  cursor: pointer;
+  border: 1px solid #80808041;
+  padding: 0.22rem 2rem;
+  border-radius: 0.5em;
+}
+
+.vesselradio {
+  margin-left: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.vessel {
+  margin-right: 30px;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+.service {
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+/* .vesselbox {
+  padding-top: 15px;
+  padding-bottom: 15px;
+} */
+
+/* .vessel-voyage {
+  padding-top: 15px;
+  padding-bottom: 15px;
+} */
+
+.vesselbox,
+.vesselbox option {
+  font-size: 0.7rem !important;
+  padding-right: 34px !important;
+  color: black !important;
+}
+
+.vessel-voyage {
+  font-size: 0.7rem !important;
+  color: black !important;
+}
+
+.vboxholder {
+  color: rgb(0, 0, 0) !important;
+}
+.timeslotnew {
+  width: 40px !important;
+  margin-left: 5px !important;
+}
+
+.timespace {
+  margin-left: 5px !important;
+}
+.etdmargin {
+  margin-left: 20px;
+}
+.invoiceby {
+  width: 100px !important;
+}
+.rectangle {
+  margin-top: 27px;
+  background-color: #007ac1;
+  border: 3px dashed #007ac1;
+  border-radius: 50px;
+  width: 1315px;
+  height: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .voyage {
+  padding-left: 48px;
+} */
+
+.voyageblock {
+  max-width: 100%;
+}
+
+.thirdrow {
+  display: flex;
+}
+
+#eta-picker::placeholder,
+#etd-picker::placeholder,
+#etd-picker,
+#eta-picker {
+  font-size: 0.7rem;
+}
+
+/* .addcharge-button {
+  background-color: #007ac1;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  margin-top: 30px;
+} */
+
+.btna {
+  background-color: #007ac1;
+  color: white;
+  margin-right: 20px;
+}
+
+.generate-button {
+  color: #1ebbee;
+  margin-right: 20px;
+}
+
+.generate-button {
+  color: #1ebbee;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  border-color: #1ebbee;
+}
+
+.submit-button {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  background-color: #1ebbee;
+  border-color: #1ebbee;
+}
+
+.required {
+  color: red;
+}
+
+.typesofcall-row {
+  /* margin-top: 30px; */
+}
+
+.td {
+  padding: 20px;
+}
+
+/* .grt {
+  padding-left: 20px;
+}
+
+.nrt {
+  padding-left: 55px;
+} */
+
+.eta {
+}
+
+.etd {
+}
+
+.btn:hover {
+  anchor-name: none;
+  color: #007ac1;
+  background-color: #ffffff;
+  border-color: #007ac1;
+}
+
+.pdabadge {
+  font-weight: 13px;
+}
+
+.capproved {
+  margin-left: 20px;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.capproved input {
+  margin-right: 2px;
+}
+
+.pdarow {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 10px;
+}
+
+/* .date-input {
+  max-width: 240px !important;
+  max-height: 56px !important;
+} */
+
+.pdad {
+  max-width: 130px;
+  font-size: 14px;
+}
+
+@media screen and (min-device-width: 1354px) and (max-device-width: 1800px) {
+  @media only screen and (max-width: 1243px) {
+    .voyageblock {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* .nrt {
+      padding-left: 0px;
+      padding-right: 20px;
+    } */
+
+    /* .date-input {
+      max-width: 100% !important;
+      max-height: 56px !important;
+      max-width: 100%;
+    } */
+
+    .etd {
+      padding-left: 0px;
+    }
+
+    /* .voyage {
+      padding-left: 0px;
+      max-width: 45%;
+    } */
+
+    .vesselradio {
+      margin-left: 0px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .buttons-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+
+    .vesselradio {
+      margin-left: 0px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 1354px) {
+  .voyageblock {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 
+  .nrt {
+    padding-left: 0px;
+    padding-right: 20px;
+  } */
+
+  /* .date-input {
+    width: 100% !important;
+    height: 56px !important;
+    max-width: 100%;
+  } */
+
+  .etd {
+    padding-left: 0px;
+  }
+
+  /* .voyage {
+    padding-left: 0px;
+    width: 45%;
+  } */
+
+  .vesselradio {
+    margin-left: 0px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+
+  .vesselradio {
+    margin-left: 0px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (max-width: 1453px) {
+  .voyageblock {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* .nrt {
+    padding-left: 0px;
+    padding-right: 20px;
+  } */
+
+  /* .date-input {
+    width: 100% !important;
+    height: 56px !important;
+    max-width: 100%;
+  } */
+
+  .etd {
+    padding-left: 0px;
+  }
+
+  /* .voyage {
+    padding-left: 0px;
+    width: 45%;
+  } */
+
+  .vesselradio {
+    margin-left: 0px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+
+  .vesselradio {
+    margin-left: 0px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+
+.buttons-wrapper {
+  display: flex;
+  margin-bottom: 35px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-spc {
+  margin-bottom: 15px;
+}
+
+.pda-date {
+  margin-left: 19px;
+}
+
+.date-input-small {
+  height: 30px !important;
+  width: 91px;
+}
+.date-input {
+  height: 38px !important;
+  font-size: 0.8rem !important;
+}
+
+/* For most modern browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.bi-trash {
+  cursor: pointer;
+}
+
+.mark-button {
+  background-color: #007ac1;
+  padding: 8px 16px;
+  margin-top: 12px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+.mark-button:hover {
+  background-color: #007ac1;
+  color: #ffffff;
+}

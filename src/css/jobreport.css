@@ -1,0 +1,490 @@
+ .mmonth {
+     font-size: 13px;
+     height: 34px;
+     margin-right: 32px;
+ }
+
+ .summary {
+     font-weight: bold;
+     color: #5a5a5a;
+     margin-top: 10px;
+ }
+
+ .bb {
+     margin-top: 5px;
+     border-bottom: 1px solid #9898984f;
+ }
+
+ .totalno {
+     display: flex;
+     align-items: center;
+     margin-right: 27px;
+ }
+
+ .getdownloadpdf {
+     margin-right: 146px;
+ }
+
+ .totalnoinput {
+     width: 50px;
+     margin-left: 5px;
+ }
+
+ .bbn {
+     border-bottom: 1px solid #9898984f;
+ }
+
+ .totalnoinputa {
+     width: 50px;
+     margin-left: 5px;
+ }
+
+ .totalnoinputb {
+     width: 50px;
+     margin-left: 5px;
+ }
+
+ .weekly {
+     width: 176px;
+     margin-left: 10px;
+ }
+
+ .jobfilter {
+     display: flex;
+     align-items: center;
+ }
+
+ .jobporrt {
+     margin-left: 10px;
+ }
+
+ .jobviewbtnn {
+     height: 20px;
+     width: 50px;
+     font-size: 0.8rem;
+     display: flex;
+     align-items: center;
+     color: rgb(255, 255, 255);
+     padding-left: 9px;
+ }
+
+ .chechkcolor {
+     color: green;
+     margin-right: 17px;
+     padding: 0px;
+     display: flex;
+     justify-content: center;
+     font-size: 20px;
+     padding-bottom: 2 px;
+ }
+
+ .jobsub {
+     max-width: 100%;
+ }
+
+ .proc {
+     color: green !important;
+ }
+
+ .Awaitingcolo {
+     color: red !important;
+ }
+
+ .jobs-multi-select {
+     padding-left: 10px;
+     width: 1000px;
+ }
+
+ .filbtn {
+     color: white;
+     width: 117px;
+     display: flex;
+     font-size: 13px;
+     font-weight: bold;
+     justify-content: center;
+     margin-right: 20px;
+ }
+
+ .searchWrapper {
+     border: 1px solid #dee2e6 !important;
+     border-radius: 4px;
+     min-height: 37px;
+     padding: 5px;
+     font-size: 13px;
+     position: relative;
+     width: 689px;
+ }
+
+ .selectionfieldjobs {
+     margin-top: 0;
+ }
+
+ .jobused {
+     margin-right: 10px;
+ }
+
+ .jobtotal {
+     display: flex;
+     align-items: center;
+ }
+
+ .jobreport-header {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+ }
+
+ .form-label {
+     font-size: 0.8rem;
+     margin-bottom: 0rem;
+ }
+
+ .multiSelectContainer {
+     position: relative;
+     text-align: left;
+     width: 100%;
+ }
+
+ .btn {
+     text-align: start;
+ }
+
+ .filbtn {
+     color: white;
+     width: 117px;
+     display: flex;
+     font-size: 13px;
+     font-weight: bold;
+     justify-content: center;
+     margin-right: 20px;
+ }
+
+ .charge {
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .rectangle {
+     align-items: center;
+     background-color: #5c5c5c25;
+     border: 2px solid #007bc1;
+     border-radius: 50px;
+     display: flex;
+     height: 2px;
+     justify-content: center;
+     margin-top: 18px;
+     width: 100%;
+ }
+
+ .charge img {
+     height: 37px;
+ }
+
+.filtermainleft {
+    position: relative;
+    border: 1px solid #80808041;
+    width: 100%;
+    max-width: 126px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.filtermain {
+    position: relative;
+    border: 1px solid #80808041;
+    width: 100%;
+    max-width: 252px;
+    margin-left: 21px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}   
+ .filtericon {
+     align-items: center;
+     padding-left: 7px;
+ }
+
+ .headerb {
+     align-items: center;
+     margin-left: 23px;
+ }
+
+ .filter {
+     padding: 0px 10px;
+     align-items: center;
+     height: 33px;
+     border: 0px;
+     font-size: 13px;
+     border: 0 !important;
+     box-shadow: inherit !important;
+     outline: 0 !important;
+ }
+
+ .form-select.form-select-sm option {
+     padding-left: 5px !important;
+ }
+
+
+
+ .headerb {
+     align-items: start;
+ }
+
+ .filbtnjob {
+     color: white;
+     width: 136px !important;
+     display: flex;
+     font-size: 13px;
+     justify-content: center;
+     margin-left: 10px;
+ }
+ 
+
+ .mmonth {
+     font-size: 13px;
+     height: 35px;
+     margin-right: 32px;
+ }
+
+ .filtermain .filter,
+ .filtermain .filter:focus {
+     border: 0 !important;
+     box-shadow: inherit !important;
+     outline: 0 !important;
+ }
+
+ .filtermainjobleft {
+     position: relative;
+     border: 1px solid #80808041;
+width: 100%;
+margin-left: 9px;
+     max-width: 238px;
+     border-radius: 5px;
+     display: flex;
+     align-items: center;
+ }
+
+ .filtermainleft-mdjob,
+ .filtermain-mdjob,
+ .filtermainjobleft-md-job {
+     position: relative;
+     border: 1px solid #80808041;
+     max-width: 100%;
+     border-radius: 5px;
+     display: flex;
+     align-items: center;
+ }
+
+ .filter-mdjob {
+     padding: 0px 10px;
+     align-items: center;
+     height: 33px;
+     border: 0px;
+     font-size: 13px;
+     box-shadow: none !important;
+     outline: 0 !important;
+     background-color: transparent;
+ }
+
+ .form-select.form-select-sm option {
+     padding-left: 5px !important;
+ }
+.monthselectheight{
+    height:35px;
+}
+ .mmonth-md-job {
+     font-size: 13px;
+     height: 34px;
+ }
+
+ .jobporrt-mdjob {
+     margin-left: 10px;
+ }
+
+ .filtericon-mdjob {
+     align-items: center;
+     padding-left: 7px;
+ }
+
+ @media (max-width: 768px) {
+      .filter-group > div {
+        margin-bottom: 10px;
+      }
+      .jobporrt {
+     margin-left: 9px;
+}
+
+
+     .jobreport-header .filbtnjob {
+         width: 100%;
+         margin-right: 0 !important;
+     }
+
+     .mmonth {
+         font-size: 13px;
+         height: 34px;
+         margin-right: 32px;
+         width: 186px;
+         margin-right: 0px;
+     }
+
+     .summary {
+         font-size: 1rem;
+         margin-top: 0;
+     }
+
+     .bb,
+     .bbn {
+         margin: 10px 0;
+     }
+
+     .rectangle {
+         margin-top: 0px;
+     }
+
+     .totalno {
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+         margin-bottom: 10px;
+     }
+
+     .totalno input {
+         width: 100% !important;
+     }
+
+     .mt-3.d-flex {
+         flex-direction: column;
+     }
+
+     .jobtotal {
+         flex-direction: column;
+         align-items: flex-start;
+     }
+
+     .searchWrapper {
+         width: 100% !important;
+         margin-top: 10px;
+     }
+
+     .col-10,
+     .col-1 {
+         width: 100%;
+         padding: 0;
+         margin-bottom: 10px;
+     }
+
+     .col-1 .filbtn {
+         width: 100%;
+         justify-content: center;
+     }
+
+     .charge {
+
+         gap: 10px;
+         align-items: center;
+     }
+
+
+
+     .headerb {
+         flex-direction: column;
+         margin-left: 0;
+         gap: 10px;
+     }
+
+     .d-flex.gap-3 {
+
+         gap: 10px !important;
+     }
+
+     .filtermain,
+            .filtermainjobleft,
+            .filtermainleft {
+                width: 100% !important;
+            }
+     .filtermain {
+         width: 183px;
+     }
+
+     /* .jobporrt {
+                width: 100%;
+                margin-left: 0;
+            } */
+
+     /* .mmonth {
+                width: 100% !important;
+                margin-right: 0;
+            } */
+
+     .jobfilter {
+         width: 100%;
+         justify-content: flex-start;
+     }
+
+     .createtable {
+         overflow-x: auto;
+     }
+
+     .jobmobpdf {
+         color: #0dcaf0;
+         padding: 1px;
+         font-size: 25px;
+         border: .5px solid #eeee;
+     }
+
+     .totalnoinput {
+         margin-left: 0px;
+     }
+
+     .totalnoinputa {
+         margin-left: 0px;
+     }
+
+     .totalnoinputb {
+         margin-left: 0px;
+     }
+.filtermain {
+    position: relative;
+    border: 1px solid #80808041;
+    
+    max-width:100%;
+     margin-left: 0px; 
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+ .filtermainjobleft {
+     position: relative;
+     border: 1px solid #80808041;
+
+margin-left: 0px;
+     max-width: 100%;
+     border-radius: 5px;
+     display: flex;
+     align-items: center;
+ }
+.mandyearbyjob {
+    /* font-size: 13px; */
+    height: 35px;
+ width: 199px;
+ min-width:100%;
+   
+    min-width: 100%;
+
+}
+.filtermainleft {
+    position: relative;
+    border: 1px solid #80808041;
+    /* width: 100%; */
+    /* max-width: 126px; */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+    .mqfiltermainleftjob{
+        min-width:161px; 
+        width:100%;
+    }
+ }

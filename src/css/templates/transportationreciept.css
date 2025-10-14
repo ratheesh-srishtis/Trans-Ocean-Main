@@ -1,0 +1,43 @@
+.crew{
+    margin-right:0 px;
+}
+.slnumber{
+    margin-right:27px;
+}
+.slwidth{
+    width:370px;
+}
+.vslwidth{
+    width:300px;
+    margin-right: 20px;
+}
+.signwidth{
+    margin-left: 12px;
+    width:611px;
+       
+}
+.signsize{
+    font-size: 14px;
+    height:37px;
+}
+.transpoter{
+    width:453px;
+}
+.transdate{
+    font-size: 0.7rem;
+}
+.jobwidth{
+    width:346px;
+}
+.transportgap{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px ;
+    margin-top: 20px;
+}
+.transmar{
+margin-left: 20px;
+}
+.addmorebtn{
+    color:white;
+}

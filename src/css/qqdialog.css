@@ -1,0 +1,199 @@
+.introstyl {}
+
+.portofcall {
+    margin-top: 10px;
+}
+
+.portofcallstyl {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.PortofCallCountry {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #f2f2f2;
+}
+
+.jobrefn {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #f2f2f2;
+}
+
+.pocstyl {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.pocstylright {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: right;
+}
+
+.grade {}
+
+.grstyl {
+    margin-top: 5px;
+    margin-right: 600px;
+}
+
+.grtabstyl {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.Excellent {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    color: #007bc1;
+}
+
+.grtwostyl {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    max-width: 10px;
+    color: #007bc1;
+}
+
+.grthreestyl {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    color: #007bc1;
+}
+
+.satisfactory {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    font-weight: bold;
+}
+
+.good {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    max-width: 250px;
+    font-weight: bold;
+}
+
+.que {
+    margin-top: 20px;
+}
+
+.queclr {
+    color: #007bc1;
+}
+
+.quesones {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+}
+
+.quesonestyl {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+    color: rgb(7, 204, 7);
+    width: 150px;
+}
+
+.questhree {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #ffffff;
+    width: 150px;
+}
+
+.margineight {
+    margin-top: 8px;
+}
+
+.texcen {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.texcenwidt {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+    width: 150px;
+}
+
+.chechkcolor {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+    width: 150px;
+    color: rgb(7, 204, 7);
+}
+
+.conclusion {
+    color: #007bc1;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.pddstyl{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #c5d9f1;
+    min-width: 0px;
+    max-width: 100%;
+}
+.pddimgstyl{
+    max-height:100px;
+max-width: 150px;
+display:flex;
+align-items: center;
+}
+.pimgstyl{
+    max-height:100px;
+        max-width: 300px;
+}
+.fstyl{
+    font-size:14px; color:#007bc1;
+    margin-left: 10px;
+}
+.istyl{
+    color:#007bc1;
+}
+.arab{
+    width:400px;
+}
+.footer{
+    width:400px;
+   
+}
+.footimgqqform{
+    max-height: 145px;
+    display: flex;
+    max-width: 1069px;
+    justify-content: center;
+}

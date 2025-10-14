@@ -1,0 +1,48 @@
+/* Company Bank Details Form Styles */
+.company-bank-details-container {
+ 
+  padding: 32px 28px 24px 28px;
+}
+
+.form-title {
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 28px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.bank-details-form .form-group {
+  margin-bottom: 22px;
+}
+
+.bank-details-form label {
+  font-weight: 500;
+  margin-bottom: 7px;
+  display: block;
+  color: #34495e;
+}
+
+.bank-details-form .form-control {
+  border-radius: 6px;
+  border: 1px solid #bfc9d2;
+  padding: 8px 12px;
+  font-size: 1rem;
+  
+}
+
+.bank-details-form .btn-success {
+  font-weight: bold;
+  font-size: 1.08rem;
+  padding: 10px 36px;
+  margin-top: 10px;
+}
+
+.btnbankdet{
+  background-color: #0dcaf0;
+  border: #0dcaf0;
+}
+.btnbankdet:hover{
+  color: #00b3d6;
+  border: 1px solid #00b3d6;
+}

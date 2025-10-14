@@ -1,0 +1,33 @@
+/* Pill design for vendor items */
+.vendor-item {
+  display: inline-block;
+  padding: 4px 16px;
+  margin: 2px 6px 2px 0;
+  background-color: #0dcaf0;
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+  border: 1px solid #000000;
+  transition: background 0.2s;
+}
+.vendor-item:hover {
+  background-color: #0dcaf0;
+  color: #ffffff;
+}
+td.addjob-click {
+  color: blue;
+  cursor: pointer;
+}
+td.addjob-click:hover {
+  text-decoration: underline;
+}
+
+.selected-vendors {
+  display: flex;
+  border: 1px solid #dee2e6;
+  padding:5px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,79 @@
+.media-settings-container {
+  margin: 15px;
+}
+
+.media-logo-preview {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.media-logo-edit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-logo-edit i {
+  font-size: 22px;
+  color: #007bff;
+}
+
+.media-save-btn {
+  margin-top: 24px;
+}
+
+.media-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.media-logo-edit {
+  position: absolute;
+  bottom: 18px;
+  right: 24px;
+  height: 37px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.media-logo-edit i {
+  font-size: 22px;
+  color: #007bc1;
+}
+
+.fontmedia {
+  font-size: 25px;
+  font-weight: 600;
+  background-color: #007bc1;
+  color: #fff;
+  padding: 11px 5px;
+  margin-bottom: 33px;
+}
+.subheadmediafont {
+  background-color: #eaeaea;
+  font-size: 16px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+
+.secand-section-margin {
+  margin-top: 80px;
+}

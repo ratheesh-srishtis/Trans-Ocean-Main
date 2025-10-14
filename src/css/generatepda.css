@@ -1,0 +1,88 @@
+/* 
+.addcharges {
+  margin: 300px;
+  border: 1px solid red;
+  border-radius: 30px;
+  padding: 20px;
+}
+
+.add-button {
+  background-color: #007ac1;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  font-size: larger;
+}
+
+.btn:hover {
+  color: #007ac1;
+  background-color: #007ac1;
+  border-color: #007ac1;
+}
+
+.rectangle {
+  height: 120px;
+  width: 1px;
+  border-right: 3px solid #007ac1;
+  border-radius: 0;
+}
+
+.rectanglea {
+  height: 120px;
+  width: 1px;
+  border-right: 3px solid #ffffff;
+  border-radius: 0;
+} */
+
+.bill {
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.terms {
+  margin-left: 20px;
+  text-align: justify;
+}
+
+.sub {
+  margin-left: 240px;
+  font-size: 20px;
+  color: #007ac1;
+}
+
+.subicon {
+  margin-top: 7px;
+  padding-right: 10px;
+  font-size: 20px;
+  color: #007ac1;
+}
+
+.no_borders_column {
+  border-bottom: 0px;
+}
+
+/* thead tr th {
+  border-top: 3px solid blue;
+}
+
+tbody tr:last-child :not(.no_borders_column) {
+  border-bottom: 3px solid blue;
+} */
+
+thead tr .tableh {
+  border-top: 3px solid blue;
+}
+
+tbody .tabler:last-child :not(.no_borders_column) {
+  border-bottom: 3px solid blue;
+}
+
+.leftimg {
+  width: 500px;
+  margin-top: 20px;
+}
+.rightimg {
+  width: 500px;
+}
+
+@media only screen and (max-width: 767px) {
+}

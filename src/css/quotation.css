@@ -1,0 +1,237 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.infobtn {
+  color: white;
+  font-size: 13px;
+}
+
+.filter {
+  padding: 0px 10px;
+  align-items: center;
+  height: 33px;
+  border: 0px;
+  font-size: 13px;
+  border: 0 !important;
+  box-shadow: inherit !important;
+  outline: 0 !important;
+}
+.emailmessage {
+  font-size: 12px;
+}
+.searchmain {
+  position: relative;
+}
+.pdabadge {
+  font-size: 13px;
+  color: #007bc1;
+  margin-top: 2px;
+}
+
+.draft-pda-jobs {
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #007bc1;
+  background-color: #e6f2f9;
+  padding: 4px;
+  padding-right: 19px;
+  margin-left: 23px;
+}
+.statusbadge i {
+  font-size: 15px;
+}
+.search {
+  border: 1px solid #80808041;
+  width: 150px;
+  height: 37px;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding-right: 36px;
+}
+
+.rightside {
+  margin-right: 23px;
+}
+
+.leftside {
+  align-items: center;
+}
+
+.headerb {
+  align-items: center;
+  margin-left: 23px;
+}
+
+.searchicon {
+  position: absolute;
+  right: 7px;
+  cursor: pointer;
+  top: 6px;
+}
+
+.filtervalue {
+  padding-left: 0px !important;
+}
+
+.filtericon {
+  align-items: center;
+  padding-left: 7px;
+}
+
+.filtermain {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 252px;
+  max-width: 100%;
+
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.filtermainleft {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 184px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.filtermainjobleft {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 240px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.filtermainjobs {
+  position: relative;
+  border: 1px solid #80808041;
+  width: 239px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.filtermainjobs .filter,
+.filtermainjobs .filter:focus {
+  border: 0 !important;
+  box-shadow: inherit !important;
+  outline: 0 !important;
+}
+
+.filtermain .filter,
+.filtermain .filter:focus {
+  border: 0 !important;
+  box-shadow: inherit !important;
+  outline: 0 !important;
+}
+
+.form-select.form-select-sm option {
+  padding-left: 5px !important;
+}
+
+.filtermain .form-select .form-select-sm {
+  padding-right: 30px;
+}
+
+.filtername {
+  padding-left: 50px;
+}
+
+.tablequo {
+  min-width: 1082px;
+  max-width: 100%;
+  font-size: 13px;
+  overflow-x: auto;
+}
+
+/* .css-1gqmilo-MuiDataGrid-columnHeaderTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: normal;
+  font-weight: bolder !important;
+  font-size: 13px;
+} */
+
+/* .css-5wdp45-MuiDataGrid-root .MuiDataGrid-cell--textLeft {
+  font-size: 13px;
+} */
+/* 
+.css-1umw9bq-MuiSvgIcon-root {
+  font-size: 19px;
+}
+
+.MuiDataGrid-root.MuiDataGrid-root--densityStandard.MuiDataGrid-root--noToolbar.MuiDataGrid-withBorderColor.css-5wdp45-MuiDataGrid-root {
+  --DataGrid-width: 1096.32px;
+  --DataGrid-hasScrollX: 0;
+  --DataGrid-hasScrollY: 0;
+  --DataGrid-scrollbarSize: 15px;
+  --DataGrid-rowWidth: 1081.29px !important;
+  --DataGrid-columnsTotalWidth: 1096.32px;
+  --DataGrid-leftPinnedWidth: 0px;
+  --DataGrid-rightPinnedWidth: 0px;
+  --DataGrid-headerHeight: 56px;
+  --DataGrid-headersTotalHeight: 56px;
+  --DataGrid-topContainerHeight: 56px;
+  --DataGrid-bottomContainerHeight: 0px;
+  --height: 52px;
+} */
+
+/* .css-1umw9bq-MuiSvgIcon-root {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  fill: currentColor;
+  font-size: 1rem !important;
+} */
+/* 
+.css-5wdp45-MuiDataGrid-root .MuiDataGrid-columnHeaders {
+  min-width: 1079px;
+  max-width: 1079px;
+  min-width: 100%;
+  width: 100%;
+} */
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.quotation-outer-div {
+  width: 96%;
+  max-width: 96%;
+  overflow-x: hidden;
+  /* margin-left: 20px; */
+}
+.filbtnjob {
+  color: white;
+  width: 136px;
+  display: flex;
+  font-size: 13px;
+  justify-content: center;
+  margin-left: 10px;
+}
+.mmonth {
+  font-size: 13px;
+  height: 34px;
+  margin-right: 32px;
+}
+.yearjobreport {
+  margin-right: 23px;
+}
