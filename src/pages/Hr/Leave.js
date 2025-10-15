@@ -14,6 +14,8 @@ import AddLeave from "./AddLeave";
 import Swal from "sweetalert2";
 import PopUp from "../PopUp";
 import Loader from "../Loader";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const Leave = ({ loginResponse }) => {
   const Group = require("../../assets/images/leave.png");
   const [isLoading, setIsLoading] = useState(false); // Loader state
@@ -34,31 +36,27 @@ const Leave = ({ loginResponse }) => {
   });
 
   useEffect(() => {
-    console.log("loginResponse", loginResponse);
-    if (loginResponse?.isEmployee === true) {
-      fecthEmployeeLeaves({ employeeId: loginResponse?.data?._id });
-    } else {
-      fecthUserLeaves({ userId: loginResponse?.data?._id });
-    }
+    fecthUserLeaves({ userId: loginResponse?.data?._id });
   }, [loginResponse]);
 
-  const fecthEmployeeLeaves = async (paylaod) => {
-    console.log("payload", paylaod);
-    const listLeaves = await getAllEmployeeLeaves(paylaod);
-    SetEmpLeaves(listLeaves?.leaves || []);
+  // const fecthEmployeeLeaves = async (paylaod) => {
+  //   console.log("payload", paylaod);
+  //   const listLeaves = await getAllEmployeeLeaves(paylaod);
+  //   SetEmpLeaves(listLeaves?.leaves || []);
 
-    // Update leave counts
-    setLeaveCounts({
-      remainingAnnualLeave: listLeaves?.remainingAnnualLeave || 0,
-      remainingCasuallLeave: listLeaves?.remainingCasuallLeave || 0,
-      remainingSicklLeave: listLeaves?.remainingSicklLeave || 0,
-      remainingEmergencyLeave: listLeaves?.remainingEmergencyLeave || 0,
-    });
-  };
+  //   // Update leave counts
+  //   setLeaveCounts({
+  //     remainingAnnualLeave: listLeaves?.remainingAnnualLeave || 0,
+  //     remainingCasuallLeave: listLeaves?.remainingCasuallLeave || 0,
+  //     remainingSicklLeave: listLeaves?.remainingSicklLeave || 0,
+  //     remainingEmergencyLeave: listLeaves?.remainingEmergencyLeave || 0,
+  //   });
+  // };
   const fecthUserLeaves = async (paylaod) => {
     console.log("payload", paylaod);
     const listLeaves = await getAllUserLeaves(paylaod);
     SetEmpLeaves(listLeaves?.leaves || []);
+    setEmployeeId(listLeaves?.employeeId || "");
 
     // Update leave counts
     setLeaveCounts({
@@ -76,7 +74,7 @@ const Leave = ({ loginResponse }) => {
   };
   const handleListLeaves = (payload) => {
     setEditMode(false);
-    fecthEmployeeLeaves(payload);
+    // fecthUserLeaves(payload);
     setOpen(false);
   };
   const payloadParams = { employeeId: employeeId };
@@ -99,10 +97,10 @@ const Leave = ({ loginResponse }) => {
             const response = await deleteLeave(payload);
             setMessage(response.message);
             setOpenPopUp(true);
-            fecthEmployeeLeaves(payloadParams);
+            fecthUserLeaves(payloadParams);
           } catch (error) {
             Swal.fire("Error deleting leaves");
-            fecthEmployeeLeaves(payloadParams);
+            fecthUserLeaves(payloadParams);
           }
         }
       }
@@ -162,10 +160,86 @@ const Leave = ({ loginResponse }) => {
     setEditMode(false);
     setErrors({});
     const payload = { employeeId: employeeId };
-    if (loginResponse?.isEmployee === true) {
-      fecthEmployeeLeaves({ employeeId: loginResponse?.data?._id });
-    } else {
-      fecthUserLeaves({ userId: loginResponse?.data?._id });
+    fecthUserLeaves({ userId: loginResponse?.data?._id });
+  };
+
+  const handleExportToExcel = () => {
+    try {
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+
+      // Prepare data for Excel export
+      const excelData = LeaveList.map((item) => {
+        const datefrom = item.leaveFrom.split("T")[0];
+
+        const [fromyear, frommonth, fromday] = datefrom.split("-");
+        const leaveFrom = `${fromday}-${frommonth}-${fromyear}`;
+        const dateto = item.leaveTo.split("T")[0];
+        const [year, month, day] = dateto.split("-");
+        const leaveTo = `${day}-${month}-${year}`;
+
+        // Logic for Approved By field
+        let approvedBy = "";
+        const approvedNames = [];
+
+        if (item.approvalEmployeeStatus && item.approvalEmployee) {
+          approvedNames.push(item.approvalEmployee.employeeName);
+        }
+
+        if (item.approvalHeadStatus && item.approvalHead) {
+          approvedNames.push(item.approvalHead.employeeName);
+        }
+
+        approvedBy =
+          approvedNames.length > 0 ? approvedNames.join(", ") : "N/A";
+
+        return {
+          "Leave Type": item.leaveType || "N/A",
+          "Leave Mode": item.leaveMode?.leaveType || "N/A",
+          "Leave From": leaveFrom || "N/A",
+          "Leave To": leaveTo || "N/A",
+          Comment: item.comment || "N/A",
+          "Approved By": approvedBy,
+        };
+      });
+
+      // Create worksheet from data
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Set column widths
+      worksheet["!cols"] = [
+        { wch: 15 }, // Leave Type
+        { wch: 15 }, // Leave Mode
+        { wch: 15 }, // Leave From
+        { wch: 15 }, // Leave To
+        { wch: 30 }, // Comment
+        { wch: 20 }, // Approved By
+      ];
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, "User Leaves");
+
+      // Generate filename
+      const fileName = "User Leaves.xlsx";
+
+      // Convert to buffer and save
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      saveAs(blob, fileName);
+
+      console.log(`Excel file exported successfully: ${fileName}`);
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      Swal.fire(
+        "Error",
+        "Error exporting to Excel. Please try again.",
+        "error"
+      );
     }
   };
   return (
@@ -178,6 +252,14 @@ const Leave = ({ loginResponse }) => {
           </div>
         </div>
         <div className=" mt-3 mb-3 employeeadd">
+          <div className="">
+            <button
+              className="btn btn-info infobtn addleave"
+              onClick={handleExportToExcel}
+            >
+              Download Excel
+            </button>
+          </div>
           <div className="">
             <button
               onClick={() => {
@@ -332,16 +414,26 @@ const Leave = ({ loginResponse }) => {
             <p>No Data Found</p>
           </div>
         )}
-        <AddLeave
-          open={open}
-          onClose={handleClose}
-          listLeaves={handleListLeaves}
-          employeeId={loginResponse?.data?._id}
-          editMode={editMode}
-          leavevalues={selectedRow}
-          errors={errors}
-          setErrors={setErrors}
-        ></AddLeave>
+
+        {!employeeId && (
+          <>
+            <p>This user is not added by admin yet</p>
+          </>
+        )}
+        {employeeId && (
+          <>
+            <AddLeave
+              open={open}
+              onClose={handleClose}
+              listLeaves={handleListLeaves}
+              employeeId={employeeId}
+              editMode={editMode}
+              leavevalues={selectedRow}
+              errors={errors}
+              setErrors={setErrors}
+            ></AddLeave>
+          </>
+        )}
       </div>
       {openPopUp && (
         <PopUp message={message} closePopup={() => setOpenPopUp(false)} />

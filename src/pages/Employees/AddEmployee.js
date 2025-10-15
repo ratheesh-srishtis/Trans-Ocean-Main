@@ -25,6 +25,7 @@ const AddEmployee = () => {
   const [errors, setErrors] = useState({});
   const [EmployeeList, setEmployeeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // Loader state
+  const [isSuccess, setIsSuccess] = useState(false); // Track if it's a success response
 
   const [passportName, setpassportName] = useState(null);
   const [passportUrl, setpassportUrl] = useState(null);
@@ -156,8 +157,8 @@ const AddEmployee = () => {
   ]);
   const [formData, setFormData] = useState({
     employeeName: location.state?.employeeName || "",
-    username: location.state?.username || "",
-    password: location.state?.password || "",
+    username: "",
+    password: "",
     employeeLastName: location.state?.employeeLastName || "",
     dob: location.state?.dob || "",
     address: location.state?.address || "",
@@ -217,6 +218,13 @@ const AddEmployee = () => {
     //window.location.reload();
   };
 
+  const handlePopupClose = () => {
+    setOpenPopUp(false);
+    if (isSuccess) {
+      reloadpage(); // Only reload if it's a success scenario
+    }
+  };
+
   useEffect(() => {
     console.log(location.state, "location.state");
   }, [location.state]);
@@ -243,60 +251,15 @@ const AddEmployee = () => {
       newErrors.dateOfJoining = "Date of joining is required";
     if (!formData.designation)
       newErrors.designation = "Desigination is required";
-    if (!formData.username) newErrors.username = "User Name is required";
-    // Password validation
-    if (!isEditing && !formData.password) {
-      newErrors.password = "Password is required";
-    }
+    // if (!formData.username) newErrors.username = "User Name is required";
+    // // Password validation
+    // if (!isEditing && !formData.password) {
+    //   newErrors.password = "Password is required";
+    // }
     // if (!formData.department) newErrors.department = "Department is required";
     // if (!formData.officialEmail)
     //   newErrors.officialEmail = "Official Email is required";
-    // passport Detail Validation
-    const { passportdetail_number, passportdetail_expiry, passportupload } =
-      formData;
-    const isAnyFieldFilled =
-      passportdetail_number || passportdetail_expiry || passportupload;
-    if (
-      isAnyFieldFilled &&
-      !(passportdetail_number && passportdetail_expiry && passportupload)
-    ) {
-      newErrors.passportDetailsErr =
-        "If any passport field is filled, all fields must be completed.";
-    } else {
-      delete newErrors.passportDetailsErr;
-    }
 
-    // Contract Details Validation
-    const { contractdetail_name, contractdetail_expiry, contractupload } =
-      formData;
-    const isAnyContractFieldFilled =
-      contractdetail_name || contractdetail_expiry || contractupload;
-    if (
-      isAnyContractFieldFilled &&
-      !(contractdetail_name && contractdetail_expiry && contractupload)
-    ) {
-      newErrors.contractDetailsErr =
-        "If any contract field is filled, all fields must be filled.";
-    }
-    // Visa Details Validation
-    const { visa_number, visa_expiry, visaupload } = formData;
-    const isAnyVisaFieldFilled = visa_number || visa_expiry || visaupload;
-    if (isAnyVisaFieldFilled && !(visa_number && visa_expiry && visaupload)) {
-      newErrors.visaDetailsErr =
-        "If any visa field is filled, all fields must be filled.";
-    }
-
-    // Licence Details Validation
-    const { license_number, license_date, licenseupload } = formData;
-    const isAnyLicenceFieldFilled =
-      license_number || license_date || licenseupload;
-    if (
-      isAnyLicenceFieldFilled &&
-      !(license_number && license_date && licenseupload)
-    ) {
-      newErrors.licenceDetailsErr =
-        "If any licence field is filled, all fields must be filled.";
-    }
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -590,7 +553,12 @@ const AddEmployee = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      setOpenPopUp(true);
+      setMessage("Please fill all required fields");
+      setIsSuccess(false); // Not a success scenario
+      return;
+    }
     try {
       const newPassportDetail = {
         passportNumber: formData.passportdetail_number,
@@ -724,6 +692,7 @@ const AddEmployee = () => {
       if (response.status === true) {
         setOpenPopUp(true);
         setMessage(response.message);
+        setIsSuccess(true); // Success scenario
         fileInputRefPassport.current.value = "";
         fileInputRefContract.current.value = "";
         fileInputRefVisa.current.value = "";
@@ -757,9 +726,12 @@ const AddEmployee = () => {
       } else {
         setOpenPopUp(true);
         setMessage(response.message);
+        setIsSuccess(false); // Error scenario
       }
     } catch (error) {
       setMessage(error);
+      setOpenPopUp(true);
+      setIsSuccess(false); // Error scenario
     }
   };
   const handleFileChange = async (event) => {
@@ -998,7 +970,7 @@ const AddEmployee = () => {
             <div className="col-4">
               <label htmlFor="employeeName" className="form-label">
                 First Name:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <input
                 type="text"
@@ -1016,7 +988,7 @@ const AddEmployee = () => {
             <div className="col-4">
               <label htmlFor="employeeLastName" className="form-label">
                 Last Name:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <input
                 type="text"
@@ -1033,7 +1005,7 @@ const AddEmployee = () => {
             </div>
             <div className="col-4">
               <label htmlFor="dob" className="form-label">
-                Date of Birth :{/* <span className="required"> * </span> */}
+                Date of Birth :<span className="required"> * </span>
               </label>
               <input
                 type="date"
@@ -1210,10 +1182,9 @@ const AddEmployee = () => {
                 <span className="invalid">{errors.iqamaNumber}</span>
               )}
             </div>
-            <div className="col-4">
+            {/* <div className="col-4">
               <label htmlFor="username" className="form-label">
                 User Name:
-                {/* <span className="required"> * </span> */}
               </label>
               <input
                 type="text"
@@ -1243,7 +1214,6 @@ const AddEmployee = () => {
                 onChange={handleChange}
                 value={formData.password}
               />
-              {/* Bootstrap eye icon */}
               <i
                 className={`bi ${
                   showPassword ? "bi-eye-slash" : "bi-eye"
@@ -1253,14 +1223,14 @@ const AddEmployee = () => {
               {errors.password && (
                 <span className="invalid">{errors.password}</span>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="Personal mt-3 mb-3">Official Information</div>
           <div className="row">
             <div className="col-2">
               <label htmlFor="dateofjoining" className="form-label">
                 Date of Joining:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <input
                 type="date"
@@ -1278,7 +1248,7 @@ const AddEmployee = () => {
             <div className="col-3">
               <label htmlFor="desigination" className="form-label">
                 Designation:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <select
                 name="designation"
@@ -2047,7 +2017,7 @@ const AddEmployee = () => {
         </form>
       </div>
 
-      {openPopUp && <PopUp message={message} closePopup={reloadpage} />}
+      {openPopUp && <PopUp message={message} closePopup={handlePopupClose} />}
       <Loader isLoading={isLoading} />
     </>
   );

@@ -418,14 +418,14 @@ const ReceivableSummary = () => {
           </div>
         </div>
         {/* <div>
-          <div class="col-md-3 col-12">
-            <button class="btn btn-info filbtnjobmd">Download PDF</button>
+          <div className="col-md-3 col-12">
+            <button className="btn btn-info filbtnjobmd">Download PDF</button>
           </div>
-          <div class="col-md-3 col-12">
-            <button class="btn btn-info filbtnjobmd">Download Excel</button>
+          <div className="col-md-3 col-12">
+            <button className="btn btn-info filbtnjobmd">Download Excel</button>
           </div>
         </div> */}
-        <div class=" mt-3 container-fluid">
+        <div className=" mt-3 container-fluid">
           <div className="row d-flex justify-content-end">
             <div className="col-md-3 col-12 d-flex gap-2 co ">
               <button

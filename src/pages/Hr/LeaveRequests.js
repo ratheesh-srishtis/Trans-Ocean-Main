@@ -8,11 +8,15 @@ import {
 import { getAllEmployees } from "../../services/apiEmployee";
 import "../../css/payment.css";
 import Swal from "sweetalert2";
+import PopUp from "../PopUp";
+import Loader from "../Loader";
 const LeaveRequests = ({ loginResponse }) => {
   const Group = require("../../assets/images/leave.png");
   const [LeaverequestLists, setLeaverequestLists] = useState([]);
   const [EmployeeList, setEmployeeList] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false); // Loader state
+  const [message, setMessage] = useState("");
+  const [openPopUp, setOpenPopUp] = useState(false);
   const fecthEmployeeLeaveRequests = async (paylaod) => {
     const response = await getAllEmployeeLeaveRequests(paylaod);
     setLeaverequestLists(response?.leaves || []);
@@ -52,7 +56,18 @@ const LeaveRequests = ({ loginResponse }) => {
         userId: loginResponse?.data?._id,
         leaveId: leaveId,
       };
-      await approveEmployeeLeaveRequests(payload);
+      let response = await approveEmployeeLeaveRequests(payload);
+      if (response.status === true) {
+        setIsLoading(false); // Hide loader
+        setOpenPopUp(true);
+        setMessage(response.message);
+        const payload = { userId: loginResponse?.data?._id };
+        fecthEmployeeLeaveRequests(payload);
+      } else {
+        setIsLoading(false); // Hide loader
+        setMessage(response.message);
+        setOpenPopUp(true);
+      }
     } catch (error) {
       console.error("Error approving leave:", error);
     }
@@ -70,8 +85,21 @@ const LeaveRequests = ({ loginResponse }) => {
       headerName: "Action",
       flex: 2,
       renderCell: (params) => {
-        const isApproved =
-          params.row.approvalEmployeeStatus || params.row.approvalHeadStatus;
+        // Check if the logged-in user has already approved this leave
+        let isApproved = false;
+
+        if (
+          params.row.approvalEmployee === loginResponse?.data?._id &&
+          params.row.approvalEmployeeStatus
+        ) {
+          isApproved = true;
+        } else if (
+          params.row.approvalHead === loginResponse?.data?._id &&
+          params.row.approvalHeadStatus
+        ) {
+          isApproved = true;
+        }
+
         return (
           <div style={{ alignItems: "center" }}>
             <button
@@ -206,6 +234,10 @@ const LeaveRequests = ({ loginResponse }) => {
           </div>
         )}
       </div>
+      {openPopUp && (
+        <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
+      )}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

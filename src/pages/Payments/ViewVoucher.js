@@ -129,7 +129,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                     onClick={downloadVoucher}
                   >
                     {" "}
-                    Download Petty
+                    Download Voucher
                   </button>
                 </div>
               </div>
@@ -157,7 +157,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                     <td className="voucherprinting">{particulars}</td>
                     <td className="voucheramountrate text-center">{amount}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td className="voucherpartthree">
                       <div className="voucheraccount">Vendor:</div>{" "}
                       <div className="voucherprinting">
@@ -166,7 +166,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                       </div>
                     </td>
                     <td className="voucherpartfour"></td>
-                  </tr>
+                  </tr> */}
 
                   <tr>
                     <td className="voucheraccount">Through:</td>

@@ -76,10 +76,10 @@ const Profile = () => {
     setFormData({ ...formData, medicalRecordDetails: updated });
   };
 
-  const fetchProfileDetails = async () => {
+  const fetchProfileDetails = async (id) => {
     let payload = {
-      userId: "",
-      employeeId: loginResponse?.data?._id,
+      userId: id,
+      employeeId: "",
     };
 
     try {
@@ -87,7 +87,7 @@ const Profile = () => {
       const response = await getProfileDetails(payload);
       console.log("fetchProfileDetails:", response);
       setEmployeeData(response?.employeeDetails[0]);
-      setEmployeeId(response?.employeeDetails[0]?.employeeId);
+      setEmployeeId(response?.employeeDetails[0]?._id);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch customers", error);
@@ -96,7 +96,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    fetchProfileDetails();
+    fetchProfileDetails(loginResponse?.data?._id);
   }, [loginResponse?.data?._id]);
   // State for all editable fields
   const [formData, setFormData] = useState({
@@ -234,7 +234,7 @@ const Profile = () => {
     let empdata = employeeData;
     setIsEditMode((prev) => !prev);
     let empObj = {
-      employeeId: loginResponse?.data?._id,
+      employeeId: employeeId,
       employeeName: empdata.employeeName,
       username: empdata.username,
       password: empdata.password,
@@ -276,6 +276,19 @@ const Profile = () => {
 
   // Excel export function - moved from ViewProfile component
   const handleExportToExcel = () => {
+    const formatDate = (dateString) => {
+      if (!dateString) return "";
+
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString;
+
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${day}-${month}-${year}`;
+    };
+
     try {
       // Create workbook
       const workbook = XLSX.utils.book_new();
@@ -285,7 +298,7 @@ const Profile = () => {
         ["Personal Information", ""],
         ["First Name", formData.employeeName || ""],
         ["Last Name", formData.employeeLastName || ""],
-        ["Date of Birth", formData.dob || ""],
+        ["Date of Birth", formatDate(formData.dob) || ""],
         ["Address", formData.address || ""],
         ["City", formData.city || ""],
         ["State", formData.state || ""],
@@ -297,7 +310,7 @@ const Profile = () => {
         ["Civil ID", formData.iqamaNumber || ""],
         ["", ""],
         ["Official Information", ""],
-        ["Date of Joining", formData.dateOfJoining || ""],
+        ["Date of Joining", formatDate(formData.dateOfJoining) || ""],
         [
           "Designation",
           desiginationlist.find((d) => d._id === formData.designation)
@@ -444,8 +457,7 @@ const Profile = () => {
 
       // Generate filename
       const employeeName = formData.employeeName || "Employee";
-      const timestamp = new Date().toISOString().split("T")[0];
-      const fileName = `${employeeName}_Profile_${timestamp}.xlsx`;
+      const fileName = `${employeeName}_Profile.xlsx`;
 
       // Convert to buffer and save
       const excelBuffer = XLSX.write(workbook, {

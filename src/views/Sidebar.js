@@ -44,7 +44,7 @@ const Sidebar = () => {
     "leave reports",
     "report",
     "General Documents",
-    "Employee Details Modifications",
+    "Update Employee Info",
     "Leave Requests",
   ];
   const handleNavigation = (menuItem) => {
@@ -148,8 +148,8 @@ const Sidebar = () => {
       case "General Documents":
         navigate("/general-documents");
         break;
-      case "Employee Details Modifications":
-        navigate("/employee-details-modifications");
+      case "Update Employee Info":
+        navigate("/update-employee-info");
         break;
       case "anchorage-stay-charges":
         navigate("/anchorage-stay-charges");
@@ -218,8 +218,8 @@ const Sidebar = () => {
       label: "General Documents",
       icon: "bi bi-bar-chart",
     },
-    "Employee Details Modifications": {
-      label: "Employee Details Modifications",
+    "Update Employee Info": {
+      label: "Update Employee Info",
       icon: "bi bi-people",
     },
     "Leave Requests": {

@@ -25,6 +25,20 @@ import {
 } from "@mui/icons-material";
 
 const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    // Handle different date formats
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
   const getSectionIcon = (type) => {
     const iconMap = {
       personal: <Person />,
@@ -42,7 +56,19 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
   const InfoCard = ({ title, icon, children }) => (
     <Card sx={{ mb: 3, boxShadow: 3 }}>
       <CardContent>
-        <Box display="flex" alignItems="center" mb={2}>
+        <Box
+          display="flex"
+          alignItems="center"
+          mb={2}
+          sx={{
+            backgroundColor: "rgb(216, 216, 216)",
+            p: 1,
+            borderRadius: 1,
+            mx: -2,
+            mt: -2,
+            mb: 2,
+          }}
+        >
           {icon}
           <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
             {title}
@@ -105,7 +131,7 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
         <Grid container spacing={2}>
           <InfoRow label="First Name" value={formData.employeeName} />
           <InfoRow label="Last Name" value={formData.employeeLastName} />
-          <InfoRow label="Date of Birth" value={formData.dob} />
+          <InfoRow label="Date of Birth" value={formatDate(formData.dob)} />
           <InfoRow label="Address" value={formData.address} />
           <InfoRow label="City" value={formData.city} />
           <InfoRow label="State" value={formData.state} />
@@ -121,7 +147,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
       {/* Official Information */}
       <InfoCard title="Official Information" icon={getSectionIcon("official")}>
         <Grid container spacing={2}>
-          <InfoRow label="Date of Joining" value={formData.dateOfJoining} />
+          <InfoRow
+            label="Date of Joining"
+            value={formatDate(formData.dateOfJoining)}
+          />
           <InfoRow
             label="Designation"
             value={

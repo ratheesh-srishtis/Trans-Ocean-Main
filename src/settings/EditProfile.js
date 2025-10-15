@@ -158,8 +158,8 @@ const EditProfile = ({ employeeObject }) => {
   ]);
   const [formData, setFormData] = useState({
     employeeName: employeeObject?.employeeName || "",
-    username: employeeObject?.username || "",
-    password: employeeObject?.password || "",
+    username: "",
+    password: "",
     employeeLastName: employeeObject?.employeeLastName || "",
     dob: employeeObject?.dob || "",
     address: employeeObject?.address || "",
@@ -216,7 +216,7 @@ const EditProfile = ({ employeeObject }) => {
   });
   const reloadpage = () => {
     // navigate("/profile");
-    window.location.reload();
+    // window.location.reload();
   };
 
   useEffect(() => {
@@ -246,11 +246,7 @@ const EditProfile = ({ employeeObject }) => {
       newErrors.dateOfJoining = "Date of joining is required";
     if (!formData.designation)
       newErrors.designation = "Desigination is required";
-    if (!formData.username) newErrors.username = "User Name is required";
-    // Password validation
-    if (!isEditing && !formData.password) {
-      newErrors.password = "Password is required";
-    }
+
     // if (!formData.department) newErrors.department = "Department is required";
     // if (!formData.officialEmail)
     //   newErrors.officialEmail = "Official Email is required";
@@ -702,14 +698,14 @@ const EditProfile = ({ employeeObject }) => {
       }
 
       //if(passportUrl)
-      formData.passportDetails = newPassportDetail;
+      formData.passportDetails = [newPassportDetail];
       //if(contractUrl)
-      formData.contractDetails = newContractDetail;
+      formData.contractDetails = [newContractDetail];
       //(visaUrl)
-      formData.visaDetails = newVisaDetail;
+      formData.visaDetails = [newVisaDetail];
 
       //if(licenseUrl)
-      formData.licenseDetails = newLicenceDetail;
+      formData.licenseDetails = [newLicenceDetail];
       if (isEditing) formData.medicalRecordDetails = editmedicalRecordDetails;
       else formData.medicalRecordDetails = medicalRecordDetails;
 
@@ -728,7 +724,7 @@ const EditProfile = ({ employeeObject }) => {
       if (response.status === true) {
         setOpenPopUp(true);
         setMessage(
-          "Updated Successfully Once HR Approves the changes you will see the changes in your profile"
+          "Update successful. The changes will reflect in your profile once approved by HR."
         );
         fileInputRefPassport.current.value = "";
         fileInputRefContract.current.value = "";
@@ -1214,10 +1210,9 @@ const EditProfile = ({ employeeObject }) => {
                 <span className="invalid">{errors.iqamaNumber}</span>
               )}
             </div>
-            <div className="col-4">
+            {/* <div className="col-4">
               <label htmlFor="username" className="form-label">
                 User Name:
-                {/* <span className="required"> * </span> */}
               </label>
               <input
                 type="text"
@@ -1247,7 +1242,6 @@ const EditProfile = ({ employeeObject }) => {
                 onChange={handleChange}
                 value={formData.password}
               />
-              {/* Bootstrap eye icon */}
               <i
                 className={`bi ${
                   showPassword ? "bi-eye-slash" : "bi-eye"
@@ -1257,7 +1251,7 @@ const EditProfile = ({ employeeObject }) => {
               {errors.password && (
                 <span className="invalid">{errors.password}</span>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="Personal mt-3 mb-3">Official Information</div>
           <div className="row">

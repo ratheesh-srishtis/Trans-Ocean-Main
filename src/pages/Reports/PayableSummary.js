@@ -419,7 +419,7 @@ const PayableSummary = () => {
             <img src={Group}></img>
           </div>
         </div>
-        <div class=" mt-3">
+        <div className=" mt-3">
           <div className="row d-flex justify-content-end">
             <div className=" col-md-3 col-12 d-flex justify-content-end  gap-2 ">
               <button

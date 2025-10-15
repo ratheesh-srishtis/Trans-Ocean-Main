@@ -208,7 +208,7 @@ const Content = ({ onNotFound }) => {
     "/company-bank-details",
     "/profile",
     "/user-leave",
-    "/employee-details-modifications",
+    "/update-employee-info",
     "/view-employee-details",
     "/leave-requests",
     "/leave",
@@ -258,10 +258,7 @@ const Content = ({ onNotFound }) => {
       <Route path="/desiginations" element={<Desiginations />} />
       <Route path="/employee-leaves" element={<EmployeeLeaves />} />
       <Route path="/leave" element={<Leave loginResponse={loginResponse} />} />
-      <Route
-        path="/employee-details-modifications"
-        element={<EmployeeModification />}
-      />
+      <Route path="/update-employee-info" element={<EmployeeModification />} />
       <Route path="/hr-settings" element={<HrSettings />} />
       <Route path="/leavereports" element={<LeaveReports />} />
       <Route
