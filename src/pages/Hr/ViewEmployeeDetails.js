@@ -516,7 +516,7 @@ const ViewEmployeeDetails = () => {
                 justifyContent: "flex-end",
                 gap: "15px",
                 marginTop: "20px",
-                marginBottom: "20px",
+                marginBottom: "60px",
               }}
             >
               <button

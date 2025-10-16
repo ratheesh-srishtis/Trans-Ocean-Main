@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -23,7 +23,7 @@ import {
   Phone,
   LocationOn,
 } from "@mui/icons-material";
-
+import { getAllEmployees } from "../services/apiEmployee";
 const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -51,6 +51,17 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
       medical: <LocalHospital />,
     };
     return iconMap[type] || <Description />;
+  };
+
+  // Helper function to get employee name by ID
+  const getEmployeeNameById = (employeeId) => {
+    if (!employeeId || !EmployeeList || EmployeeList.length === 0) return "";
+
+    const employee = EmployeeList.find((emp) => emp._id === employeeId);
+    if (employee) {
+      return `${employee.employeeName} ${employee.employeeLastName}`;
+    }
+    return "";
   };
 
   const InfoCard = ({ title, icon, children }) => (
@@ -123,6 +134,22 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
       </Paper>
     );
   };
+  const [EmployeeList, setEmployeeList] = useState([]);
+
+  const fetchemployeeList = async (payload) => {
+    try {
+      const listallemployees = await getAllEmployees(payload);
+      setEmployeeList(listallemployees?.employees || []);
+      //console.log(listallemployees,"---listallemployees");
+    } catch (error) {
+      console.error("Failed to fetch employees", error);
+    }
+  };
+
+  useEffect(() => {
+    let payload = { searchKey: "" };
+    fetchemployeeList(payload);
+  }, []);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -160,6 +187,14 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           />
           <InfoRow label="Official Email ID" value={formData.officialEmail} />
           <InfoRow label="Profession Title" value={formData.profession} />
+          <InfoRow
+            label="Reporting To"
+            value={getEmployeeNameById(formData.reportingTo)}
+          />
+          <InfoRow
+            label="Reporting Head"
+            value={getEmployeeNameById(formData.reportingHead)}
+          />
         </Grid>
       </InfoCard>
 
@@ -175,7 +210,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Passport Number" value={item.passportNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -198,7 +236,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Contract Name" value={item.contractName} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -221,7 +262,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Visa Number" value={item.visaNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -244,7 +288,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="License Number" value={item.licenseNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document

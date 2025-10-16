@@ -48,6 +48,7 @@ const InvoicePage = ({
   const [openPopUp, setOpenPopUp] = useState(false);
   const [employee, setEmployee] = useState("");
   const [message, setMessage] = useState("");
+  const [employeeError, setEmployeeError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loader state
   const [remarksOpen, setRemarksOpen] = useState(false);
   const [serviceReports, setServiceReports] = useState([]);
@@ -126,6 +127,17 @@ const InvoicePage = ({
     }
   };
   const acceptInvoice = async (remark) => {
+    // Check if employee is selected
+    if (!employee) {
+      setEmployeeError("Please select Invoice By first");
+      setMessage("Please select Invoice By first");
+      setOpenPopUp(true);
+      return;
+    }
+
+    // Clear error if employee is selected
+    setEmployeeError("");
+
     console.log(remark, "handleRemarksSubmit");
     let pdaPayload = {
       pdaId: pdaResponse?._id,
@@ -271,6 +283,10 @@ const InvoicePage = ({
 
   const handleChange = (e) => {
     setEmployee(e.target.value);
+    // Clear error when employee is selected
+    if (e.target.value) {
+      setEmployeeError("");
+    }
   };
 
   useEffect(() => {
@@ -343,6 +359,9 @@ const InvoicePage = ({
                     ))}
                   </select>
                 </div>
+                {employeeError && (
+                  <div className="invalid">{employeeError}</div>
+                )}
               </div>
             </div>
           </div>

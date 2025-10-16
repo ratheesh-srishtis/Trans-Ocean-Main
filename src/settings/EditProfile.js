@@ -102,11 +102,10 @@ const EditProfile = ({ employeeObject }) => {
     setCertificateFields([...certificateFields, newField]);
   };
 
-  const existpassort = employeeObject?.passportDetails[0]?.document || "";
-  const existcontract = employeeObject?.contractDetails[0]?.document || "";
-  const existvisa = employeeObject?.visaDetails[0]?.document || "";
-
-  const existlicense = employeeObject?.licenseDetails[0]?.document || "";
+  const existpassort = employeeObject?.passportDetails?.[0]?.document || null;
+  const existcontract = employeeObject?.contractDetails?.[0]?.document || null;
+  const existvisa = employeeObject?.visaDetails?.[0]?.document || null;
+  const existlicense = employeeObject?.licenseDetails?.[0]?.document || null;
   const [desiginationlist, setDesiginations] = useState([]);
   const fetchAllDesignations = async () => {
     let listdesiginations = await getAllDesignations();
@@ -138,14 +137,30 @@ const EditProfile = ({ employeeObject }) => {
       });
       setUploadedMedicalFiles(initialFiles);
       setUploadedCertificateFiles(initialCertificateFiles);
-      setpassportUrl(existpassort.url);
-      setpassportName(existpassort.originalName);
-      setcontractUrl(existcontract.url);
-      setcontractName(existcontract.originalName);
-      setvisaUrl(existvisa.url);
-      setvisaName(existvisa.originalName);
-      setlicenseUrl(existlicense.url);
-      setlicenseName(existlicense.originalName);
+
+      // Initialize passport document state
+      if (existpassort && existpassort.url) {
+        setpassportUrl(existpassort.url);
+        setpassportName(existpassort.originalName);
+      }
+
+      // Initialize contract document state
+      if (existcontract && existcontract.url) {
+        setcontractUrl(existcontract.url);
+        setcontractName(existcontract.originalName);
+      }
+
+      // Initialize visa document state
+      if (existvisa && existvisa.url) {
+        setvisaUrl(existvisa.url);
+        setvisaName(existvisa.originalName);
+      }
+
+      // Initialize license document state
+      if (existlicense && existlicense.url) {
+        setlicenseUrl(existlicense.url);
+        setlicenseName(existlicense.originalName);
+      }
     }
   }, [
     fields,
@@ -178,29 +193,30 @@ const EditProfile = ({ employeeObject }) => {
     profession: employeeObject?.profession || "",
     passportDetails: employeeObject?.passportDetails || [],
     passportdetail_number:
-      employeeObject?.passportDetails[0]?.passportNumber || "",
+      employeeObject?.passportDetails?.[0]?.passportNumber || "",
     passportdetail_expiry:
-      employeeObject?.passportDetails[0]?.dateOfExpiry || "",
+      employeeObject?.passportDetails?.[0]?.dateOfExpiry || "",
     passportupload: uploadedFiles.passportupload
       ? uploadedFiles.passportupload.originalName
       : "",
     contractDetails: employeeObject?.contractDetails || [],
-    contractdetail_name: employeeObject?.contractDetails[0]?.contractName || "",
+    contractdetail_name:
+      employeeObject?.contractDetails?.[0]?.contractName || "",
     contractdetail_expiry:
-      employeeObject?.contractDetails[0]?.dateOfExpiry || "",
+      employeeObject?.contractDetails?.[0]?.dateOfExpiry || "",
     contractupload: uploadedFiles.contractupload
       ? uploadedFiles.contractupload.originalName
       : "",
     visaDetails: employeeObject?.visaDetails || [],
-    visa_number: employeeObject?.visaDetails[0]?.visaNumber || "",
-    visa_expiry: employeeObject?.visaDetails[0]?.dateOfExpiry || "",
+    visa_number: employeeObject?.visaDetails?.[0]?.visaNumber || "",
+    visa_expiry: employeeObject?.visaDetails?.[0]?.dateOfExpiry || "",
     visaupload: uploadedFiles.visaupload
       ? uploadedFiles.visaupload.originalName
       : "",
 
     licenseDetails: employeeObject?.licenseDetails || [],
-    license_number: employeeObject?.licenseDetails[0]?.licenseNumber || "",
-    license_date: employeeObject?.licenseDetails[0]?.dateOfExpiry || "",
+    license_number: employeeObject?.licenseDetails?.[0]?.licenseNumber || "",
+    license_date: employeeObject?.licenseDetails?.[0]?.dateOfExpiry || "",
     licenseupload: uploadedFiles.licenseupload
       ? uploadedFiles.licenseupload.originalName
       : "",
@@ -216,7 +232,7 @@ const EditProfile = ({ employeeObject }) => {
   });
   const reloadpage = () => {
     // navigate("/profile");
-    // window.location.reload();
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -251,51 +267,7 @@ const EditProfile = ({ employeeObject }) => {
     // if (!formData.officialEmail)
     //   newErrors.officialEmail = "Official Email is required";
     // passport Detail Validation
-    const { passportdetail_number, passportdetail_expiry, passportupload } =
-      formData;
-    const isAnyFieldFilled =
-      passportdetail_number || passportdetail_expiry || passportupload;
-    if (
-      isAnyFieldFilled &&
-      !(passportdetail_number && passportdetail_expiry && passportupload)
-    ) {
-      newErrors.passportDetailsErr =
-        "If any passport field is filled, all fields must be completed.";
-    } else {
-      delete newErrors.passportDetailsErr;
-    }
 
-    // Contract Details Validation
-    const { contractdetail_name, contractdetail_expiry, contractupload } =
-      formData;
-    const isAnyContractFieldFilled =
-      contractdetail_name || contractdetail_expiry || contractupload;
-    if (
-      isAnyContractFieldFilled &&
-      !(contractdetail_name && contractdetail_expiry && contractupload)
-    ) {
-      newErrors.contractDetailsErr =
-        "If any contract field is filled, all fields must be filled.";
-    }
-    // Visa Details Validation
-    const { visa_number, visa_expiry, visaupload } = formData;
-    const isAnyVisaFieldFilled = visa_number || visa_expiry || visaupload;
-    if (isAnyVisaFieldFilled && !(visa_number && visa_expiry && visaupload)) {
-      newErrors.visaDetailsErr =
-        "If any visa field is filled, all fields must be filled.";
-    }
-
-    // Licence Details Validation
-    const { license_number, license_date, licenseupload } = formData;
-    const isAnyLicenceFieldFilled =
-      license_number || license_date || licenseupload;
-    if (
-      isAnyLicenceFieldFilled &&
-      !(license_number && license_date && licenseupload)
-    ) {
-      newErrors.licenceDetailsErr =
-        "If any licence field is filled, all fields must be filled.";
-    }
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -591,40 +563,55 @@ const EditProfile = ({ employeeObject }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validateForm()) return;
+    console.log(formData, "formData_handleSubmit");
     try {
+      // Handle passport details - use existing document if no new file uploaded
+      const existingPassportDoc =
+        employeeObject?.passportDetails?.[0]?.document || null;
       const newPassportDetail = {
         passportNumber: formData.passportdetail_number,
         dateOfExpiry: formData.passportdetail_expiry,
         document: {
-          url: passportUrl,
-          originalName: passportName,
+          url: passportUrl || existingPassportDoc?.url || null,
+          originalName:
+            passportName || existingPassportDoc?.originalName || null,
         },
       };
 
+      // Handle contract details - use existing document if no new file uploaded
+      const existingContractDoc =
+        employeeObject?.contractDetails?.[0]?.document || null;
       const newContractDetail = {
         contractName: formData.contractdetail_name,
         dateOfExpiry: formData.contractdetail_expiry,
         document: {
-          url: contractUrl,
-          originalName: contractName,
+          url: contractUrl || existingContractDoc?.url || null,
+          originalName:
+            contractName || existingContractDoc?.originalName || null,
         },
       };
 
+      // Handle visa details - use existing document if no new file uploaded
+      const existingVisaDoc =
+        employeeObject?.visaDetails?.[0]?.document || null;
       const newVisaDetail = {
         visaNumber: formData.visa_number,
         dateOfExpiry: formData.visa_expiry,
         document: {
-          url: visaUrl,
-          originalName: visaName,
+          url: visaUrl || existingVisaDoc?.url || null,
+          originalName: visaName || existingVisaDoc?.originalName || null,
         },
       };
 
+      // Handle license details - use existing document if no new file uploaded
+      const existingLicenseDoc =
+        employeeObject?.licenseDetails?.[0]?.document || null;
       const newLicenceDetail = {
         licenseNumber: formData.license_number,
         dateOfExpiry: formData.license_date,
         document: {
-          url: licenseUrl,
-          originalName: licenseName,
+          url: licenseUrl || existingLicenseDoc?.url || null,
+          originalName: licenseName || existingLicenseDoc?.originalName || null,
         },
       };
 
@@ -751,8 +738,28 @@ const EditProfile = ({ employeeObject }) => {
           designation: "",
           // department:"",
           officialEmail: "",
+          passportDetails: [],
           passportdetail_number: "",
           passportdetail_expiry: "",
+          passportupload: "",
+          contractDetails: [],
+          contractdetail_name: "",
+          contractdetail_expiry: "",
+          contractupload: "",
+          visaDetails: [],
+          visa_number: "",
+          visa_expiry: "",
+          visaupload: "",
+          licenseDetails: [],
+          license_number: "",
+          license_date: "",
+          licenseupload: "",
+          medicalRecordDetails: [],
+          medical_description: "",
+          relationship: "",
+          certificationDetails: [],
+          certification: "",
+          certificateDescription: "",
           reportingTo: "",
           reportingHead: "",
         });
@@ -996,7 +1003,7 @@ const EditProfile = ({ employeeObject }) => {
         <form onSubmit={handleSubmit}>
           <div className="row mb-2">
             <div className="col-4">
-              <label htmlFor="employeeName" className="form-label">
+              <label htmlFor="employeeName" className="form-label-for-profile">
                 First Name:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1014,7 +1021,10 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4">
-              <label htmlFor="employeeLastName" className="form-label">
+              <label
+                htmlFor="employeeLastName"
+                className="form-label-for-profile"
+              >
                 Last Name:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1032,7 +1042,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4">
-              <label htmlFor="dob" className="form-label">
+              <label htmlFor="dob" className="form-label-for-profile">
                 Date of Birth :{/* <span className="required"> * </span> */}
               </label>
               <input
@@ -1051,7 +1061,7 @@ const EditProfile = ({ employeeObject }) => {
             <div className="col">
               <div className="mb-3">
                 <div className="col">
-                  <label htmlFor="adddress" className="form-label">
+                  <label htmlFor="adddress" className="form-label-for-profile">
                     Address:
                   </label>
                   <textarea
@@ -1069,7 +1079,7 @@ const EditProfile = ({ employeeObject }) => {
           </div>
           <div className="row mb-2">
             <div className="col-4">
-              <label htmlFor="city" className="form-label">
+              <label htmlFor="city" className="form-label-for-profile">
                 City:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1085,7 +1095,7 @@ const EditProfile = ({ employeeObject }) => {
               {errors.city && <span className="invalid">{errors.city}</span>}
             </div>
             <div className="col-4">
-              <label htmlFor="state" className="form-label">
+              <label htmlFor="state" className="form-label-for-profile">
                 State:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1101,7 +1111,7 @@ const EditProfile = ({ employeeObject }) => {
               {errors.state && <span className="invalid">{errors.state}</span>}
             </div>
             <div className="col-4">
-              <label htmlFor="postcode" className="form-label">
+              <label htmlFor="postcode" className="form-label-for-profile">
                 Post Code:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1121,7 +1131,7 @@ const EditProfile = ({ employeeObject }) => {
           </div>
           <div className="row mb-2">
             <div className="col-4">
-              <label htmlFor="nationality" className="form-label">
+              <label htmlFor="nationality" className="form-label-for-profile">
                 Nationality:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1139,7 +1149,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4">
-              <label htmlFor="contactnumber" className="form-label">
+              <label htmlFor="contactnumber" className="form-label-for-profile">
                 Contact Number:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1157,7 +1167,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4">
-              <label htmlFor="email" className="form-label">
+              <label htmlFor="email" className="form-label-for-profile">
                 Email ID:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1175,7 +1185,10 @@ const EditProfile = ({ employeeObject }) => {
           </div>
           <div className="row mb-2">
             <div className="col-4">
-              <label htmlFor="passportnumber" className="form-label">
+              <label
+                htmlFor="passportnumber"
+                className="form-label-for-profile"
+              >
                 Passport Number:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1193,7 +1206,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4">
-              <label htmlFor="iqamanumber" className="form-label">
+              <label htmlFor="iqamanumber" className="form-label-for-profile">
                 Civil ID:
                 {/* <span className="required"> * </span> */}
               </label>
@@ -1211,7 +1224,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             {/* <div className="col-4">
-              <label htmlFor="username" className="form-label">
+              <label htmlFor="username" className="form-label-for-profile">
                 User Name:
               </label>
               <input
@@ -1228,7 +1241,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-4 position-relative">
-              <label htmlFor="password" className="form-label">
+              <label htmlFor="password" className="form-label-for-profile">
                 Password:
               </label>
               <input
@@ -1253,12 +1266,11 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div> */}
           </div>
-          <div className="Personal mt-3 mb-3">Official Information</div>
-          <div className="row">
+          {/* <div className="Personal mt-3 mb-3">Official Information</div> */}
+          {/* <div className="row">
             <div className="col-2">
-              <label htmlFor="dateofjoining" className="form-label">
+              <label htmlFor="dateofjoining" className="form-label-for-profile">
                 Date of Joining:
-                {/* <span className="required"> * </span> */}
               </label>
               <input
                 type="date"
@@ -1274,9 +1286,8 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-3">
-              <label htmlFor="desigination" className="form-label">
+              <label htmlFor="desigination" className="form-label-for-profile">
                 Designation:
-                {/* <span className="required"> * </span> */}
               </label>
               <select
                 name="designation"
@@ -1299,9 +1310,8 @@ const EditProfile = ({ employeeObject }) => {
             </div>
 
             <div className="col-4">
-              <label htmlFor="officialemail" className="form-label">
+              <label htmlFor="officialemail" className="form-label-for-profile">
                 Email ID:
-                {/* <span className="required"> * </span> */}
               </label>
               <input
                 type="email"
@@ -1318,7 +1328,7 @@ const EditProfile = ({ employeeObject }) => {
               )}
             </div>
             <div className="col-3">
-              <label htmlFor="officialemail" className="form-label">
+              <label htmlFor="officialemail" className="form-label-for-profile">
                 Profession Title:
               </label>
               <input
@@ -1331,11 +1341,11 @@ const EditProfile = ({ employeeObject }) => {
                 value={formData.profession}
               />
             </div>
-          </div>
+          </div> */}
 
-          <div className="row py-4">
+          {/* <div className="row py-4">
             <div className="col-6">
-              <label htmlFor="reportingTo" className="form-label">
+              <label htmlFor="reportingTo" className="form-label-for-profile">
                 Reporting Person:
               </label>
               <select
@@ -1355,7 +1365,7 @@ const EditProfile = ({ employeeObject }) => {
               </select>
             </div>
             <div className="col-6">
-              <label htmlFor="reportingHead" className="form-label">
+              <label htmlFor="reportingHead" className="form-label-for-profile">
                 Reporting Head:
               </label>
               <select
@@ -1374,7 +1384,7 @@ const EditProfile = ({ employeeObject }) => {
                 ))}
               </select>
             </div>
-          </div>
+          </div> */}
 
           <div className="Personal mt-3 mb-3">Documents</div>
           {/* passport */}
@@ -1383,7 +1393,10 @@ const EditProfile = ({ employeeObject }) => {
             <div>
               <div className="row mb-2">
                 <div className="col-4">
-                  <label htmlFor="passportdetail_number" className="form-label">
+                  <label
+                    htmlFor="passportdetail_number"
+                    className="form-label-for-profile"
+                  >
                     Passport Number:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1398,7 +1411,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-3">
-                  <label htmlFor="passportdetail_expiry" className="form-label">
+                  <label
+                    htmlFor="passportdetail_expiry"
+                    className="form-label-for-profile"
+                  >
                     Date of Expiry:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1413,7 +1429,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-5">
-                  <label htmlFor="portofolio" className="form-label">
+                  <label
+                    htmlFor="portofolio"
+                    className="form-label-for-profile"
+                  >
                     Document Upload:
                   </label>
                   <input
@@ -1469,7 +1488,10 @@ const EditProfile = ({ employeeObject }) => {
             <div>
               <div className="row mb-2">
                 <div className="col-4">
-                  <label htmlFor="contractdetail_name" className="form-label">
+                  <label
+                    htmlFor="contractdetail_name"
+                    className="form-label-for-profile"
+                  >
                     Contract Name:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1484,7 +1506,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-3">
-                  <label htmlFor="contractdetail_expiry" className="form-label">
+                  <label
+                    htmlFor="contractdetail_expiry"
+                    className="form-label-for-profile"
+                  >
                     Date of Expiry:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1499,7 +1524,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-5">
-                  <label htmlFor="portofolio1" className="form-label">
+                  <label
+                    htmlFor="portofolio1"
+                    className="form-label-for-profile"
+                  >
                     Document Upload:
                   </label>
                   <input
@@ -1555,7 +1583,10 @@ const EditProfile = ({ employeeObject }) => {
             <div>
               <div className="row mb-2">
                 <div className="col-4">
-                  <label htmlFor="visa_number" className="form-label">
+                  <label
+                    htmlFor="visa_number"
+                    className="form-label-for-profile"
+                  >
                     Visa Number:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1570,7 +1601,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-3">
-                  <label htmlFor="visa_expiry" className="form-label">
+                  <label
+                    htmlFor="visa_expiry"
+                    className="form-label-for-profile"
+                  >
                     Date of Expiry:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1588,7 +1622,10 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="alert alert-danger">{errors.message}</div>
                 )}
                 <div className="col-5">
-                  <label htmlFor="visaupload" className="form-label">
+                  <label
+                    htmlFor="visaupload"
+                    className="form-label-for-profile"
+                  >
                     Document Upload:
                   </label>
                   <input
@@ -1644,7 +1681,10 @@ const EditProfile = ({ employeeObject }) => {
             <div>
               <div className="row mb-2     ">
                 <div className="col-4">
-                  <label htmlFor="license_number" className="form-label">
+                  <label
+                    htmlFor="license_number"
+                    className="form-label-for-profile"
+                  >
                     License Number:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1659,7 +1699,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-3">
-                  <label htmlFor="license_date" className="form-label">
+                  <label
+                    htmlFor="license_date"
+                    className="form-label-for-profile"
+                  >
                     Date of Expiry:
                     {/* <span className="required"> * </span> */}
                   </label>
@@ -1674,7 +1717,10 @@ const EditProfile = ({ employeeObject }) => {
                   />
                 </div>
                 <div className="col-5">
-                  <label htmlFor="licenseupload" className="form-label">
+                  <label
+                    htmlFor="licenseupload"
+                    className="form-label-for-profile"
+                  >
                     Document Upload:
                   </label>
                   <input
@@ -1737,7 +1783,7 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="col-4">
                     <label
                       htmlFor={`certificate_name_${field._id || field.id}`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Certificate Name:
                     </label>
@@ -1767,7 +1813,7 @@ const EditProfile = ({ employeeObject }) => {
                       htmlFor={`certificate_description_${
                         field._id || field.id
                       }`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Certificate Description:
                     </label>
@@ -1800,7 +1846,7 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="col-4">
                     <label
                       htmlFor={`certificatesRecord_${field._id || field.id}`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Document Upload:
                     </label>
@@ -1891,7 +1937,7 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="col-4">
                     <label
                       htmlFor={`medical_description_${field._id || field.id}`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Medical description:
                     </label>
@@ -1919,7 +1965,7 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="col-4">
                     <label
                       htmlFor={`relationship_${field._id || field.id}`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Relationship:
                     </label>
@@ -1955,7 +2001,7 @@ const EditProfile = ({ employeeObject }) => {
                   <div className="col-4">
                     <label
                       htmlFor={`medicalrord_${field._id || field.id}`}
-                      className="form-label"
+                      className="form-label-for-profile"
                     >
                       Document Upload:
                     </label>

@@ -122,6 +122,10 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
     }
   }, [getvoucher]);
 
+  useEffect(() => {
+    console.log(customerVoucher, "customerVoucher");
+  }, [customerVoucher]);
+
   return (
     <>
       <Dialog
@@ -186,10 +190,10 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                     <td className="voucheraccount">
                       Account:
                       <p className="voucherprint">
-                        {customerVoucher?.pdaDetails?.pdaNumber} -{" "}
+                        {customerVoucher?.pdaDetails?.pdaNumber}
                         {customerVoucher?.pdaDetails?.jobId
-                          ? customerVoucher?.pdaDetails?.jobId
-                          : "N/A"}
+                          ? ` - ${customerVoucher?.pdaDetails?.jobId}`
+                          : ""}
                         <div>
                           {
                             customerVoucher?.pdaDetails?.customerId

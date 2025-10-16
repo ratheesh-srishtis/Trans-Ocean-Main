@@ -318,6 +318,8 @@ const Profile = () => {
         ],
         ["Official Email ID", formData.officialEmail || ""],
         ["Profession Title", formData.profession || ""],
+        ["Reporting To", formData.reportingTo || ""],
+        ["Reporting Head", formData.reportingHead || ""],
       ];
 
       // Add passport details

@@ -16,12 +16,18 @@ const LeaveRequests = ({ loginResponse }) => {
   const [EmployeeList, setEmployeeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // Loader state
   const [message, setMessage] = useState("");
+  const [comparingEmployeeId, setComparingEmployeeId] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const fecthEmployeeLeaveRequests = async (paylaod) => {
     const response = await getAllEmployeeLeaveRequests(paylaod);
     setLeaverequestLists(response?.leaves || []);
+    setComparingEmployeeId(response?.employeeId);
     console.log("Leave Requests Data:", response);
   };
+
+  useEffect(() => {
+    console.log("Comparing Employee ID:", comparingEmployeeId);
+  }, [comparingEmployeeId]);
 
   const fetchemployeeList = async (payload) => {
     try {
@@ -79,7 +85,7 @@ const LeaveRequests = ({ loginResponse }) => {
     { field: "leaveFrom", headerName: "Leave From", flex: 2 },
     { field: "leaveTo", headerName: "Leave To", flex: 2 },
     { field: "comment", headerName: "Comment", flex: 2 },
-    { field: "approvedBy", headerName: "Approved By", flex: 2 },
+    // { field: "approvedBy", headerName: "Approved By", flex: 2 },
     {
       field: "actions",
       headerName: "Action",
@@ -89,12 +95,12 @@ const LeaveRequests = ({ loginResponse }) => {
         let isApproved = false;
 
         if (
-          params.row.approvalEmployee === loginResponse?.data?._id &&
+          params.row.approvalEmployee === comparingEmployeeId &&
           params.row.approvalEmployeeStatus
         ) {
           isApproved = true;
         } else if (
-          params.row.approvalHead === loginResponse?.data?._id &&
+          params.row.approvalHead === comparingEmployeeId &&
           params.row.approvalHeadStatus
         ) {
           isApproved = true;
@@ -150,29 +156,29 @@ const LeaveRequests = ({ loginResponse }) => {
               const leaveTo = `${day}-${month}-${year}`;
 
               // Logic for Approved By field
-              let approvedBy = "";
-              const approvedNames = [];
+              // let approvedBy = "";
+              // const approvedNames = [];
 
-              if (item.approvalEmployeeStatus && item.approvalEmployee) {
-                const approvalEmployee = EmployeeList.find(
-                  (emp) => emp._id === item.approvalEmployee
-                );
-                if (approvalEmployee) {
-                  approvedNames.push(approvalEmployee.employeeName);
-                }
-              }
+              // if (item.approvalEmployeeStatus && item.approvalEmployee) {
+              //   const approvalEmployee = EmployeeList.find(
+              //     (emp) => emp._id === item.approvalEmployee
+              //   );
+              //   if (approvalEmployee) {
+              //     approvedNames.push(approvalEmployee.employeeName);
+              //   }
+              // }
 
-              if (item.approvalHeadStatus && item.approvalHead) {
-                const approvalHead = EmployeeList.find(
-                  (emp) => emp._id === item.approvalHead
-                );
-                if (approvalHead) {
-                  approvedNames.push(approvalHead.employeeName);
-                }
-              }
+              // if (item.approvalHeadStatus && item.approvalHead) {
+              //   const approvalHead = EmployeeList.find(
+              //     (emp) => emp._id === item.approvalHead
+              //   );
+              //   if (approvalHead) {
+              //     approvedNames.push(approvalHead.employeeName);
+              //   }
+              // }
 
-              approvedBy =
-                approvedNames.length > 0 ? approvedNames.join(", ") : "N/A";
+              // approvedBy =
+              //   approvedNames.length > 0 ? approvedNames.join(", ") : "N/A";
 
               return {
                 ...item,
@@ -184,7 +190,7 @@ const LeaveRequests = ({ loginResponse }) => {
                 leaveFrom: leaveFrom || "N/A",
                 leaveTo: leaveTo || "N/A",
                 comment: item.comment || "N/A",
-                approvedBy: approvedBy,
+                // approvedBy: approvedBy,
               };
             })}
             columns={columns}

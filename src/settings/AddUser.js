@@ -6,6 +6,7 @@ import { getAllEmployees } from "../services/apiEmployee";
 import "../css/settings.css";
 import PopUp from "../pages/PopUp";
 import Swal from "sweetalert2";
+import Loader from "../pages/Loader";
 import { uploadSingleImage } from "../services/apiService";
 const AddUser = ({
   open,
@@ -19,6 +20,7 @@ const AddUser = ({
   const [RolesList, setRolesList] = useState([]);
   const [uploadStatus, setUploadStatus] = useState("");
   const [EmployeeList, setEmployeeList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   const fetchemployeeList = async () => {
     try {
@@ -48,7 +50,6 @@ const AddUser = ({
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [closePopUp, setclosePopup] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loader state
   useEffect(() => {
     fetchrolesList();
   }, []);
@@ -134,13 +135,17 @@ const AddUser = ({
     if (name === "employeeId" && value) {
       const selectedEmployee = EmployeeList.find((emp) => emp._id === value);
       if (selectedEmployee) {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-          name: `${selectedEmployee.employeeName}${selectedEmployee.employeeLastName}`,
-          email: selectedEmployee.officialEmail || selectedEmployee.email || "",
-          phonenumber: selectedEmployee.contactNumber || "",
-        }));
+        if (editMode == false) {
+          setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+            name: `${selectedEmployee.employeeName} ${selectedEmployee.employeeLastName}`,
+            email:
+              selectedEmployee.officialEmail || selectedEmployee.email || "",
+            phonenumber: selectedEmployee.contactNumber || "",
+          }));
+        }
+
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: "",
@@ -248,9 +253,11 @@ const AddUser = ({
 
     try {
       setUploadStatus("Uploading...");
+      setIsLoading(true);
       const response = await uploadSingleImage(formData);
       console.log(response, "response_uploadSingleImage");
       if (response.status) {
+        setIsLoading(false);
         setUploadStatus("Upload successful!");
         // Also update formData.emailsignature
         setFormData((prevFormData) => ({
@@ -259,9 +266,11 @@ const AddUser = ({
         }));
         errors.emailsignature = "";
       } else {
+        setIsLoading(false);
         setUploadStatus("Upload failed. Please try again.");
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("File upload error:", error);
       setUploadStatus("An error occurred during upload.");
     }
@@ -430,7 +439,9 @@ const AddUser = ({
                     className="form-label"
                   >
                     {" "}
-                    New Password<span className="required"> * </span>:
+                    New Password
+                    {editMode == false && <span className="required"> * </span>}
+                    :
                   </label>
                   <input
                     name="password"
@@ -519,10 +530,7 @@ const AddUser = ({
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
                   >
-                    Phone Number:{" "}
-                    {errors.phonenumber && (
-                      <span className="required"> * </span>
-                    )}
+                    Phone Number: <span className="required"> * </span>
                   </label>
                   <input
                     name="phonenumber"
@@ -543,7 +551,7 @@ const AddUser = ({
             <div className="row align-items-center">
               <div className="col-6">
                 <label htmlFor="formFile" className="form-label">
-                  Email Signature:
+                  Email Signature: <span className="required"> * </span>
                 </label>
                 <input
                   className="form-control documentsfsize linheight"
@@ -591,6 +599,7 @@ const AddUser = ({
         </DialogContent>
       </Dialog>
       {openPopUp && <PopUp message={message} closePopup={fetchusersList} />}
+      <Loader isLoading={isLoading} />
     </>
   );
 };
