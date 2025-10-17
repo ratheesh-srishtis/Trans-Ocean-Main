@@ -50,7 +50,7 @@ const DischargeReport = ({
     { id: "grade", label: "Grade" },
     { id: "date", label: "Date" },
     { id: "totalQuantity", label: "Total Quantity" },
-    { id: "loadedQuantity", label: "Discharge Quantity" },
+    { id: "loadedQuantity", label: "Discharged Quantity" },
     { id: "balance", label: "Balance" },
     { id: "rate", label: "Rate" },
     { id: "etc", label: "ETC" },

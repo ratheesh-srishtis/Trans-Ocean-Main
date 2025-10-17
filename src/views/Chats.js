@@ -164,6 +164,7 @@ const Chats = () => {
         getChatsList(limit, 0, recieverType, "sendMessage");
         setActionType("send"); // Set action type to "send"
         setMessage(""); // Clear input after sending
+        getUnreadCount();
         // Reset the textarea height to default (1 row)
         if (textareaRef.current) {
           textareaRef.current.style.height = "auto"; // Reset height

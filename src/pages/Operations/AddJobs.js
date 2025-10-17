@@ -629,12 +629,20 @@ const AddJobs = ({
     setTemplatesList(charge?.templates);
 
     // Pre-fill Multiselect with vendor IDs from charge
-    const vendorIdsFromCharge = [
-      charge?.vendorId,
-      charge?.vendor2Id,
-      charge?.vendor3Id,
-      charge?.vendor4Id,
-    ].filter(Boolean);
+    // Select vendor IDs only if their corresponding isPrivateVendor fields are false
+    const vendorIdsFromCharge = [];
+    if (charge?.vendorId && charge?.isPrivateVendor === false) {
+      vendorIdsFromCharge.push(charge.vendorId);
+    }
+    if (charge?.vendor2Id && charge?.isPrivateVendor2 === false) {
+      vendorIdsFromCharge.push(charge.vendor2Id);
+    }
+    if (charge?.vendor3Id && charge?.isPrivateVendor3 === false) {
+      vendorIdsFromCharge.push(charge.vendor3Id);
+    }
+    if (charge?.vendor4Id && charge?.isPrivateVendor4 === false) {
+      vendorIdsFromCharge.push(charge.vendor4Id);
+    }
     setSelectedIds(vendorIdsFromCharge);
   }, [charge]);
 
@@ -1022,44 +1030,6 @@ const AddJobs = ({
                         Vendor Name <span className="required"> </span> :
                       </label>
                       <div className="vessel-select">
-                        {/* <select
-                            name="vendor"
-                            className="form-select vesselbox"
-                            onChange={handleSelectChange}
-                            aria-label="Default select example"
-                            value={selectedVendor?._id}
-                          >
-                            <option value="">Choose Vendor</option>
-                            {vendors?.map((vendor) => (
-                              <option key={vendor._id} value={vendor?._id}>
-                                {vendor.vendorName}
-                              </option>
-                            ))}
-                          </select> */}
-
-                        {/* <Multiselect
-                        options={vendors}
-                        displayValue="vendorName" // Display the vendorName in the dropdown
-                        showCheckbox
-                        onSelect={handleVendorSelect} // Triggered when an item is selected
-                        onRemove={handleRemove} // Triggered when an item is removed
-                        // selectedValues={vendors.filter((v) =>
-                        //   selectedIds.includes(v._id)
-                        // )} // Pre-select vendors
-
-                        selectedValues={selectedIds
-                          .map((id) => vendors.find((v) => v._id === id))
-                          .filter(Boolean)} // Pre-select vendors in user selection order
-                        className="custom-multiselect" // Ap ply custom class
-                        style={{
-                          ...customStyles,
-                          option: {
-                            ...customStyles.option,
-                            ":hover": hoverStyles, // Add hover styling
-                          },
-                        }}
-                      /> */}
-
                         <div className="selected-vendors">
                           {selectedIds
                             .map((id) => vendors.find((v) => v._id === id))

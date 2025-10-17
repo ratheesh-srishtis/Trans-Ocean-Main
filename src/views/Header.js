@@ -124,11 +124,11 @@ const Header = () => {
     } else if (location.pathname == "/aed-conversion-rate") {
       return "AED Conversion Rate";
     } else if (location.pathname == "/media-settings") {
-      return "Upload Media";
+      return "Media Upload";
     } else if (location.pathname == "/profile") {
       return "Profile";
     } else if (location.pathname == "/company-bank-details") {
-      return "Company Bank Detaila";
+      return "Company Bank Info";
     } else if (location.pathname == "/user-leave") {
       return "User Leave";
     } else if (location.pathname == "/update-employee-info") {
@@ -303,7 +303,7 @@ const Header = () => {
               >
                 {loginResponse?.isEmployee
                   ? loginResponse?.data?.employeeName
-                  : formatUserType(loginResponse?.data?.name)}
+                  : loginResponse?.data?.name}
 
                 <div className="nameuser d-none d-md-block">
                   {loginResponse?.isEmployee

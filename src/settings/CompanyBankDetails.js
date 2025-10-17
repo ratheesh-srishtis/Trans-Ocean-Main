@@ -94,13 +94,13 @@ const CompanyBankDetails = () => {
     console.log("Update Response:", response);
     if (response?.status == true) {
       setIsLoading(false);
-      setMessage("Bank details updated successfully!");
+      setMessage("Company bank details updated successfully!");
       setOpenPopUp(true);
       setIsSuccess(true);
       fetchBankDetails();
     } else {
       setIsLoading(false);
-      setMessage("Failed to update bank details. Please try again.");
+      setMessage("Failed to update company bank details. Please try again.");
       setOpenPopUp(true);
       setIsSuccess(false);
       fetchBankDetails();
@@ -110,7 +110,7 @@ const CompanyBankDetails = () => {
   return (
     <>
       <div className="company-bank-details-container">
-        <h4 className="form-title">Edit Company Bank Details</h4>
+        <h4 className="form-title">Update Bank Information</h4>
         <form className="bank-details-form">
           <div className="row">
             <div className="form-group col-6">

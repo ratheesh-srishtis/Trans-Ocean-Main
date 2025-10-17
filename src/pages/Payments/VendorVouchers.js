@@ -235,7 +235,7 @@ const VendorVouchers = () => {
     { field: "throughs", headerName: "Through", flex: 3 },
     { field: "particulars", headerName: "Particulars", flex: 3 },
     { field: "accountof", headerName: "On Account of", flex: 3 },
-    // { field: "vendorName", headerName: "Vendor Name", flex: 3 },
+    { field: "vendorName", headerName: "Vendor Name", flex: 3 },
     { field: "dateofPay", headerName: "Payment Date", flex: 2, minWidth: 130 },
     { field: "amount", headerName: "Amount", flex: 2 },
     { field: "remark", headerName: "Remark", flex: 2 },

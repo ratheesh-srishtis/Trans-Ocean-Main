@@ -129,8 +129,8 @@ const InvoicePage = ({
   const acceptInvoice = async (remark) => {
     // Check if employee is selected
     if (!employee) {
-      setEmployeeError("Please select Invoice By first");
-      setMessage("Please select Invoice By first");
+      setEmployeeError("Select Invoice By");
+      setMessage("Select 'Invoice By' to continue.");
       setOpenPopUp(true);
       return;
     }

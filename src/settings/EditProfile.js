@@ -999,13 +999,15 @@ const EditProfile = ({ employeeObject }) => {
         <div className="pleaseinfo mb-3">
           {!isEditing ? "Please fill out your informations below" : null}
         </div>
-        <div className="Personal mb-3">Personal Information</div>
+        <div className="Personal mb-3" style={{ fontWeight: "bold" }}>
+          Personal Information
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="row mb-2">
             <div className="col-4">
               <label htmlFor="employeeName" className="form-label-for-profile">
                 First Name:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <input
                 type="text"
@@ -1014,10 +1016,10 @@ const EditProfile = ({ employeeObject }) => {
                 placeholder=""
                 name="employeeName"
                 onChange={handleChange}
-                value={formData.employeeName}
+                value={formData?.employeeName}
               />
-              {errors.employeeName && (
-                <span className="invalid">{errors.employeeName}</span>
+              {errors?.employeeName && (
+                <span className="invalid">{errors?.employeeName}</span>
               )}
             </div>
             <div className="col-4">
@@ -1026,7 +1028,7 @@ const EditProfile = ({ employeeObject }) => {
                 className="form-label-for-profile"
               >
                 Last Name:
-                {/* <span className="required"> * </span> */}
+                <span className="required"> * </span>
               </label>
               <input
                 type="text"
@@ -1043,7 +1045,7 @@ const EditProfile = ({ employeeObject }) => {
             </div>
             <div className="col-4">
               <label htmlFor="dob" className="form-label-for-profile">
-                Date of Birth :{/* <span className="required"> * </span> */}
+                Date of Birth :<span className="required"> * </span>
               </label>
               <input
                 type="date"
@@ -1386,7 +1388,9 @@ const EditProfile = ({ employeeObject }) => {
             </div>
           </div> */}
 
-          <div className="Personal mt-3 mb-3">Documents</div>
+          <div className="Personal mt-3 mb-3" style={{ fontWeight: "bold" }}>
+            Documents
+          </div>
           {/* passport */}
           <div className="documentnewstyle shadow p-3 mb-4 bg-body-tertiary rounded">
             <div className="passport">Passport Details</div>
