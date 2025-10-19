@@ -316,11 +316,11 @@ const EditProfile = ({ employeeObject }) => {
         switch (fieldName) {
           case "passportupload":
             // Delete from database if in edit mode and employeeId exists
-            if (isEditing && location.state?.employeeId) {
+            if (isEditing && employeeObject.employeeId) {
               try {
                 const deletePayload = {
-                  employeeId: location.state.employeeId,
-                  documentId: location.state.passportDetails[0]._id,
+                  employeeId: employeeObject.employeeId,
+                  documentId: employeeObject.passportDetails[0]._id,
                 };
                 await deletePassportDocument(deletePayload);
                 console.log(
@@ -348,11 +348,11 @@ const EditProfile = ({ employeeObject }) => {
             break;
           case "contractupload":
             // Delete from database if in edit mode and employeeId exists
-            if (isEditing && location.state?.employeeId) {
+            if (isEditing && employeeObject.employeeId) {
               try {
                 const deletePayload = {
-                  employeeId: location.state.employeeId,
-                  documentId: location.state.contractDetails[0]._id,
+                  employeeId: employeeObject.employeeId,
+                  documentId: employeeObject.contractDetails[0]._id,
                 };
                 await deleteContractDocument(deletePayload);
                 console.log(
@@ -380,11 +380,11 @@ const EditProfile = ({ employeeObject }) => {
             break;
           case "visaupload":
             // Delete from database if in edit mode and employeeId exists
-            if (isEditing && location.state?.employeeId) {
+            if (isEditing && employeeObject.employeeId) {
               try {
                 const deletePayload = {
-                  employeeId: location.state.employeeId,
-                  documentId: location.state.visaDetails[0]._id,
+                  employeeId: employeeObject.employeeId,
+                  documentId: employeeObject.visaDetails[0]._id,
                 };
                 await deleteVisaDocument(deletePayload);
                 console.log("Visa document deleted from database successfully");
@@ -410,11 +410,11 @@ const EditProfile = ({ employeeObject }) => {
             break;
           case "licenseupload":
             // Delete from database if in edit mode and employeeId exists
-            if (isEditing && location.state?.employeeId) {
+            if (isEditing && employeeObject.employeeId) {
               try {
                 const deletePayload = {
-                  employeeId: location.state.employeeId,
-                  documentId: location.state.licenseDetails[0]._id,
+                  employeeId: employeeObject.employeeId,
+                  documentId: employeeObject.licenseDetails[0]._id,
                 };
                 await deleteLicenseDocument(deletePayload);
                 console.log(
@@ -443,54 +443,44 @@ const EditProfile = ({ employeeObject }) => {
 
           case "certificatesRecord":
             // Delete from database if in edit mode and has _id
-            if (isEditing && passed_id && location.state?.employeeId) {
-              try {
-                const deletePayload = {
-                  employeeId: location.state.employeeId,
-                  documentId: passed_id,
-                };
-                await deleteCertificationDocument(deletePayload);
-                console.log("Certificate deleted from database successfully");
-              } catch (error) {
-                console.error(
-                  "Error deleting certificate from database:",
-
-                  error
-                );
-                Swal.fire(
-                  "Error",
-                  "Failed to delete certificate from database",
-                  "error"
-                );
-                return; // Exit if database deletion fails
-              }
+            try {
+              const deletePayload = {
+                employeeId: employeeObject.employeeId,
+                documentId: passed_id,
+              };
+              await deleteCertificationDocument(deletePayload);
+              console.log("Certificate deleted from database successfully");
+            } catch (error) {
+              console.error("Error deleting certificate from database:", error);
+              Swal.fire(
+                "Error",
+                "Failed to delete certificate from database",
+                "error"
+              );
+              return; // Exit if database deletion fails
             }
 
-            // Update uploaded medical files
+            // Only remove the document from the object, not the entire object
             setUploadedCertificateFiles((prevFiles) => {
-              //console.log('Before delete:', prevFiles);
-              const { [passed_id]: deleted, ...updatedFiles } = prevFiles; // destructuring to remove the field
-              //console.log('After delete:', updatedFiles);
-              let updatedData = [];
-              if (isEditing)
-                updatedData = certificateFields.filter(
-                  (item) => (item._id || item.id) !== passed_id
-                );
-              else
-                updatedData = certificateFields.filter(
-                  (item) => item.id !== passed_id
-                );
-              //console.log("HERR::",updatedData);
-              setCertificateFields(updatedData);
+              const { [passed_id]: deleted, ...updatedFiles } = prevFiles;
               return { ...updatedFiles };
             });
+
+            setCertificateFields((prevFields) =>
+              prevFields.map((item) => {
+                if ((item._id || item.id) === passed_id) {
+                  // Remove only the document property
+                  return { ...item, document: null };
+                }
+                return item;
+              })
+            );
 
             // Clear file input
             setFormData((prevData) => ({
               ...prevData,
               [passed_id]: {
-                certification: "",
-                certificateDescription: "",
+                ...prevData[passed_id],
                 certificatesRecord: null,
               },
             }));
@@ -502,10 +492,10 @@ const EditProfile = ({ employeeObject }) => {
 
           default:
             // Delete from database if in edit mode and has _id
-            if (isEditing && passed_id && location.state?.employeeId) {
+            if (isEditing && passed_id && employeeObject.employeeId) {
               try {
                 const deletePayload = {
-                  employeeId: location.state.employeeId,
+                  employeeId: employeeObject.employeeId,
                   documentId: passed_id,
                 };
                 await deleteMedicalRecordDocument(deletePayload);
@@ -526,28 +516,27 @@ const EditProfile = ({ employeeObject }) => {
               }
             }
 
-            // Update uploaded medical files
+            // Only remove the document from the object, not the entire object
             setUploadedMedicalFiles((prevFiles) => {
-              //console.log('Before delete:', prevFiles);
-              const { [passed_id]: deleted, ...updatedFiles } = prevFiles; // destructuring to remove the field
-              //console.log('After delete:', updatedFiles);
-              let updatedData = [];
-              if (isEditing)
-                updatedData = fields.filter(
-                  (item) => (item._id || item.id) !== passed_id
-                );
-              else updatedData = fields.filter((item) => item.id !== passed_id);
-              //console.log("HERR::",updatedData);
-              setFields(updatedData);
+              const { [passed_id]: deleted, ...updatedFiles } = prevFiles;
               return { ...updatedFiles };
             });
+
+            setFields((prevFields) =>
+              prevFields.map((item) => {
+                if ((item._id || item.id) === passed_id) {
+                  // Remove only the document property
+                  return { ...item, document: null };
+                }
+                return item;
+              })
+            );
 
             // Clear file input
             setFormData((prevData) => ({
               ...prevData,
               [passed_id]: {
-                description: "",
-                relationship: "",
+                ...prevData[passed_id],
                 medicalrord: null,
               },
             }));

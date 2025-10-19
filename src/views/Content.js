@@ -205,7 +205,7 @@ const Content = ({ onNotFound }) => {
     "/aed-conversion-rate",
     "/test-page",
     "/media-settings",
-    "/company-bank-details",
+    "/company-bank-info",
     "/profile",
     "/user-leave",
     "/update-employee-info",
@@ -357,7 +357,7 @@ const Content = ({ onNotFound }) => {
         element={<AnchorageStayCharges />}
       />
       <Route path="/media-settings" element={<MediaSettings />} />
-      <Route path="/company-bank-details" element={<CompanyBankDetails />} />
+      <Route path="/company-bank-info" element={<CompanyBankDetails />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/user-leave" element={<UserLeave />} />
       <Route path="/stay-charge" element={<StayCharge />} />

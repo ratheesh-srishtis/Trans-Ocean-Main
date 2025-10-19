@@ -432,120 +432,309 @@ const AddEmployee = () => {
             }
             break;
 
-          case "certificatesRecord":
-            // Delete from database if in edit mode and has _id
-            if (isEditing && passed_id && location.state?.employeeId) {
+          // case "certificatesRecord":
+          //   // Delete from database if in edit mode and has _id
+          //   if (isEditing && passed_id && location.state?.employeeId) {
+          //     try {
+          //       const deletePayload = {
+          //         employeeId: location.state.employeeId,
+          //         documentId: passed_id,
+          //       };
+          //       await deleteCertificationDocument(deletePayload);
+          //       console.log("Certificate deleted from database successfully");
+          //     } catch (error) {
+          //       console.error(
+          //         "Error deleting certificate from database:",
+
+          //         error
+          //       );
+          //       Swal.fire(
+          //         "Error",
+          //         "Failed to delete certificate from database",
+          //         "error"
+          //       );
+          //       return; // Exit if database deletion fails
+          //     }
+          //   }
+
+          //   // Update uploaded medical files
+          //   setUploadedCertificateFiles((prevFiles) => {
+          //     //console.log('Before delete:', prevFiles);
+          //     const { [passed_id]: deleted, ...updatedFiles } = prevFiles; // destructuring to remove the field
+          //     //console.log('After delete:', updatedFiles);
+          //     let updatedData = [];
+          //     if (isEditing)
+          //       updatedData = certificateFields.filter(
+          //         (item) => (item._id || item.id) !== passed_id
+          //       );
+          //     else
+          //       updatedData = certificateFields.filter(
+          //         (item) => item.id !== passed_id
+          //       );
+          //     //console.log("HERR::",updatedData);
+          //     setCertificateFields(updatedData);
+          //     return { ...updatedFiles };
+          //   });
+
+          //   // Clear file input
+          //   setFormData((prevData) => ({
+          //     ...prevData,
+          //     [passed_id]: {
+          //       certification: "",
+          //       certificateDescription: "",
+          //       certificatesRecord: null,
+          //     },
+          //   }));
+          //   if (fileInputRefs.current[passed_id]) {
+          //     fileInputRefs.current[passed_id].value = null;
+          //   }
+
+          //   break;
+
+          case "certificatesRecord": {
+            // Find the certificate object by either _id (DB) or id (local temporary)
+            const certItem = certificateFields.find(
+              (item) => (item._id ?? item.id) === passed_id
+            );
+
+            // Was this persisted to DB? (we call API only if a DB _id exists)
+            const isPersistedInDb = Boolean(certItem && certItem._id);
+
+            // If editing an existing certificate with a DB id -> delete the document on backend
+            if (isEditing && isPersistedInDb && location.state?.employeeId) {
               try {
                 const deletePayload = {
                   employeeId: location.state.employeeId,
-                  documentId: passed_id,
+                  documentId: passed_id, // backend expects certificate _id
                 };
                 await deleteCertificationDocument(deletePayload);
-                console.log("Certificate deleted from database successfully");
+                console.log(
+                  "Certificate document deleted from database successfully"
+                );
               } catch (error) {
                 console.error(
-                  "Error deleting certificate from database:",
-
+                  "Error deleting certificate document from database:",
                   error
                 );
                 Swal.fire(
                   "Error",
-                  "Failed to delete certificate from database",
+                  "Failed to delete certificate document from database",
                   "error"
                 );
-                return; // Exit if database deletion fails
+                return; // don't proceed with local state changes if server delete failed
               }
             }
 
-            // Update uploaded medical files
+            // 1) Update uploadedCertificateFiles — remove file info locally.
             setUploadedCertificateFiles((prevFiles) => {
-              //console.log('Before delete:', prevFiles);
-              const { [passed_id]: deleted, ...updatedFiles } = prevFiles; // destructuring to remove the field
-              //console.log('After delete:', updatedFiles);
-              let updatedData = [];
-              if (isEditing)
-                updatedData = certificateFields.filter(
-                  (item) => (item._id || item.id) !== passed_id
+              const updatedFiles = { ...prevFiles };
+
+              // If there's an entry for this id, remove file-specific properties
+              if (updatedFiles[passed_id]) {
+                const entry = { ...updatedFiles[passed_id] };
+
+                // Remove common file fields used in your app
+                if ("document" in entry) delete entry.document;
+                if ("certificatesRecord" in entry)
+                  entry.certificatesRecord = null;
+                if ("url" in entry) delete entry.url;
+                if ("originalName" in entry) delete entry.originalName;
+                if ("file" in entry) delete entry.file;
+
+                // If entry is empty (no meaningful keys), remove the whole key
+                const isEmpty = Object.keys(entry).every(
+                  (k) =>
+                    entry[k] === null ||
+                    entry[k] === undefined ||
+                    entry[k] === ""
                 );
-              else
-                updatedData = certificateFields.filter(
-                  (item) => item.id !== passed_id
-                );
-              //console.log("HERR::",updatedData);
-              setCertificateFields(updatedData);
-              return { ...updatedFiles };
+
+                if (isEmpty) {
+                  delete updatedFiles[passed_id];
+                } else {
+                  updatedFiles[passed_id] = entry;
+                }
+              }
+
+              return updatedFiles;
             });
 
-            // Clear file input
-            setFormData((prevData) => ({
-              ...prevData,
-              [passed_id]: {
-                certification: "",
-                certificateDescription: "",
-                certificatesRecord: null,
-              },
-            }));
-            if (fileInputRefs.current[passed_id]) {
-              fileInputRefs.current[passed_id].value = null;
+            // 2) Update certificateFields — keep object, remove only document / file refs
+            setCertificateFields((prev) =>
+              prev.map((item) => {
+                const id = item._id ?? item.id;
+                if (id !== passed_id) return item;
+
+                const updatedItem = { ...item };
+
+                // Delete or null only the file-related fields
+                if ("document" in updatedItem) delete updatedItem.document;
+                if ("certificatesRecord" in updatedItem)
+                  updatedItem.certificatesRecord = null;
+                if ("file" in updatedItem) delete updatedItem.file;
+                if ("url" in updatedItem) delete updatedItem.url;
+                if ("originalName" in updatedItem)
+                  delete updatedItem.originalName;
+
+                return updatedItem;
+              })
+            );
+
+            // 3) Update formData — clear only file-related values for this id, keep form text
+            setFormData((prevData) => {
+              const existing = prevData[passed_id] || {};
+              const newEntry = { ...existing };
+
+              if ("certificatesRecord" in newEntry)
+                newEntry.certificatesRecord = null;
+              if ("document" in newEntry) delete newEntry.document;
+              if ("file" in newEntry) delete newEntry.file;
+              if ("url" in newEntry) delete newEntry.url;
+              if ("originalName" in newEntry) delete newEntry.originalName;
+
+              return {
+                ...prevData,
+                [passed_id]: newEntry,
+              };
+            });
+
+            // 4) Clear the actual file input element safely
+            if (
+              fileInputRefs &&
+              fileInputRefs.current &&
+              fileInputRefs.current[passed_id]
+            ) {
+              try {
+                fileInputRefs.current[passed_id].value = null;
+              } catch (e) {
+                // Some browsers may throw — ignore safely
+                console.warn("Could not reset file input ref:", e);
+              }
             }
 
+            console.log(
+              "Certificate file removed (local state updated). DB call used only when item had _id."
+            );
             break;
+          }
+          default: {
+            // Find the record by _id or id
+            const recordItem = fields.find(
+              (item) => (item._id ?? item.id) === passed_id
+            );
 
-          default:
-            // Delete from database if in edit mode and has _id
-            if (isEditing && passed_id && location.state?.employeeId) {
+            // Determine if this record exists in DB
+            const isPersistedInDb = Boolean(recordItem && recordItem._id);
+
+            // 1️⃣ Delete file from backend only if record exists in DB
+            if (isEditing && isPersistedInDb && location.state?.employeeId) {
               try {
                 const deletePayload = {
                   employeeId: location.state.employeeId,
-                  documentId: passed_id,
+                  documentId: passed_id, // backend expects medical record _id
                 };
                 await deleteMedicalRecordDocument(deletePayload);
                 console.log(
-                  "Medical record deleted from database successfully"
+                  "Medical record document deleted from database successfully"
                 );
               } catch (error) {
                 console.error(
-                  "Error deleting medical record from database:",
+                  "Error deleting medical record document from database:",
                   error
                 );
                 Swal.fire(
                   "Error",
-                  "Failed to delete medical record from database",
+                  "Failed to delete medical record document from database",
                   "error"
                 );
-                return; // Exit if database deletion fails
+                return; // stop further local updates if API fails
               }
             }
 
-            // Update uploaded medical files
+            // 2️⃣ Update uploaded medical files — clear only file info
             setUploadedMedicalFiles((prevFiles) => {
-              //console.log('Before delete:', prevFiles);
-              const { [passed_id]: deleted, ...updatedFiles } = prevFiles; // destructuring to remove the field
-              //console.log('After delete:', updatedFiles);
-              let updatedData = [];
-              if (isEditing)
-                updatedData = fields.filter(
-                  (item) => (item._id || item.id) !== passed_id
+              const updatedFiles = { ...prevFiles };
+
+              if (updatedFiles[passed_id]) {
+                const entry = { ...updatedFiles[passed_id] };
+
+                // Remove/clear common file-related fields
+                if ("document" in entry) delete entry.document;
+                if ("medicalrord" in entry) entry.medicalrord = null;
+                if ("file" in entry) delete entry.file;
+                if ("url" in entry) delete entry.url;
+                if ("originalName" in entry) delete entry.originalName;
+
+                // Remove entry completely if it becomes empty
+                const isEmpty = Object.keys(entry).every(
+                  (k) =>
+                    entry[k] === null ||
+                    entry[k] === undefined ||
+                    entry[k] === ""
                 );
-              else updatedData = fields.filter((item) => item.id !== passed_id);
-              //console.log("HERR::",updatedData);
-              setFields(updatedData);
-              return { ...updatedFiles };
+                if (isEmpty) delete updatedFiles[passed_id];
+                else updatedFiles[passed_id] = entry;
+              }
+
+              return updatedFiles;
             });
 
-            // Clear file input
-            setFormData((prevData) => ({
-              ...prevData,
-              [passed_id]: {
-                description: "",
-                relationship: "",
-                medicalrord: null,
-              },
-            }));
-            if (fileInputRefs.current[passed_id]) {
-              fileInputRefs.current[passed_id].value = null;
+            // 3️⃣ Update fields — keep record but remove file/document only
+            setFields((prev) =>
+              prev.map((item) => {
+                const id = item._id ?? item.id;
+                if (id !== passed_id) return item;
+
+                const updatedItem = { ...item };
+
+                // Delete file-related properties only
+                if ("document" in updatedItem) delete updatedItem.document;
+                if ("medicalrord" in updatedItem)
+                  updatedItem.medicalrord = null;
+                if ("file" in updatedItem) delete updatedItem.file;
+                if ("url" in updatedItem) delete updatedItem.url;
+                if ("originalName" in updatedItem)
+                  delete updatedItem.originalName;
+
+                return updatedItem;
+              })
+            );
+
+            // 4️⃣ Update formData — clear only file field, keep other values
+            setFormData((prevData) => {
+              const existing = prevData[passed_id] || {};
+              const newEntry = { ...existing };
+
+              if ("medicalrord" in newEntry) newEntry.medicalrord = null;
+              if ("document" in newEntry) delete newEntry.document;
+              if ("file" in newEntry) delete newEntry.file;
+              if ("url" in newEntry) delete newEntry.url;
+              if ("originalName" in newEntry) delete newEntry.originalName;
+
+              return {
+                ...prevData,
+                [passed_id]: newEntry,
+              };
+            });
+
+            // 5️⃣ Clear file input ref
+            if (
+              fileInputRefs &&
+              fileInputRefs.current &&
+              fileInputRefs.current[passed_id]
+            ) {
+              try {
+                fileInputRefs.current[passed_id].value = null;
+              } catch (e) {
+                console.warn("Could not reset file input ref:", e);
+              }
             }
+
+            console.log(
+              "Medical record file removed (local + API if applicable)"
+            );
             break;
+          }
         }
       }
     });

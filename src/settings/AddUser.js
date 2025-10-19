@@ -120,47 +120,99 @@ const AddUser = ({
   };
   const [selectedRoleType, setSelectedRoleType] = useState("");
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   console.log(name, "adduser handleChange_adduser");
+  //   console.log(value, "value handleChange_adduser ");
+
+  //   // If changing the role, update selectedRoleType
+  //   if (name === "role") {
+  //     const selectedRoleObj = RolesList.find((r) => r._id === value);
+  //     setSelectedRoleType(selectedRoleObj?.roleType || "");
+  //   }
+
+  //   // If changing the employee, auto-populate name, email, and phone number
+  //   if (name === "employeeId" && value) {
+  //     const selectedEmployee = EmployeeList.find((emp) => emp._id === value);
+  //     if (selectedEmployee) {
+  //       if (editMode == false) {
+  //         setFormData((prevData) => ({
+  //           ...prevData,
+  //           [name]: value,
+  //           name: `${selectedEmployee.employeeName} ${selectedEmployee.employeeLastName}`,
+  //           email:
+  //             selectedEmployee.officialEmail || selectedEmployee.email || "",
+  //           phonenumber: selectedEmployee.contactNumber || "",
+  //         }));
+  //       }
+
+  //       setErrors((prevErrors) => ({
+  //         ...prevErrors,
+  //         [name]: "",
+  //         name: "",
+  //         email: "",
+  //         phonenumber: "",
+  //       }));
+  //       return;
+  //     }
+  //   }
+
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  //   setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, "adduser handleChange_adduser");
-    console.log(value, "value handleChange_adduser ");
+    console.log(name, "handleChange");
+    console.log(value, "value");
 
-    // If changing the role, update selectedRoleType
+    // Handle role selection
     if (name === "role") {
       const selectedRoleObj = RolesList.find((r) => r._id === value);
       setSelectedRoleType(selectedRoleObj?.roleType || "");
     }
 
-    // If changing the employee, auto-populate name, email, and phone number
+    // Handle employee selection
     if (name === "employeeId" && value) {
       const selectedEmployee = EmployeeList.find((emp) => emp._id === value);
       if (selectedEmployee) {
-        if (editMode == false) {
-          setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
+        // ✅ Always set employeeId (even in edit mode)
+        // 🚫 Only auto-fill details if NOT in edit mode
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+          ...(editMode === false && {
             name: `${selectedEmployee.employeeName} ${selectedEmployee.employeeLastName}`,
             email:
               selectedEmployee.officialEmail || selectedEmployee.email || "",
             phonenumber: selectedEmployee.contactNumber || "",
-          }));
-        }
+          }),
+        }));
 
+        // Clear errors
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: "",
-          name: "",
-          email: "",
-          phonenumber: "",
+          ...(editMode === false && {
+            name: "",
+            email: "",
+            phonenumber: "",
+          }),
         }));
+
         return;
       }
     }
 
+    // Default change handler
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
@@ -352,10 +404,10 @@ const AddUser = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between " onClick={onClose}>
+        <div className="d-flex justify-content-between ">
           <DialogTitle>{editMode ? "Edit User" : "Add User"}</DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "40px" }}>

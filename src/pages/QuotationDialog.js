@@ -236,8 +236,8 @@ const QuotationDialog = ({
       >
         <div className="d-flex justify-content-between">
           <DialogTitle> Send Quotation</DialogTitle>
-          <div className="closeicon" onClick={onClose}>
-            <i className="bi bi-x-lg "></i>
+          <div className="closeicon">
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
 

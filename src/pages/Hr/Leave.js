@@ -97,10 +97,11 @@ const Leave = ({ loginResponse }) => {
             const response = await deleteLeave(payload);
             setMessage(response.message);
             setOpenPopUp(true);
-            fecthUserLeaves(payloadParams);
+            // Always fetch with userId to refresh the table
+            fecthUserLeaves({ userId: loginResponse?.data?._id });
           } catch (error) {
             Swal.fire("Error deleting leaves");
-            fecthUserLeaves(payloadParams);
+            fecthUserLeaves({ userId: loginResponse?.data?._id });
           }
         }
       }
@@ -261,14 +262,18 @@ const Leave = ({ loginResponse }) => {
             </button>
           </div>
           <div className="">
-            <button
-              onClick={() => {
-                OpenDialog();
-              }}
-              className="btn btn-info infobtn addleave"
-            >
-              Add Leave
-            </button>
+            {employeeId && (
+              <>
+                <button
+                  onClick={() => {
+                    OpenDialog();
+                  }}
+                  className="btn btn-info infobtn addleave"
+                >
+                  Add Leave
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -416,9 +421,21 @@ const Leave = ({ loginResponse }) => {
         )}
 
         {!employeeId && (
-          <>
-            <p>This user is not added by admin yet</p>
-          </>
+          <div
+            style={{
+              textAlign: "center",
+              margin: "30px 0",
+              color: "#4079ed",
+              fontWeight: "bold",
+              fontSize: "18px",
+              background: "#f4f8ff",
+              padding: "16px",
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px rgba(64,121,237,0.08)",
+            }}
+          >
+            This user is not added by admin yet
+          </div>
         )}
         {employeeId && (
           <>

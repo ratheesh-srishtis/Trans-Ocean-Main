@@ -920,9 +920,9 @@ const ResponsiveDialog = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between" onClick={onClose}>
+        <div className="d-flex justify-content-between">
           <DialogTitle>{isEditcharge ? "Update" : "Add"} Charge</DialogTitle>
-          <div className="closeicon">
+          <div className="closeicon" onClick={onClose}>
             <i className="bi bi-x-lg "></i>
           </div>
         </div>

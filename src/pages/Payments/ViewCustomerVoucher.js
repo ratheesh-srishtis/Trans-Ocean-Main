@@ -36,27 +36,46 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
       return "Zero";
     }
 
-    const amountInWords = toWords.convert(Number(value)); // "One Hundred"
+    const amount = Number(value);
+    const integerPart = Math.floor(amount);
+    const fractionPart = Math.round((amount - integerPart) * 100); // 2 decimal places
+
+    const amountInWords = toWords.convert(integerPart);
 
     let currencyFullName = "";
     let currencyUnit = "";
+    let subUnit = "";
 
     switch (currency?.toUpperCase()) {
       case "USD":
         currencyFullName = "United States Dollar";
         currencyUnit = "Dollars";
+        subUnit = "Cents";
         break;
       case "OMR":
         currencyFullName = "Omani Riyal";
-        currencyUnit = "Riyals";
+        currencyUnit = "Riyal";
+        subUnit = "Baisa";
+        break;
+      case "AED":
+        currencyFullName = "Dirham";
+        currencyUnit = "Dirhams";
+        subUnit = "Fils";
         break;
       default:
-        currencyFullName =
-          currency?.toUpperCase() === "AED" ? "Dirham" : currency;
+        currencyFullName = currency;
         currencyUnit = "";
+        subUnit = "";
     }
 
-    return `${currencyFullName} ${amountInWords} ${currencyUnit} Only`;
+    let result = `${currencyFullName} ${amountInWords}`;
+
+    if (fractionPart > 0) {
+      const fractionInWords = toWords.convert(fractionPart);
+      result += ` and ${fractionInWords} ${subUnit}`;
+    }
+
+    return `${result} Only`;
   };
 
   const downloadVoucher = async () => {
@@ -225,7 +244,13 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                                   .format("DD-MM-YYYY")}
                               </div>
                               <div className="voucherprintingnew">
-                                Mode Of Payment : {payment?.modeofPayment}
+                                Mode Of Payment :
+                                {payment?.modeofPayment
+                                  ? payment?.modeofPayment
+                                      .charAt(0)
+                                      .toUpperCase() +
+                                    payment?.modeofPayment.slice(1)
+                                  : ""}
                               </div>
                               <div className="voucherprintingnew">
                                 {payment?.bank?.bankName}

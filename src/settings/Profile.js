@@ -16,7 +16,7 @@ import {
   editEmployeeProfile,
 } from "../services/apiSettings";
 import { useNavigate } from "react-router-dom";
-
+import { getAllEmployees } from "../services/apiEmployee";
 import PopUp from "../pages/PopUp";
 import Loader from "../pages/Loader";
 import { useAuth } from "../context/AuthContext";
@@ -39,6 +39,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [employeeId, setEmployeeId] = useState("");
   const [employeeData, setEmployeeData] = useState("");
+  const [allEmployees, setAllEmployees] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
 
   // Delete handlers for certificate/medical
@@ -68,6 +69,21 @@ const Profile = () => {
       setOpenPopUp(true);
     }
   };
+
+  const fetchemployeeList = async (payload) => {
+    try {
+      const listallemployees = await getAllEmployees(payload);
+      setAllEmployees(listallemployees?.employees || []);
+      //console.log(listallemployees,"---listallemployees");
+    } catch (error) {
+      console.error("Failed to fetch employees", error);
+    }
+  };
+
+  useEffect(() => {
+    let payload = { searchKey: "" };
+    fetchemployeeList(payload);
+  }, []);
 
   const handleDeleteMedical = (idx) => {
     // Note: Medical record deletion is currently local-only
@@ -275,6 +291,18 @@ const Profile = () => {
   };
 
   // Excel export function - moved from ViewProfile component
+
+  // Helper to get employee name by ID from desiginationlist
+  const getEmployeeNameById = (employeeId) => {
+    if (!employeeId || !allEmployees || allEmployees.length === 0) return "";
+
+    const employee = allEmployees.find((emp) => emp._id === employeeId);
+    if (employee) {
+      return `${employee.employeeName} ${employee.employeeLastName}`;
+    }
+    return "";
+  };
+
   const handleExportToExcel = () => {
     const formatDate = (dateString) => {
       if (!dateString) return "";
@@ -318,8 +346,8 @@ const Profile = () => {
         ],
         ["Official Email ID", formData.officialEmail || ""],
         ["Profession Title", formData.profession || ""],
-        ["Reporting To", formData.reportingTo || ""],
-        ["Reporting Head", formData.reportingHead || ""],
+        ["Reporting To", getEmployeeNameById(formData.reportingTo) || ""],
+        ["Reporting Head", getEmployeeNameById(formData.reportingHead) || ""],
       ];
 
       // Add passport details

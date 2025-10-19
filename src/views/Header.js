@@ -127,7 +127,7 @@ const Header = () => {
       return "Media Upload";
     } else if (location.pathname == "/profile") {
       return "Profile";
-    } else if (location.pathname == "/company-bank-details") {
+    } else if (location.pathname == "/company-bank-info") {
       return "Company Bank Info";
     } else if (location.pathname == "/user-leave") {
       return "User Leave";
@@ -291,7 +291,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.110</div>
+            <div className="version">Version: 0.113</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">
