@@ -152,7 +152,7 @@ const Desiginations = () => {
               NoRowsOverlay,
             }}
             sx={{
-              width: "1050px",
+              width: "97%",
               overflowX: "hidden",
               margin: "16px",
               "& .MuiDataGrid-root": {

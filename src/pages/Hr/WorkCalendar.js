@@ -133,7 +133,7 @@ const WorkCalendar = () => {
           </div>
         </div>
         <div>
-          <DataGrid
+          <DataGrid 
             rows={workCalendarlist.map((item) => {
               return {
                 id: item._id,
@@ -152,7 +152,7 @@ const WorkCalendar = () => {
               NoRowsOverlay,
             }}
             sx={{
-              width: "1050px",
+              width: "97%",
               overflowX: "hidden",
               margin: "16px",
               "& .MuiDataGrid-root": {

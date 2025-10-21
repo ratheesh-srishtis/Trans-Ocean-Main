@@ -15,17 +15,27 @@
 
 .costcentersomeinput {
   font-size: 12px;
+  width:101px;
 }
 .margincostcenter {
   margin-left: 26px;
 }
-
+.jobvcostcentre {
+    font-size: 12px;
+    height: 35px;
+    padding-right: 34px !important;
+   
+}
+.jjvcost{
+  width:60px;
+}
 .pettymargin {
   margin-left: 15px;
 }
 
 .costcenterport {
   font-size: 12px;
+  width:72px;
 }
 
 .vesselboxcostcenter {
