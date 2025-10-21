@@ -1335,20 +1335,20 @@ const CreatePDA = ({
                     {pdaResponse?.pdaStatus == 1
                       ? "Draft PDA"
                       : pdaResponse?.pdaStatus == 2
-                      ? "Waiting For Approval From FM"
-                      : pdaResponse?.pdaStatus == 3
-                      ? "Internally Approved"
-                      : pdaResponse?.pdaStatus == 4
-                      ? "Rejected By FM"
-                      : pdaResponse?.pdaStatus == 5
-                      ? "Customer Approved"
-                      : pdaResponse?.pdaStatus == 6
-                      ? "Pending From Operations"
-                      : pdaResponse?.pdaStatus == 7
-                      ? "Operations Completed"
-                      : pdaResponse?.pdaStatus == 8
-                      ? "Closed"
-                      : ""}
+                        ? "Waiting For Approval From FM"
+                        : pdaResponse?.pdaStatus == 3
+                          ? "Internally Approved"
+                          : pdaResponse?.pdaStatus == 4
+                            ? "Rejected By FM"
+                            : pdaResponse?.pdaStatus == 5
+                              ? "Customer Approved"
+                              : pdaResponse?.pdaStatus == 6
+                                ? "Pending From Operations"
+                                : pdaResponse?.pdaStatus == 7
+                                  ? "Operations Completed"
+                                  : pdaResponse?.pdaStatus == 8
+                                    ? "Closed"
+                                    : ""}
                   </div>
                 </div>
 
@@ -1379,8 +1379,8 @@ const CreatePDA = ({
               <img
                 src={
                   location.pathname.includes("/create-pda") &&
-                  location.state &&
-                  location.state.row
+                    location.state &&
+                    location.state.row
                     ? updatePdaImage
                     : createPdaImage
                 }
@@ -1390,7 +1390,7 @@ const CreatePDA = ({
           </div>
           <div className="typesofcall-row ">
             <div className="row align-items-start">
-              <div className="col">
+              <div className="col-lg-4 col-md-6 col-sm-12">
                 <div className="mb-3">
                   <label
                     htmlFor="exampleFormControlInput1"
@@ -1432,7 +1432,7 @@ const CreatePDA = ({
                   )}
                 </div>
               </div>
-              <div className="col">
+              <div className="col-lg-4 col-md-6 col-sm-12">
                 <label
                   htmlFor="exampleFormControlInput1"
                   className="form-label"
@@ -1463,7 +1463,7 @@ const CreatePDA = ({
                   </>
                 )}
               </div>
-              <div className="col">
+              <div className="col-lg-4 col-md-6 col-sm-12">
                 <label
                   htmlFor="exampleFormControlInput1"
                   className="form-label"
@@ -1496,7 +1496,7 @@ const CreatePDA = ({
           </div>
           <div className="choosecargo-row ">
             <div className="row align-items-start">
-              <div className="col-3">
+              <div className="col-lg-3 col-md-6 col-sm-12">
                 <div className="mb-3">
                   <label
                     htmlFor="exampleFormControlInput1"
@@ -1522,7 +1522,7 @@ const CreatePDA = ({
                   </div>
                 </div>
               </div>
-              <div className="col-3">
+              <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
                 <label
                   htmlFor="exampleFormControlInput1"
                   className="form-label"
@@ -1546,27 +1546,26 @@ const CreatePDA = ({
                   </select>
                 </div>
               </div>
-              <div className="col">
-                <div className="row">
-                  <div className="col-6">
-                    <label
-                      htmlFor="exampleFormControlInput1"
-                      className="form-label"
-                    >
-                      Vessel Voyage No:
-                    </label>
-                    <input
-                      name="vesselVoyageNumber"
-                      type="text"
-                      className="form-control vessel-voyage"
-                      id="exampleFormControlInput1"
-                      placeholder=" "
-                      value={formData.vesselVoyageNumber}
-                      onChange={handleInputChange}
-                      onWheel={handleWheel}
-                    />
-                  </div>
-                  <div className="col-6">
+
+              <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  Vessel Voyage No:
+                </label>
+                <input
+                  name="vesselVoyageNumber"
+                  type="text"
+                  className="form-control vessel-voyage"
+                  id="exampleFormControlInput1"
+                  placeholder=" "
+                  value={formData.vesselVoyageNumber}
+                  onChange={handleInputChange}
+                  onWheel={handleWheel}
+                />
+              </div>
+                                <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
                     <label
                       htmlFor="exampleFormControlInput1"
                       className="form-label"
@@ -1590,12 +1589,11 @@ const CreatePDA = ({
                       </select>
                     </div>
                   </div>
-                </div>
-              </div>
+
             </div>
           </div>
           <div className="thirdrow mb-3 row">
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 col-sm-12">
               <div className="row">
                 <div className="col-6">
                   <label
@@ -1648,8 +1646,8 @@ const CreatePDA = ({
                 </div>
               </div>
             </div>
-            <div className="col-4">
-              <div className="row">
+            <div className="col-lg-4 col-md-6 col-sm-12">
+              <div className="row mb-3">
                 <div className="col-6 grt">
                   <label
                     htmlFor="exampleFormControlInput1"
@@ -1700,7 +1698,7 @@ const CreatePDA = ({
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 col-sm-12">
               <label htmlFor="exampleFormControlInput1" className="form-label">
                 Customer Name:<span className="required"> * </span>
               </label>
@@ -1730,7 +1728,7 @@ const CreatePDA = ({
 
           <div className="imo">
             <div className="row align-items-start">
-              <div className="col-2">
+              <div className="col-lg-2 col-md-6 col-sm-12 mb-3">
                 <div className="d-flex">
                   <div>
                     <label
@@ -1795,7 +1793,7 @@ const CreatePDA = ({
                 )}
               </div>
 
-              <div className="col-2 etdmargin">
+              <div className="col-lg-2 col-md-6 col-sm-12 mb-3 ">
                 <div className="d-flex">
                   <div>
                     <label
@@ -1863,7 +1861,7 @@ const CreatePDA = ({
                   </>
                 )}
               </div>
-              <div className="col-1 nrt ">
+              <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
                 <label for="exampleFormControlInput1" className="form-label">
                   Berth:
                 </label>
@@ -1877,7 +1875,7 @@ const CreatePDA = ({
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="col-2 nrt ">
+              <div className="col-lg-2 col-md-6 col-sm-12 nrt mb-3">
                 <label
                   htmlFor="exampleFormControlInput1"
                   className="form-label"
@@ -1902,7 +1900,7 @@ const CreatePDA = ({
 
               {opsByValue && (
                 <>
-                  <div className="col-2 nrt ">
+                  <div className="col-lg-2 col-md-6 col-sm-12 nrt ">
                     <label
                       htmlFor="exampleFormControlInput1"
                       className="form-label"
@@ -1923,7 +1921,7 @@ const CreatePDA = ({
               )}
               {invoiceByValue && (
                 <>
-                  <div className="col-2 nrt ">
+                  <div className="col-lg-2 col-md-6 col-sm-12 nrt ">
                     <label
                       htmlFor="exampleFormControlInput1"
                       className="form-label"
@@ -1943,7 +1941,10 @@ const CreatePDA = ({
                 </>
               )}
 
-              <div className="row align-items-start d-flex justify-content-end">
+
+            </div>
+          </div>
+                        <div className="row align-items-start d-flex justify-content-end">
                 {pdaResponse?.pdaStatus != 7 && (
                   <>
                     {requestedServices.length > 0 && (
@@ -1965,7 +1966,7 @@ const CreatePDA = ({
                 )}
                 {pdaResponse?.pdaStatus != 7 && (
                   <>
-                    <div className="col-2">
+                    <div className="col-lg-2 col-md-6 col-sm-12">
                       <button
                         type="button"
                         className="btn addcharge-button text-center"
@@ -1979,8 +1980,6 @@ const CreatePDA = ({
                   </>
                 )}
               </div>
-            </div>
-          </div>
 
           <div className="row mt-2">
             <div className="col-12">
@@ -2060,17 +2059,17 @@ const CreatePDA = ({
                     {(pdaResponse === null ||
                       pdaResponse === undefined ||
                       pdaResponse?.pdaStatus <= 1) && (
-                      <button
-                        className="btn btna generate-button"
-                        onClick={() => {
-                          submitPda(1);
-                        }}
-                      >
-                        {pdaResponse === null || pdaResponse === undefined
-                          ? " Save As Draft"
-                          : "Edit Draft"}
-                      </button>
-                    )}
+                        <button
+                          className="btn btna generate-button"
+                          onClick={() => {
+                            submitPda(1);
+                          }}
+                        >
+                          {pdaResponse === null || pdaResponse === undefined
+                            ? " Save As Draft"
+                            : "Edit Draft"}
+                        </button>
+                      )}
                   </div>
 
                   <div className="right d-flex">
@@ -2150,54 +2149,54 @@ const CreatePDA = ({
 
                         {loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() !==
                           "financemanager" && (
-                          <>
-                            {pdaResponse?.pdaStatus === 4 && (
-                              <>
-                                <button
-                                  className="btn btna submit-button"
-                                  onClick={() => {
-                                    resubmitPDA();
-                                  }}
-                                >
-                                  Resubmit for FM Approval
-                                </button>
-                              </>
-                            )}
-                          </>
-                        )}
+                            <>
+                              {pdaResponse?.pdaStatus === 4 && (
+                                <>
+                                  <button
+                                    className="btn btna submit-button"
+                                    onClick={() => {
+                                      resubmitPDA();
+                                    }}
+                                  >
+                                    Resubmit for FM Approval
+                                  </button>
+                                </>
+                              )}
+                            </>
+                          )}
 
                         {(loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
                           "financemanager" ||
                           loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
-                            "operationsmanager") && (
-                          <>
-                            {(pdaResponse?.pdaStatus == 2 ||
-                              pdaResponse?.pdaStatus == 4) && (
-                              <>
-                                <button
-                                  className="btn btna generate-button"
-                                  onClick={() => {
-                                    updateQuotation("3");
-                                  }}
-                                >
-                                  Approve
-                                </button>
-                              </>
-                            )}
-                            {pdaResponse?.pdaStatus == 2 && (
-                              <>
-                                <button
-                                  className="btn btna generate-button"
-                                  onClick={() => {
-                                    updateQuotation("4");
-                                  }}
-                                >
-                                  Reject
-                                </button>
-                              </>
-                            )}
-                          </>
-                        )}
+                          "operationsmanager") && (
+                            <>
+                              {(pdaResponse?.pdaStatus == 2 ||
+                                pdaResponse?.pdaStatus == 4) && (
+                                  <>
+                                    <button
+                                      className="btn btna generate-button"
+                                      onClick={() => {
+                                        updateQuotation("3");
+                                      }}
+                                    >
+                                      Approve
+                                    </button>
+                                  </>
+                                )}
+                              {pdaResponse?.pdaStatus == 2 && (
+                                <>
+                                  <button
+                                    className="btn btna generate-button"
+                                    onClick={() => {
+                                      updateQuotation("4");
+                                    }}
+                                  >
+                                    Reject
+                                  </button>
+                                </>
+                              )}
+                            </>
+                          )}
                       </>
                     )}
                   </div>
