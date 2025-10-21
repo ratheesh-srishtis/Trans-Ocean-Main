@@ -3,7 +3,7 @@
   margin-left: 0px;
   width: 100%;
 }
-.costcenterfz{
+.costcenterfz {
   font-size: 12px;
   margin-left: -11px;
   width: 100%;
@@ -97,4 +97,10 @@
   .costcenterportname {
     margin-left: 0px;
   }
+}
+
+.costcenter-breakup .MuiDataGrid-row {
+  max-height: 145px !important;
+  min-height: 125px !important;
+  --height: 130px !important;
 }

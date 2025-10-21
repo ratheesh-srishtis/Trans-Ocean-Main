@@ -208,7 +208,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                   </tr>
                   <tr>
                     <td className="voucherprinting">
-                      {getWordRepresentation(amount, "Dirham")}
+                      {getWordRepresentation(amount, "OMR")}
                     </td>
                     <td className="voucheramountrate text-center">
                       OMR {amount}

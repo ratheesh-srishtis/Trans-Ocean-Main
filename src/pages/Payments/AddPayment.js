@@ -640,7 +640,7 @@ const AddCustomerPayment = ({
                     <input
                       name="paymentDate"
                       type="date"
-                      className="form-control vessel-voyage"
+                      className="form-control custom-picker-styles"
                       id="bank"
                       placeholder=""
                       onChange={handleChange}

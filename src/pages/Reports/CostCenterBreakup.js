@@ -459,7 +459,7 @@ const CostCenterBreakup = () => {
 
   return (
     <>
-      <div className="p-2 ">
+      <div className="p-2 costcenter-breakup">
         <div className="row mt-3 mb-3">
           <div className=" col-3 d-flex align-items-center">
             <label htmlFor="input" className="col-form-label costcenterinput jjvcost">
