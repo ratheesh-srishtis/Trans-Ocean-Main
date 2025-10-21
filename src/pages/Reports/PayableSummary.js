@@ -47,16 +47,13 @@ const PayableSummary = () => {
       pdaId: selectedJobNo,
     };
     setIsLoading(true);
-
     try {
-      setIsLoading(false);
-
       const response = await getPayableSummaryReport(payload);
       setReportList(response?.report);
       console.log("getReport", response);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-
       console.error("Failed to fetch quotations:", error);
     }
   };

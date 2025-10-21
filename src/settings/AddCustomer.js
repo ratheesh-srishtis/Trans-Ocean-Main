@@ -114,12 +114,12 @@ const AddCustomer = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between" onClick={onClose}>
+        <div className="d-flex justify-content-between">
           <DialogTitle>
             {editMode ? "Edit Customer" : "Add Customer"}
           </DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "60px" }}>
@@ -149,31 +149,31 @@ const AddCustomer = ({
                 </div>
               </div>
             </div>
-             <div className="col mb-3 align-items-start">
-                <div className="">
-                  <label
-                    htmlFor="exampleFormControlInput1"
-                    className="form-label"
-                  >
-                    {" "}
-                    Customer Address<span className="required"> * </span>:
-                  </label>
+            <div className="col mb-3 align-items-start">
+              <div className="">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  {" "}
+                  Customer Address<span className="required"> * </span>:
+                </label>
 
-                  <textarea
-                    name="customerAddress"
-                    rows="3"
-                    className="form-control addcusheight"
-                    id="exampleFormControlInput1"
-                    placeholder="Address"
-                    onChange={handleChange}
-                    value={formData.customerAddress}
-                  ></textarea>
+                <textarea
+                  name="customerAddress"
+                  rows="3"
+                  className="form-control addcusheight"
+                  id="exampleFormControlInput1"
+                  placeholder="Address"
+                  onChange={handleChange}
+                  value={formData.customerAddress}
+                ></textarea>
 
-                  {errors.customerAddress && (
-                    <span className="invalid">{errors.customerAddress}</span>
-                  )}
-                </div>
+                {errors.customerAddress && (
+                  <span className="invalid">{errors.customerAddress}</span>
+                )}
               </div>
+            </div>
 
             <div className="btnuser">
               <button className="btn btna submit-button btnfsize">

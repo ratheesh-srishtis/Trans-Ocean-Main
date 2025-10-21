@@ -402,13 +402,13 @@ const GeneralDocuments = () => {
             <DialogTitle>
               {isEditMode ? "Edit General Document" : "Add General Document"}
             </DialogTitle>
-            <div
-              className="closeicon"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              <i className="bi bi-x-lg "></i>
+            <div className="closeicon">
+              <i
+                className="bi bi-x-lg "
+                onClick={() => {
+                  setOpen(false);
+                }}
+              ></i>
             </div>
           </div>
           <DialogContent>

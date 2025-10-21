@@ -39,7 +39,7 @@ const MediaSettings = () => {
         const response = await uploadCompanyMedia(formData);
         console.log(response, "response_handleLogoChange");
         if (response?.status == true) {
-          setMessage("Successfully uploaded image");
+          setMessage("Image uploaded successfully");
           setOpenPopUp(true);
           // after API upload success
           await getMediaFiles(); // 👈 refresh context immediately

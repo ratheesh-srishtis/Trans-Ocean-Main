@@ -406,7 +406,7 @@ const SendReport = ({
                     Attachments:
                   </label>
                   <div className="rectangle-quotation">
-                    <div className="invoice">Quotation PDF</div>
+                    <div className="invoice">Final Report PDF</div>
                     <div className="Attach">
                       <i className="bi bi-filetype-pdf"></i>
                     </div>

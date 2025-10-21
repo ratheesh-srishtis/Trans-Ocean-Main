@@ -291,7 +291,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.113</div>
+            <div className="version">Version: 0.114</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">

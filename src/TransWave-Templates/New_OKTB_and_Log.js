@@ -418,7 +418,7 @@ const NewOKTBAndLog = ({
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+      <Dialog open={open} fullWidth maxWidth="md">
         <div
           className="d-flex justify-content-between "
           onClick={() => onClose()}
@@ -426,7 +426,7 @@ const NewOKTBAndLog = ({
           {" "}
           <DialogTitle></DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClose={handleClose}></i>
           </div>
         </div>
 
