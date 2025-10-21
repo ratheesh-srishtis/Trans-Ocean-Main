@@ -451,7 +451,7 @@ const VendorPayments = () => {
             <i className="bi bi-funnel-fill filtericon"></i>
             <select
               name="pdaId"
-              className="form-select form-select-sm filteremployee"
+              className="form-select form-select-sm filteremployee cupaymentddfont"
               aria-label="Small select example"
               onChange={handleTimeperiod}
             >

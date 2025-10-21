@@ -486,7 +486,7 @@ const CostCenterBreakup = () => {
               <div className="col-md-3 col-12 d-flex align-items-center ">
                 <label
                   htmlFor="input"
-                  className=" col-3 col-form-label costcenterinput me-2"
+                  className=" col-3 col-form-label costcentersomeinput"
                 >
                   Vessel Name:
                 </label>
@@ -494,7 +494,7 @@ const CostCenterBreakup = () => {
                 <input
                   type="text"
                   id="inputPassword6"
-                  className="form-control costcenterfontsize"
+                  className="form-control costcenterfz"
                   placeholder=""
                   readOnly
                   value={vesselName}

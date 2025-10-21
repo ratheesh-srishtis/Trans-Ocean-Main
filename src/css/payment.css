@@ -149,7 +149,7 @@
 }
 .statusscustomervendor {
   height: 34px;
-  width: 130px;
+  width: 370px;
 }
 .statusscustomerbypayment {
   height: 34px;
@@ -306,7 +306,9 @@
 .form-control.vessel-voyage {
   padding-right: 2.5rem;
 }
-
+.cupaymentddfont{
+  font-size: 12px !important;
+}
 /* Leave Count Cards Styles */
 .leave-cards-container {
   padding: 0 15px;

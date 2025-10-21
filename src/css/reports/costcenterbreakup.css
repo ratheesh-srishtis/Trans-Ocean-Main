@@ -3,12 +3,19 @@
   margin-left: 0px;
   width: 100%;
 }
-
+.costcenterfz{
+  font-size: 12px;
+  margin-left: -11px;
+  width: 100%;
+}
 .costcenterinput {
   font-size: 12px;
   margin-right: 10px;
 }
 
+.costcentersomeinput {
+  font-size: 12px;
+}
 .margincostcenter {
   margin-left: 26px;
 }
@@ -26,7 +33,7 @@
   height: 35px;
   padding-right: 34px !important;
   width: 100%;
-  max-width: 274px;
+  max-width: 357px;
 }
 
 .costcenterportname {
