@@ -127,15 +127,15 @@ const ViewEmployeeDetails = () => {
     console.log("Update Response:", response);
     if (response?.status == true) {
       setIsLoading(false);
-      setMessage("Employee details updated successfully!");
+      setMessage("HR has approved your request to update profile details.");
       setOpenPopUp(true);
       fetchProfileDetails();
     } else {
       setIsLoading(false);
-      setMessage("Failed to update Employee details. Please try again.");
+      setMessage("Failed to approve the profile update request.");
       setOpenPopUp(true);
       fetchProfileDetails();
-      navigate("/employee-details-modifications");
+      navigate("/update-employee-info");
     }
   };
   const handleReject = async () => {
@@ -146,18 +146,18 @@ const ViewEmployeeDetails = () => {
     console.log("Update Response:", response);
     if (response?.status == true) {
       setIsLoading(false);
-      setMessage("Employee details updated successfully!");
+      setMessage("HR rejected your profile update request.");
       setOpenPopUp(true);
     } else {
       setIsLoading(false);
-      setMessage("Failed to update Employee details. Please try again.");
+      setMessage("Failed to reject your profile update request.");
       setOpenPopUp(true);
     }
   };
 
   const handleClosePopup = () => {
     setOpenPopUp(false);
-    navigate("/employee-details-modifications"); // ✅ navigate after close
+    navigate("/update-employee-info"); // ✅ navigate after close
   };
 
   const getSectionIcon = (type) => {
@@ -232,6 +232,20 @@ const ViewEmployeeDetails = () => {
       </Paper>
     );
   };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    // Handle different date formats
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
   return (
     <>
       <div className="container home-container">
@@ -250,7 +264,10 @@ const ViewEmployeeDetails = () => {
                     label="Last Name"
                     value={formData.employeeLastName}
                   />
-                  <InfoRow label="Date of Birth" value={formData.dob} />
+                  <InfoRow
+                    label="Date of Birth"
+                    value={formatDate(formData.dob)}
+                  />
                   <InfoRow label="Address" value={formData.address} />
                   <InfoRow label="City" value={formData.city} />
                   <InfoRow label="State" value={formData.state} />
@@ -277,7 +294,7 @@ const ViewEmployeeDetails = () => {
                 <Grid container spacing={2}>
                   <InfoRow
                     label="Date of Joining"
-                    value={formData.dateOfJoining}
+                    value={formatDate(formData.dateOfJoining)}
                   />
                   <InfoRow
                     label="Designation"
@@ -315,7 +332,7 @@ const ViewEmployeeDetails = () => {
                       />
                       <InfoRow
                         label="Date of Expiry"
-                        value={item.dateOfExpiry}
+                        value={formatDate(item.dateOfExpiry)}
                       />
                       <Grid item xs={12}>
                         <Typography
@@ -348,7 +365,7 @@ const ViewEmployeeDetails = () => {
                       />
                       <InfoRow
                         label="Date of Expiry"
-                        value={item.dateOfExpiry}
+                        value={formatDate(item.dateOfExpiry)}
                       />
                       <Grid item xs={12}>
                         <Typography
@@ -378,7 +395,7 @@ const ViewEmployeeDetails = () => {
                       <InfoRow label="Visa Number" value={item.visaNumber} />
                       <InfoRow
                         label="Date of Expiry"
-                        value={item.dateOfExpiry}
+                        value={formatDate(item.dateOfExpiry)}
                       />
                       <Grid item xs={12}>
                         <Typography
@@ -411,7 +428,7 @@ const ViewEmployeeDetails = () => {
                       />
                       <InfoRow
                         label="Date of Expiry"
-                        value={item.dateOfExpiry}
+                        value={formatDate(item.dateOfExpiry)}
                       />
                       <Grid item xs={12}>
                         <Typography
@@ -516,7 +533,7 @@ const ViewEmployeeDetails = () => {
                 justifyContent: "flex-end",
                 gap: "15px",
                 marginTop: "20px",
-                marginBottom: "20px",
+                marginBottom: "60px",
               }}
             >
               <button

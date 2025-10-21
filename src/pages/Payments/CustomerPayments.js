@@ -305,13 +305,15 @@ const CustomerPayments = () => {
       renderCell: (params) => (
         <>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <button
-              className="btn btna submitpaymentbutton btnfsize"
-              onClick={() => handleView(params.row)}
-              style={{ marginRight: "8px" }}
-            >
-              View
-            </button>
+            {(!params.row.amount || params.row.amount === 0) && (
+              <button
+                className="btn btna submitpaymentbutton btnfsize"
+                onClick={() => handleView(params.row)}
+                style={{ marginRight: "8px" }}
+              >
+                View
+              </button>
+            )}
             <IconButton color="primary" onClick={() => handleEdit(params.row)}>
               <EditIcon sx={{ fontSize: "19px" }} />
             </IconButton>

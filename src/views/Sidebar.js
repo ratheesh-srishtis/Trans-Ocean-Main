@@ -44,7 +44,7 @@ const Sidebar = () => {
     "leave reports",
     "report",
     "General Documents",
-    "Employee Details Modifications",
+    "Update Employee Info",
     "Leave Requests",
   ];
   const handleNavigation = (menuItem) => {
@@ -148,8 +148,8 @@ const Sidebar = () => {
       case "General Documents":
         navigate("/general-documents");
         break;
-      case "Employee Details Modifications":
-        navigate("/employee-details-modifications");
+      case "Update Employee Info":
+        navigate("/update-employee-info");
         break;
       case "anchorage-stay-charges":
         navigate("/anchorage-stay-charges");
@@ -157,8 +157,8 @@ const Sidebar = () => {
       case "aed-conversion-rate":
         navigate("/aed-conversion-rate");
         break;
-      case "company-bank-details":
-        navigate("/company-bank-details");
+      case "company-bank-info":
+        navigate("/company-bank-info");
         break;
       case "media-settings":
         navigate("/media-settings");
@@ -218,8 +218,8 @@ const Sidebar = () => {
       label: "General Documents",
       icon: "bi bi-bar-chart",
     },
-    "Employee Details Modifications": {
-      label: "Employee Details Modifications",
+    "Update Employee Info": {
+      label: "Update Employee Info",
       icon: "bi bi-people",
     },
     "Leave Requests": {
@@ -302,8 +302,7 @@ const Sidebar = () => {
                                   "Anchorage Stay Charges":
                                     "anchorage-stay-charges",
                                   "AED Conversion Rate": "aed-conversion-rate",
-                                  "Company Bank Details":
-                                    "company-bank-details",
+                                  "Company Bank Info": "company-bank-info",
                                   "Company Media": "media-settings",
                                 };
                                 const submenuKey = submenuMap[item.submenu];

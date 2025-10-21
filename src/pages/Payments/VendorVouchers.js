@@ -234,7 +234,7 @@ const VendorVouchers = () => {
     { field: "voucher", headerName: "Petty Number", flex: 2, minWidth: 130 },
     { field: "throughs", headerName: "Through", flex: 3 },
     { field: "particulars", headerName: "Particulars", flex: 3 },
-    { field: "accountof", headerName: "On Account Of", flex: 3 },
+    { field: "accountof", headerName: "On Account of", flex: 3 },
     { field: "vendorName", headerName: "Vendor Name", flex: 3 },
     { field: "dateofPay", headerName: "Payment Date", flex: 2, minWidth: 130 },
     { field: "amount", headerName: "Amount", flex: 2 },
@@ -519,7 +519,7 @@ const VendorVouchers = () => {
               dateofPay: formattedDate || "N/A",
               amount: item.amount || "N/A",
               vendorId: item.vendorId?._id || "",
-              vendorName: item.vendorId?.vendorName || "N/A",
+              // vendorName: item.vendorId?.vendorName || "N/A",
               remark: item.remark || "N/A",
               // modeofPayment: modeofpay || "N/A",
               // banks:

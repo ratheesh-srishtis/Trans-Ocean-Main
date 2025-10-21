@@ -29,7 +29,6 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
     }
   }, [getvoucher]);
   const getWordRepresentation = (value, currency) => {
-    console.log(value, currency, "getWordRepresentation");
     if (
       value === undefined ||
       value === null ||
@@ -40,27 +39,46 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
       return "Zero";
     }
 
-    const amountInWords = toWords.convert(Number(value)); // "One Hundred"
+    const amount = Number(value);
+    const integerPart = Math.floor(amount);
+    const fractionPart = Math.round((amount - integerPart) * 100); // 2 decimal places
+
+    const amountInWords = toWords.convert(integerPart);
 
     let currencyFullName = "";
     let currencyUnit = "";
+    let subUnit = "";
 
     switch (currency?.toUpperCase()) {
       case "USD":
         currencyFullName = "United States Dollar";
         currencyUnit = "Dollars";
+        subUnit = "Cents";
         break;
       case "OMR":
         currencyFullName = "Omani Riyal";
-        currencyUnit = "Riyals";
+        currencyUnit = "Riyal";
+        subUnit = "Baisa";
+        break;
+      case "AED":
+        currencyFullName = "Dirham";
+        currencyUnit = "Dirhams";
+        subUnit = "Fils";
         break;
       default:
-        currencyFullName =
-          currency?.toUpperCase() === "AED" ? "Dirham" : currency;
+        currencyFullName = currency;
         currencyUnit = "";
+        subUnit = "";
     }
 
-    return `${currencyFullName} ${amountInWords} ${currencyUnit} Only`;
+    let result = `${currencyFullName} ${amountInWords}`;
+
+    if (fractionPart > 0) {
+      const fractionInWords = toWords.convert(fractionPart);
+      result += ` and ${fractionInWords} ${subUnit}`;
+    }
+
+    return `${result} Only`;
   };
 
   const downloadVoucher = async () => {
@@ -108,10 +126,10 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between " onClick={onClose}>
+        <div className="d-flex justify-content-between ">
           <DialogTitle></DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "40px" }}>
@@ -129,7 +147,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                     onClick={downloadVoucher}
                   >
                     {" "}
-                    Download Petty
+                    Download Voucher
                   </button>
                 </div>
               </div>

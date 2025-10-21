@@ -262,7 +262,7 @@ const Quotations = ({
     {
       field: "actions",
       headerName: "Action",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => (
         <>
           <IconButton color="primary" onClick={() => handleEdit(params.row)}>
@@ -295,7 +295,8 @@ const Quotations = ({
               )}
             </>
           )}
-          {loginResponse?.data?.userRole?.roleType == "admin" && (
+          {(loginResponse?.data?.userRole?.roleType == "admin" ||
+            loginResponse?.data?.userRole?.roleType == "superadmin") && (
             <>
               <IconButton
                 color="secondary"

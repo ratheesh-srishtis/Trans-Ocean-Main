@@ -124,16 +124,16 @@ const Header = () => {
     } else if (location.pathname == "/aed-conversion-rate") {
       return "AED Conversion Rate";
     } else if (location.pathname == "/media-settings") {
-      return "Upload Media";
+      return "Media Upload";
     } else if (location.pathname == "/profile") {
       return "Profile";
-    } else if (location.pathname == "/company-bank-details") {
-      return "Company Bank Detaila";
+    } else if (location.pathname == "/company-bank-info") {
+      return "Company Bank Info";
     } else if (location.pathname == "/user-leave") {
       return "User Leave";
-    } else if (location.pathname == "/employee-details-modifications") {
-      return "Employee Details Modifications";
-    } else if (location.pathname == "/leave-requests") {
+    } else if (location.pathname == "/update-employee-info") {
+      return "Update Employee Info";
+    } else if (location.pathname == "/update-employee-info") {
       return "Leave Requests";
     } else if (location.pathname == "/leave") {
       return "Leave";
@@ -259,8 +259,16 @@ const Header = () => {
       return "HR";
     }
 
-    // Capitalize the first letter for other cases
-    return receiverType.charAt(0).toUpperCase() + receiverType.slice(1);
+    // Special case for 'superadmin'
+    if (receiverType.toLowerCase() === "superadmin") {
+      return "Super Admin";
+    }
+
+    // For other values: capitalize first letter and capitalize after spaces
+    return receiverType
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
   };
 
   return (
@@ -274,16 +282,16 @@ const Header = () => {
           className="header--wrapper d-flex justify-content-between align-items-center px-3 py-3 flex-wrap w-100
 "
         >
-          <button class="btn d-md-none" type="button" id="sidebarToggle">
-            <i class="bi bi-list"></i>
+          <button className="btn d-md-none" type="button" id="sidebarToggle">
+            <i className="bi bi-list"></i>
           </button>
-          <div class="d-md-none mx-auto">
+          <div className="d-md-none mx-auto">
             <img src={logo} className="userimg"></img>
           </div>
 
           <div className="header--title d-none d-md-block">
-            <h5 class="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.108</div>
+            <h5 className="mb-0">{getHeaderText()}</h5>
+            <div className="version">Version: 0.114</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">
@@ -295,7 +303,7 @@ const Header = () => {
               >
                 {loginResponse?.isEmployee
                   ? loginResponse?.data?.employeeName
-                  : formatUserType(loginResponse?.data?.name)}
+                  : loginResponse?.data?.name}
 
                 <div className="nameuser d-none d-md-block">
                   {loginResponse?.isEmployee
@@ -335,7 +343,7 @@ const Header = () => {
             </div>
 
             <div className=" chatnotification position-relative mx-md-4 mx-3 ">
-              <button class="btn p-0 d-md-none">
+              <button className="btn p-0 d-md-none">
                 <img src={chat} className="userimg"></img>
               </button>
               <button

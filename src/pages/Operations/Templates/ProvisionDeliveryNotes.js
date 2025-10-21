@@ -148,6 +148,13 @@ const ProvisionDeliveryNotes = ({
       //   formDataToSend.append(`items[${index}][unit]`, item.unit);
       // });
 
+      // Check if a document is uploaded before calling the API
+      if (!(formData.files instanceof File)) {
+        setMessage("Please upload a document before submitting.");
+        setOpenPopUp(true);
+        return;
+      }
+
       // Append the file (if it exists and is a File object)
       if (formData.files instanceof File) {
         formDataToSend.append("files", formData.files);
@@ -288,10 +295,10 @@ const ProvisionDeliveryNotes = ({
           fullWidth
           maxWidth="lg"
         >
-          <div className="d-flex justify-content-between " onClick={onClose}>
+          <div className="d-flex justify-content-between ">
             <DialogTitle></DialogTitle>
             <div className="closeicon">
-              <i className="bi bi-x-lg "></i>
+              <i className="bi bi-x-lg " onClick={onClose}></i>
             </div>
           </div>
           <div className="mm">

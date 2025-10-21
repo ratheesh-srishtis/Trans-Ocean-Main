@@ -12,6 +12,8 @@ import "../../css/payment.css";
 import AddLeave from "./AddLeave";
 import Swal from "sweetalert2";
 import PopUp from "../PopUp";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const EmployeeLeaves = () => {
   const Group = require("../../assets/images/leave.png");
   const employeeId = localStorage.getItem("employeeId");
@@ -21,9 +23,22 @@ const EmployeeLeaves = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
+  const [leaveCounts, setLeaveCounts] = useState({
+    remainingAnnualLeave: 0,
+    remainingCasuallLeave: 0,
+    remainingSicklLeave: 0,
+    remainingEmergencyLeave: 0,
+  });
   const [open, setOpen] = useState(false);
   const fecthEmployeeLeaves = async (paylaod) => {
     const listLeaves = await getAllEmployeeLeaves(paylaod);
+    //   // Update leave counts
+    setLeaveCounts({
+      remainingAnnualLeave: listLeaves?.remainingAnnualLeave || 0,
+      remainingCasuallLeave: listLeaves?.remainingCasuallLeave || 0,
+      remainingSicklLeave: listLeaves?.remainingSicklLeave || 0,
+      remainingEmergencyLeave: listLeaves?.remainingEmergencyLeave || 0,
+    });
     SetEmpLeaves(listLeaves?.leaves || []);
   };
 
@@ -124,6 +139,85 @@ const EmployeeLeaves = () => {
     setEditMode(false);
     setErrors({});
   };
+
+  const handleExportToExcel = () => {
+    try {
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+
+      // Prepare data for Excel export
+      const excelData = LeaveList.map((item) => {
+        const datefrom = item.leaveFrom.split("T")[0];
+        const [fromyear, frommonth, fromday] = datefrom.split("-");
+        const leaveFrom = `${fromday}-${frommonth}-${fromyear}`;
+        const dateto = item.leaveTo.split("T")[0];
+        const [year, month, day] = dateto.split("-");
+        const leaveTo = `${day}-${month}-${year}`;
+
+        // Logic for Approved By field
+        let approvedBy = "";
+        const approvedNames = [];
+
+        if (item.approvalEmployeeStatus && item.approvalEmployee) {
+          approvedNames.push(item.approvalEmployee.employeeName);
+        }
+
+        if (item.approvalHeadStatus && item.approvalHead) {
+          approvedNames.push(item.approvalHead.employeeName);
+        }
+
+        approvedBy =
+          approvedNames.length > 0 ? approvedNames.join(", ") : "N/A";
+
+        return {
+          "Leave Type": item.leaveType || "N/A",
+          "Leave Mode": item.leaveMode?.leaveType || "N/A",
+          "Leave From": leaveFrom || "N/A",
+          "Leave To": leaveTo || "N/A",
+          Comment: item.comment || "N/A",
+          "Approved By": approvedBy,
+        };
+      });
+
+      // Create worksheet from data
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+      // Set column widths
+      worksheet["!cols"] = [
+        { wch: 15 }, // Leave Type
+        { wch: 15 }, // Leave Mode
+        { wch: 15 }, // Leave From
+        { wch: 15 }, // Leave To
+        { wch: 30 }, // Comment
+        { wch: 20 }, // Approved By
+      ];
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Employee Leaves");
+
+      // Generate filename
+      const fileName = "Employee Leaves.xlsx";
+
+      // Convert to buffer and save
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      saveAs(blob, fileName);
+
+      console.log(`Excel file exported successfully: ${fileName}`);
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      Swal.fire(
+        "Error",
+        "Error exporting to Excel. Please try again.",
+        "error"
+      );
+    }
+  };
   return (
     <>
       <div>
@@ -136,6 +230,14 @@ const EmployeeLeaves = () => {
         <div className=" mt-3 mb-3 employeeadd">
           <div className="">
             <button
+              className="btn btn-info infobtn addleave"
+              onClick={handleExportToExcel}
+            >
+              Download Excel
+            </button>
+          </div>
+          <div className="">
+            <button
               onClick={() => {
                 OpenDialog();
               }}
@@ -143,6 +245,66 @@ const EmployeeLeaves = () => {
             >
               Add Leave
             </button>
+          </div>
+        </div>
+        {/* Leave Count Cards */}
+        <div className="leave-cards-container mt-4 mb-4">
+          <div className="row g-3">
+            <div className="col-md-3 col-sm-6">
+              <div className="leave-card annual-leave">
+                <div className="leave-card-header">
+                  <h6 className="leave-card-title">Annual Leave</h6>
+                </div>
+                <div className="leave-card-body">
+                  <h2 className="leave-count">
+                    {leaveCounts.remainingAnnualLeave}
+                  </h2>
+                  <p className="leave-subtitle">Days Available</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3 col-sm-6">
+              <div className="leave-card casual-leave">
+                <div className="leave-card-header">
+                  <h6 className="leave-card-title">Casual Leave</h6>
+                </div>
+                <div className="leave-card-body">
+                  <h2 className="leave-count">
+                    {leaveCounts.remainingCasuallLeave}
+                  </h2>
+                  <p className="leave-subtitle">Days Available</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3 col-sm-6">
+              <div className="leave-card sick-leave">
+                <div className="leave-card-header">
+                  <h6 className="leave-card-title">Sick Leave</h6>
+                </div>
+                <div className="leave-card-body">
+                  <h2 className="leave-count">
+                    {leaveCounts.remainingSicklLeave}
+                  </h2>
+                  <p className="leave-subtitle">Days Available</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3 col-sm-6">
+              <div className="leave-card emergency-leave">
+                <div className="leave-card-header">
+                  <h6 className="leave-card-title">Emergency Leave</h6>
+                </div>
+                <div className="leave-card-body">
+                  <h2 className="leave-count">
+                    {leaveCounts.remainingEmergencyLeave}
+                  </h2>
+                  <p className="leave-subtitle">Days Available</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div>

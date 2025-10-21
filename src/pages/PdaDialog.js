@@ -268,10 +268,10 @@ const PdaDialog = ({
           style: { width: "1700px" }, // Custom width
         }}
       >
-        <div className="d-flex justify-content-between" onClick={onClose}>
+        <div className="d-flex justify-content-between">
           <DialogTitle></DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent>
@@ -453,7 +453,7 @@ const PdaDialog = ({
                   {(
                     parseFloat(formattedTotals?.customerOMR) +
                     parseFloat(formattedTotals?.customerVAT)
-                  )?.toFixed(2)}
+                  )?.toFixed(3)}
                 </td>
                 <td className="stylt">{formattedTotals?.customerTotalUSD}</td>
               </tr>

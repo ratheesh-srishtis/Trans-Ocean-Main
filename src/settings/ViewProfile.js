@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -23,8 +23,22 @@ import {
   Phone,
   LocationOn,
 } from "@mui/icons-material";
-
+import { getAllEmployees } from "../services/apiEmployee";
 const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    // Handle different date formats
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
   const getSectionIcon = (type) => {
     const iconMap = {
       personal: <Person />,
@@ -39,10 +53,33 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
     return iconMap[type] || <Description />;
   };
 
+  // Helper function to get employee name by ID
+  const getEmployeeNameById = (employeeId) => {
+    if (!employeeId || !EmployeeList || EmployeeList.length === 0) return "";
+
+    const employee = EmployeeList.find((emp) => emp._id === employeeId);
+    if (employee) {
+      return `${employee.employeeName} ${employee.employeeLastName}`;
+    }
+    return "";
+  };
+
   const InfoCard = ({ title, icon, children }) => (
     <Card sx={{ mb: 3, boxShadow: 3 }}>
       <CardContent>
-        <Box display="flex" alignItems="center" mb={2}>
+        <Box
+          display="flex"
+          alignItems="center"
+          mb={2}
+          sx={{
+            backgroundColor: "rgb(216, 216, 216)",
+            p: 1,
+            borderRadius: 1,
+            mx: -2,
+            mt: -2,
+            mb: 2,
+          }}
+        >
           {icon}
           <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
             {title}
@@ -97,6 +134,22 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
       </Paper>
     );
   };
+  const [EmployeeList, setEmployeeList] = useState([]);
+
+  const fetchemployeeList = async (payload) => {
+    try {
+      const listallemployees = await getAllEmployees(payload);
+      setEmployeeList(listallemployees?.employees || []);
+      //console.log(listallemployees,"---listallemployees");
+    } catch (error) {
+      console.error("Failed to fetch employees", error);
+    }
+  };
+
+  useEffect(() => {
+    let payload = { searchKey: "" };
+    fetchemployeeList(payload);
+  }, []);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -105,7 +158,7 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
         <Grid container spacing={2}>
           <InfoRow label="First Name" value={formData.employeeName} />
           <InfoRow label="Last Name" value={formData.employeeLastName} />
-          <InfoRow label="Date of Birth" value={formData.dob} />
+          <InfoRow label="Date of Birth" value={formatDate(formData.dob)} />
           <InfoRow label="Address" value={formData.address} />
           <InfoRow label="City" value={formData.city} />
           <InfoRow label="State" value={formData.state} />
@@ -121,7 +174,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
       {/* Official Information */}
       <InfoCard title="Official Information" icon={getSectionIcon("official")}>
         <Grid container spacing={2}>
-          <InfoRow label="Date of Joining" value={formData.dateOfJoining} />
+          <InfoRow
+            label="Date of Joining"
+            value={formatDate(formData.dateOfJoining)}
+          />
           <InfoRow
             label="Designation"
             value={
@@ -131,6 +187,14 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           />
           <InfoRow label="Official Email ID" value={formData.officialEmail} />
           <InfoRow label="Profession Title" value={formData.profession} />
+          <InfoRow
+            label="Reporting To"
+            value={getEmployeeNameById(formData.reportingTo)}
+          />
+          <InfoRow
+            label="Reporting Head"
+            value={getEmployeeNameById(formData.reportingHead)}
+          />
         </Grid>
       </InfoCard>
 
@@ -146,7 +210,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Passport Number" value={item.passportNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -169,7 +236,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Contract Name" value={item.contractName} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -192,7 +262,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="Visa Number" value={item.visaNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document
@@ -215,7 +288,10 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
           >
             <Grid container spacing={2}>
               <InfoRow label="License Number" value={item.licenseNumber} />
-              <InfoRow label="Date of Expiry" value={item.dateOfExpiry} />
+              <InfoRow
+                label="Date of Expiry"
+                value={formatDate(item.dateOfExpiry)}
+              />
               <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                   Uploaded Document

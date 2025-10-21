@@ -309,10 +309,10 @@ const AddServiceRequest = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between" onClick={handleClose}>
+        <div className="d-flex justify-content-between">
           <DialogTitle>Add Services</DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg  " onClick={handleClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "60px" }}>

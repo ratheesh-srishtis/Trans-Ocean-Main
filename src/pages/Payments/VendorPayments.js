@@ -52,6 +52,16 @@ const VendorPayments = () => {
   const [isDirectVendorPayment, setIsDirectVendorPayment] = useState(false);
   const [EmployeeList, setEmployeeList] = useState([]);
 
+  // Helper function to format numbers with 3 decimal places without scientific notation
+  const formatAmount = (amount) => {
+    if (typeof amount !== "number" || isNaN(amount)) return "0.000";
+    return Number(amount).toLocaleString("en-US", {
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
+      useGrouping: false,
+    });
+  };
+
   const fetchVoucherNumber = async () => {
     const listvoucherNumber = await getVoucherNumber();
     const fetchedvoucherNumber = listvoucherNumber?.voucherNumber || [];
@@ -97,15 +107,15 @@ const VendorPayments = () => {
     try {
       const Listpayments = await getVendorPayments(payload);
       setVendorpayment(Listpayments?.payments || []);
-      setInvoiceAmount((Listpayments?.totalInvoiceAmount || 0).toFixed(3));
-      setPaidAmount((Listpayments?.paidAmount || 0).toFixed(3));
-      setDiscountAmount((Listpayments?.discountAmountOMR || 0).toFixed(3));
+      setInvoiceAmount(formatAmount(Listpayments?.totalInvoiceAmount || 0));
+      setPaidAmount(formatAmount(Listpayments?.paidAmount || 0));
+      setDiscountAmount(formatAmount(Listpayments?.discountAmountOMR || 0));
 
       const totalAmount = Listpayments?.totalInvoiceAmount || 0;
       const amountpaid = Listpayments?.paidAmount || 0;
       const discount = Listpayments?.discountAmountOMR || 0;
       const balance = totalAmount - amountpaid - discount;
-      setBalanceAmount(parseFloat(balance.toFixed(3)));
+      setBalanceAmount(formatAmount(balance));
     } catch (error) {
       console.log("Error in Api", error);
     }

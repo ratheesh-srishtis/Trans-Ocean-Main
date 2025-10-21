@@ -227,8 +227,8 @@ const SendReport = ({
       >
         <div className="d-flex justify-content-between">
           <DialogTitle>Send Report</DialogTitle>
-          <div className="closeicon" onClick={onClose}>
-            <i className="bi bi-x-lg "></i>
+          <div className="closeicon">
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
 
@@ -406,7 +406,7 @@ const SendReport = ({
                     Attachments:
                   </label>
                   <div className="rectangle-quotation">
-                    <div className="invoice">Quotation PDF</div>
+                    <div className="invoice">Final Report PDF</div>
                     <div className="Attach">
                       <i className="bi bi-filetype-pdf"></i>
                     </div>

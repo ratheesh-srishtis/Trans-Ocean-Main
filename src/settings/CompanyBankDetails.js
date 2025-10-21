@@ -20,6 +20,8 @@ const CompanyBankDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
   const fetchBankDetails = async () => {
     try {
       setIsLoading(true);
@@ -40,9 +42,50 @@ const CompanyBankDetails = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  const validateForm = () => {
+    const requiredFields = [
+      { field: "bankName", label: "Bank Name" },
+      { field: "bankAddress", label: "Address" },
+      { field: "accountNumberOMR", label: "A/C Number (OMR)" },
+      { field: "ibanOMR", label: "IBAN (OMR)" },
+      { field: "accountNumberUSD", label: "A/C Number (USD)" },
+      { field: "ibanUSD", label: "IBAN (USD)" },
+      { field: "swiftCode", label: "SWIFT Code" },
+    ];
+
+    const newErrors = {};
+    let isValid = true;
+
+    requiredFields.forEach(({ field, label }) => {
+      if (!formData[field] || formData[field].trim() === "") {
+        newErrors[field] = `${label} is required`;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handlePopupClose = () => {
+    setOpenPopUp(false);
+    // Add any additional logic if needed when popup closes
   };
 
   const handleSave = async () => {
+    if (!validateForm()) {
+      setOpenPopUp(true);
+      setMessage("Please fill all required fields");
+      setIsSuccess(false);
+      return;
+    }
+
     setIsLoading(true);
     const { _id, ...rest } = formData;
     const payload = { detailsId: _id, ...rest };
@@ -51,13 +94,15 @@ const CompanyBankDetails = () => {
     console.log("Update Response:", response);
     if (response?.status == true) {
       setIsLoading(false);
-      setMessage("Bank details updated successfully!");
+      setMessage("Company bank details updated successfully!");
       setOpenPopUp(true);
+      setIsSuccess(true);
       fetchBankDetails();
     } else {
       setIsLoading(false);
-      setMessage("Failed to update bank details. Please try again.");
+      setMessage("Failed to update company bank details. Please try again.");
       setOpenPopUp(true);
+      setIsSuccess(false);
       fetchBankDetails();
     }
   };
@@ -65,11 +110,13 @@ const CompanyBankDetails = () => {
   return (
     <>
       <div className="company-bank-details-container">
-        <h4 className="form-title">Edit Company Bank Details</h4>
+        <h4 className="form-title">Update Bank Information</h4>
         <form className="bank-details-form">
           <div className="row">
             <div className="form-group col-6">
-              <label htmlFor="bankName">Bank Name</label>
+              <label htmlFor="bankName">
+                Bank Name<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="bankName"
@@ -78,9 +125,14 @@ const CompanyBankDetails = () => {
                 value={formData.bankName}
                 onChange={handleInputChange}
               />
+              {errors.bankName && (
+                <span className="invalid">{errors.bankName}</span>
+              )}
             </div>
             <div className="form-group col-6">
-              <label htmlFor="bankAddress">Address</label>
+              <label htmlFor="bankAddress">
+                Address<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="bankAddress"
@@ -89,12 +141,17 @@ const CompanyBankDetails = () => {
                 value={formData.bankAddress}
                 onChange={handleInputChange}
               />
+              {errors.bankAddress && (
+                <span className="invalid">{errors.bankAddress}</span>
+              )}
             </div>
           </div>
 
           <div className="row">
             <div className="form-group col-6">
-              <label htmlFor="accountNumberOMR">A/C Number (OMR)</label>
+              <label htmlFor="accountNumberOMR">
+                A/C Number (OMR)<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="accountNumberOMR"
@@ -103,9 +160,14 @@ const CompanyBankDetails = () => {
                 value={formData.accountNumberOMR}
                 onChange={handleInputChange}
               />
+              {errors.accountNumberOMR && (
+                <span className="invalid">{errors.accountNumberOMR}</span>
+              )}
             </div>
             <div className="form-group col-6">
-              <label htmlFor="ibanOMR">IBAN (OMR)</label>
+              <label htmlFor="ibanOMR">
+                IBAN (OMR)<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="ibanOMR"
@@ -114,12 +176,17 @@ const CompanyBankDetails = () => {
                 value={formData.ibanOMR}
                 onChange={handleInputChange}
               />
+              {errors.ibanOMR && (
+                <span className="invalid">{errors.ibanOMR}</span>
+              )}
             </div>
           </div>
 
           <div className="row">
             <div className="form-group col-6">
-              <label htmlFor="accountNumberUSD">A/C Number (USD)</label>
+              <label htmlFor="accountNumberUSD">
+                A/C Number (USD)<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="accountNumberUSD"
@@ -128,9 +195,14 @@ const CompanyBankDetails = () => {
                 value={formData.accountNumberUSD}
                 onChange={handleInputChange}
               />
+              {errors.accountNumberUSD && (
+                <span className="invalid">{errors.accountNumberUSD}</span>
+              )}
             </div>
             <div className="form-group col-6">
-              <label htmlFor="ibanUSD">IBAN (USD)</label>
+              <label htmlFor="ibanUSD">
+                IBAN (USD)<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="ibanUSD"
@@ -139,12 +211,17 @@ const CompanyBankDetails = () => {
                 value={formData.ibanUSD}
                 onChange={handleInputChange}
               />
+              {errors.ibanUSD && (
+                <span className="invalid">{errors.ibanUSD}</span>
+              )}
             </div>
           </div>
 
           <div className="row">
             <div className="form-group col-6">
-              <label htmlFor="swiftCode">SWIFT Code</label>
+              <label htmlFor="swiftCode">
+                SWIFT Code<span className="required"> * </span>
+              </label>
               <input
                 type="text"
                 id="swiftCode"
@@ -153,6 +230,9 @@ const CompanyBankDetails = () => {
                 value={formData.swiftCode}
                 onChange={handleInputChange}
               />
+              {errors.swiftCode && (
+                <span className="invalid">{errors.swiftCode}</span>
+              )}
             </div>
           </div>
 
@@ -167,9 +247,7 @@ const CompanyBankDetails = () => {
           </div>
         </form>
       </div>
-      {openPopUp && (
-        <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
-      )}{" "}
+      {openPopUp && <PopUp message={message} closePopup={handlePopupClose} />}{" "}
       <Loader isLoading={isLoading} />
     </>
   );

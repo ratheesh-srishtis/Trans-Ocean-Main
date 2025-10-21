@@ -165,16 +165,17 @@ const OpsList = () => {
             <EditIcon sx={{ fontSize: "19px" }} />
           </IconButton>
 
-          {loginResponse?.data?.userRole?.roleType == "admin" && (
-            <>
-              <IconButton
-                color="secondary"
-                onClick={() => handleDelete(params.row)}
-              >
-                <DeleteIcon sx={{ fontSize: "19px" }} />
-              </IconButton>
-            </>
-          )}
+          {loginResponse?.data?.userRole?.roleType == "admin" ||
+            (loginResponse?.data?.userRole?.roleType == "superadmin" && (
+              <>
+                <IconButton
+                  color="secondary"
+                  onClick={() => handleDelete(params.row)}
+                >
+                  <DeleteIcon sx={{ fontSize: "19px" }} />
+                </IconButton>
+              </>
+            ))}
         </>
       ),
     },
@@ -188,7 +189,8 @@ const OpsList = () => {
     console.log("Edit row", row);
     if (
       loginResponse?.data?.userRole?.roleType == "finance" ||
-      loginResponse?.data?.userRole?.roleType == "admin"
+      loginResponse?.data?.userRole?.roleType == "admin" ||
+      loginResponse?.data?.userRole?.roleType == "superadmin"
     ) {
       navigate("/create-pda", { state: { row } });
     } else if (loginResponse?.data?.userRole?.roleType == "operations") {
