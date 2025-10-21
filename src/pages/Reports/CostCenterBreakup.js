@@ -460,14 +460,14 @@ const CostCenterBreakup = () => {
   return (
     <>
       <div className="p-2 ">
-        <div className="row g-3 mt-3 mb-3">
-          <div className=" col-md-3 col-12 d-flex align-items-center">
-            <label htmlFor="input" className="col-form-label costcenterinput">
+        <div className="row mt-3 mb-3">
+          <div className=" col-3 d-flex align-items-center">
+            <label htmlFor="input" className="col-form-label costcenterinput jjvcost">
               Job No:
             </label>
 
             <select
-              className="form-select vesselboxcostcenter"
+              className="form-select jobvcostcentre"
               aria-label="Small select example"
               name="jobNo"
               onChange={handleSelectChange}
@@ -483,7 +483,7 @@ const CostCenterBreakup = () => {
           </div>
           {vesselName && (
             <>
-              <div className="col-md-3 col-12 d-flex align-items-center ">
+              <div className="col-3 d-flex align-items-center ">
                 <label
                   htmlFor="input"
                   className=" col-3 col-form-label costcentersomeinput"
@@ -505,7 +505,7 @@ const CostCenterBreakup = () => {
           {portName && (
             <>
               <>
-                <div className=" col-md-3 col-12  d-flex align-items-center ">
+                <div className=" col-3  d-flex align-items-center ">
                   <label
                     htmlFor="input"
                     className=" col-2 form-label costcenterport me-2"
@@ -524,7 +524,7 @@ const CostCenterBreakup = () => {
                 </div>
               </>
               <>
-                <div className=" col-md-3 col-12 d-flex align-items-center gap-2 ">
+                <div className=" col-3 d-flex align-items-center gap-2 ">
                   <button
                     className="btn btn-info filbtnjobccbrkup"
                     onClick={() => {
