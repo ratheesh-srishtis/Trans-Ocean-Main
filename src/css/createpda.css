@@ -313,6 +313,61 @@
   font-size: 14px;
 }
 
+
+
+.buttons-wrapper {
+  display: flex;
+  margin-bottom: 35px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-spc {
+  margin-bottom: 15px;
+}
+
+.pda-date {
+  margin-left: 19px;
+}
+
+.date-input-small {
+  height: 30px !important;
+  width: 91px;
+}
+.date-input {
+  height: 38px !important;
+  font-size: 0.8rem !important;
+}
+
+/* For most modern browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.bi-trash {
+  cursor: pointer;
+}
+
+.mark-button {
+  background-color: #007ac1;
+  padding: 8px 16px;
+  margin-top: 12px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+.mark-button:hover {
+  background-color: #007ac1;
+  color: #ffffff;
+}
 @media screen and (min-device-width: 1354px) and (max-device-width: 1800px) {
   @media only screen and (max-width: 1243px) {
     .voyageblock {
@@ -452,58 +507,4 @@
     margin-right: 10px;
     cursor: pointer;
   }
-}
-
-.buttons-wrapper {
-  display: flex;
-  margin-bottom: 35px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.left-spc {
-  margin-bottom: 15px;
-}
-
-.pda-date {
-  margin-left: 19px;
-}
-
-.date-input-small {
-  height: 30px !important;
-  width: 91px;
-}
-.date-input {
-  height: 38px !important;
-  font-size: 0.8rem !important;
-}
-
-/* For most modern browsers */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* For Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.bi-trash {
-  cursor: pointer;
-}
-
-.mark-button {
-  background-color: #007ac1;
-  padding: 8px 16px;
-  margin-top: 12px;
-  text-align: center;
-  color: white;
-  font-size: 14px;
-  font-family: sans-serif;
-}
-.mark-button:hover {
-  background-color: #007ac1;
-  color: #ffffff;
 }

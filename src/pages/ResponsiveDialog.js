@@ -1013,9 +1013,9 @@ const ResponsiveDialog = ({
             <>
               <div className="Anchoragecall">
                 {/* <div className="Callhead">Service: Anchorage Call</div> */}
-                <div className="row ">
+                <div className=" ">
                   <div className="row align-items-start">
-                    <div className="col-md-4">
+                    <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -1048,7 +1048,7 @@ const ResponsiveDialog = ({
                       )}
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -1080,7 +1080,7 @@ const ResponsiveDialog = ({
                       )}
                     </div>
 
-                    <div className="col-md-4">
+                    <div className="col-lg-4 col-md-6 col-sm-12 ">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -1115,10 +1115,10 @@ const ResponsiveDialog = ({
                   </div>
                 </div>
 
-                <div className="qq">
-                  <div className="col-4">
-                    <div className="mb-3">
-                      <div className="col mt-2">
+                <div className="row">
+                  <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
+                    
+                      <div className="">
                         <label
                           htmlFor="exampleFormControlInput1"
                           className="form-label"
@@ -1140,7 +1140,7 @@ const ResponsiveDialog = ({
                           <div className="invalid">Please enter quantity</div>
                         </>
                       )}
-                    </div>
+                    
                   </div>
                 </div>
 
@@ -1150,7 +1150,7 @@ const ResponsiveDialog = ({
                 </div>
                 <div className="row ">
                   <div className="row align-items-start">
-                    <div className="col">
+                    <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -1181,7 +1181,7 @@ const ResponsiveDialog = ({
                         </select>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-lg-4 col-md-6 col-sm-12">
                       <div className="mb-3">
                         <div className="col">
                           <label
@@ -1244,7 +1244,7 @@ const ResponsiveDialog = ({
                 </div>
                 <div className="row ">
                   <div className="row align-items-start">
-                    <div className="col-4  ">
+                    <div className="col-lg-4 col-md-6 col-sm-12 ">
                       <div className="mb-3">
                         <div className="col">
                           <label
@@ -1266,7 +1266,7 @@ const ResponsiveDialog = ({
                         </div>
                       </div>
                     </div>
-                    <div className="col-4">
+                    <div className="col-lg-4 col-md-6 col-sm-12">
                       <div className="mb-3">
                         <div className="col">
                           <label
@@ -1314,7 +1314,7 @@ const ResponsiveDialog = ({
                     }}
                   >
                     <div className="row align-items-start">
-                      <div className="col">
+                      <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
                         <label className="form-label">Vendor:</label>
                         <div className="vessel-select">
                           <select
@@ -1339,7 +1339,7 @@ const ResponsiveDialog = ({
                           </select>
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-lg-4 col-md-6 col-sm-12">
                         <div className="mb-3">
                           <div className="col">
                             <label className="form-label">Amount(OMR):</label>
@@ -1367,7 +1367,7 @@ const ResponsiveDialog = ({
                           </div>
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-lg-4 col-md-6 col-sm-12">
                         <div className="mb-3">
                           <div className="col">
                             <label className="form-label">VAT Amount:</label>
@@ -1389,7 +1389,7 @@ const ResponsiveDialog = ({
                       </div>
                     </div>
                     <div className="row align-items-center">
-                      <div className="col-4">
+                      <div className="col-lg-4 col-md-6 col-sm-12">
                         <div className="mb-3">
                           <div className="col">
                             <label className="form-label">Total OMR:</label>
@@ -1403,7 +1403,7 @@ const ResponsiveDialog = ({
                           </div>
                         </div>
                       </div>
-                      <div className="col-4">
+                      <div className="col-lg-4 col-md-6 col-sm-12">
                         <div className="mb-3">
                           <div className="col">
                             <label className="form-label">Total USD:</label>
@@ -1423,7 +1423,7 @@ const ResponsiveDialog = ({
                           </div>
                         </div>
                       </div>
-                      <div className="col-4">
+                      <div className="col-lg-4 col-md-6 col-sm-12">
                         <div
                           className="form-check pvendor"
                           style={{ display: "flex", alignItems: "center" }}
@@ -1536,7 +1536,7 @@ const ResponsiveDialog = ({
                           </div>
 
                           <div className="row mb-3">
-                            <div className="col-6">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
                               <span className="marinehead">Charge type:</span>
                               <span className="subvalue">
                                 {/* {getItemName(
@@ -1546,7 +1546,7 @@ const ResponsiveDialog = ({
                                 {charge?.chargeName}
                               </span>
                             </div>
-                            <div className="col-6">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
                               <span className="marinehead">Quantity:</span>
                               <span className="subvalue">
                                 {charge?.quantity}
@@ -1571,7 +1571,7 @@ const ResponsiveDialog = ({
                           </div>
 
                           <div className="row mb-3">
-                            <div className="col-12 ">
+                            <div className="col-lg-12 col-md-6 col-sm-12">
                               <span className="marinehead marineBold">
                                 Customer:
                               </span>
@@ -1582,21 +1582,21 @@ const ResponsiveDialog = ({
                           </div>
 
                           <div className="row mb-3">
-                            <div className="omr col-3 ">
+                            <div className="omr col-lg-3 col-md-6 col-sm-12 ">
                               <span className="marinehead">Amount (OMR):</span>
                               <span className="subvalue">
                                 {charge.customerOMR.toFixed(3)}
                               </span>
                             </div>
 
-                            <div className="vat col-3 ">
+                            <div className="vat col-lg-3 col-md-6 col-sm-12 ">
                               <span className="marinehead">VAT Amount:</span>
                               <span className="subvalue">
                                 {charge.customerVAT.toFixed(3)}
                               </span>
                             </div>
 
-                            <div className="omr col-3 ">
+                            <div className="omr col-lg-3 col-md-6 col-sm-12 ">
                               <span className="marinehead">Total (OMR):</span>
                               <span className="subvalue">
                                 {(
@@ -1606,7 +1606,7 @@ const ResponsiveDialog = ({
                               </span>
                             </div>
 
-                            <div className="vat col-3 ">
+                            <div className="vat col-lg-3 col-md-6 col-sm-12 ">
                               <span className="marinehead">Total USD:</span>
                               <span className="subvalue">
                                 {charge.customerTotalUSD.toFixed(3)}
@@ -1640,7 +1640,7 @@ const ResponsiveDialog = ({
                               if (charge[idKey]) {
                                 return (
                                   <div
-                                    className="col-3"
+                                    className="col-lg-3 col-md-6 col-sm-12"
                                     key={idKey}
                                     style={{
                                       border: "1px solid #eee",
