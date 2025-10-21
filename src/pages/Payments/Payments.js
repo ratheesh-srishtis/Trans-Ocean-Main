@@ -116,7 +116,7 @@ const Payments = () => {
       </div>
       <div className="choosecargo-row p-3 ">
         <div className="row ">
-          <div className="col-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="mb-3">
               {permissions.includes("receivables") && (
                 <>
@@ -146,7 +146,7 @@ const Payments = () => {
               )}
             </div>
           </div>
-          <div className="col-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="mb-3">
               {permissions.includes("payables") && (
                 <>
@@ -180,7 +180,7 @@ const Payments = () => {
 
       <div className="choosecargo-row p-3 ">
         <div className="row ">
-          <div className="col-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="mb-3">
               {permissions.includes("petty") && (
                 <>
@@ -218,7 +218,7 @@ const Payments = () => {
             </div>
           </div>
 
-          <div className="col-6">
+          <div className="col-lg-6 col-md-6 col-sm-12">
             <div className="mb-3">
               {permissions.includes("employee petty") && (
                 <>

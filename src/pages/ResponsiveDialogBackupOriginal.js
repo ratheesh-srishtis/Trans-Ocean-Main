@@ -1068,7 +1068,7 @@ const ResponsiveDialog = ({
                 </div>
                 <div className="row ">
                   <div className="row align-items-start">
-                    <div className="col">
+                    <div className="col-lg-4 col-md-6 col-sm-12">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -1099,7 +1099,7 @@ const ResponsiveDialog = ({
                         </select>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-lg-4 col-md-6 col-sm-12">
                       <div className="mb-3">
                         <div className="col">
                           <label
@@ -1221,7 +1221,7 @@ const ResponsiveDialog = ({
                 </div>
                 <div className="row ">
                   <div className="row align-items-start">
-                    <div className="col">
+                    <div className="col-lg-4 col-md-6 col-sm-12">
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
