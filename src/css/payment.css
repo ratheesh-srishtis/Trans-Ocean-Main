@@ -90,7 +90,7 @@
 .datebycustomerpayment {
   position: relative;
   border: 1px solid #80808041;
-  width: 128px;
+  width: 138px;
   max-width: 100%;
   border-radius: 5px;
   display: flex;
@@ -106,7 +106,7 @@
 .voucherbypayment {
   position: relative;
   border: 1px solid #80808041;
-  width: 273px;
+  width: 213px;
   max-width: 100%;
   border-radius: 5px;
   display: flex;
@@ -149,11 +149,14 @@
 }
 .statusscustomervendor {
   height: 34px;
-  width: 370px;
+  width: 201px;
+}
+.vpmnth{
+  height:34px;
 }
 .statusscustomerbypayment {
   height: 34px;
-  width: 253px;
+  width: 210px;
 }
 .employe {
   width: 275px;

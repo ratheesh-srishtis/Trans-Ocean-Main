@@ -511,6 +511,7 @@
 
 .chatnewsty {
   display: flex;
+  align-items: center;
 }
 
 .chat .chat-history .message {

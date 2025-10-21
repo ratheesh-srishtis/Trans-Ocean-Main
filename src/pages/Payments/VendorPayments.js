@@ -487,7 +487,7 @@ const VendorPayments = () => {
             {period === "month" && (
               <select
                 name="month"
-                className="form-select jobporrt mmonthpayment monthcustomerpay"
+                className="form-select jobporrt vpmnth monthcustomerpay"
                 onChange={handleTimeperiod}
               >
                 <option value="">Select Month</option>
@@ -502,7 +502,7 @@ const VendorPayments = () => {
             {period === "year" && (
               <select
                 name="year"
-                className="form-select jobporrt mmonthpayment monthcustomerpay"
+                className="form-select jobporrt vpmnth monthcustomerpay"
                 onChange={handleTimeperiod}
               >
                 <option value="">Select Year</option>
