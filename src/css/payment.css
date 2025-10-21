@@ -422,3 +422,8 @@
     font-size: 24px;
   }
 }
+
+.custom-picker-styles {
+  height: 32px;
+  font-size: 13px;
+}

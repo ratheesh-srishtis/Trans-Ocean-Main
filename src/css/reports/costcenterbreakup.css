@@ -81,3 +81,9 @@
     margin-left: 0px;
   }
 }
+
+.MuiDataGrid-row {
+  max-height: 145px !important;
+  min-height: 125px !important;
+  --height: 130px !important;
+}

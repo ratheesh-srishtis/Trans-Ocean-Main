@@ -244,7 +244,7 @@ const AddLeave = ({
                   <input
                     name="leaveFrom"
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="leaveFrom"
                     placeholder=""
                     onChange={handleChange}
@@ -264,7 +264,7 @@ const AddLeave = ({
                   <input
                     name="leaveTo"
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="leaveTo"
                     placeholder=""
                     onChange={handleChange}
