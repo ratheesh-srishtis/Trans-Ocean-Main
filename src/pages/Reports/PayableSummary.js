@@ -47,16 +47,13 @@ const PayableSummary = () => {
       pdaId: selectedJobNo,
     };
     setIsLoading(true);
-
     try {
-      setIsLoading(false);
-
       const response = await getPayableSummaryReport(payload);
       setReportList(response?.report);
       console.log("getReport", response);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-
       console.error("Failed to fetch quotations:", error);
     }
   };
@@ -223,14 +220,27 @@ const PayableSummary = () => {
     console.log(selectedRemarkAction, "selectedRemarkAction");
   }, [selectedRemarkAction]);
 
-  const totalPayable = reportList
-    ?.reduce((sum, r) => sum + (r.totalInvoiceAmount - r.paidAmount), 0)
-    .toFixed(3);
+  // Helper function to format numbers with 3 decimal places without scientific notation
+  const formatAmount = (amount) => {
+    if (typeof amount !== "number" || isNaN(amount)) return "0.000";
+    return Number(amount).toLocaleString("en-US", {
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
+      useGrouping: false,
+    });
+  };
+
+  const totalPayable = formatAmount(
+    reportList?.reduce(
+      (sum, r) => sum + (r.totalInvoiceAmount - r.paidAmount),
+      0
+    )
+  );
   const rows = [
     ...reportList?.map((report, index) => {
       const vendorName = report?.vendorName ? report?.vendorName : "";
-      const amountOMR = (report.totalInvoiceAmount - report.paidAmount).toFixed(
-        3
+      const amountOMR = formatAmount(
+        report.totalInvoiceAmount - report.paidAmount
       );
       const remark = report ? report.remark : "";
 
@@ -354,8 +364,8 @@ const PayableSummary = () => {
     if (!reportList || reportList?.length === 0) return;
     const excelData = reportList?.map((report) => {
       const vendorName = report?.vendorName ? report?.vendorName : "-";
-      const amountOMR = (report.totalInvoiceAmount - report.paidAmount).toFixed(
-        3
+      const amountOMR = formatAmount(
+        report.totalInvoiceAmount - report.paidAmount
       );
       const remark = report ? report.remark : "";
       const remarkDate =
@@ -364,7 +374,7 @@ const PayableSummary = () => {
           : "N/A";
       return {
         "Vendor Name": vendorName,
-        "Amount in OMR": `Amount In OMR ${amountOMR}`,
+        "Amount in OMR": `${amountOMR}`,
         "Status/ Remarks": remark || "N/A",
         "Remark Date": remark ? remarkDate : "N/A",
       };
@@ -419,7 +429,7 @@ const PayableSummary = () => {
             <img src={Group}></img>
           </div>
         </div>
-        <div class=" mt-3">
+        <div className=" mt-3">
           <div className="row d-flex justify-content-end">
             <div className=" col-md-3 col-12 d-flex justify-content-end  gap-2 ">
               <button

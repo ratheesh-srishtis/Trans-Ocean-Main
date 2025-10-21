@@ -68,7 +68,7 @@ const LeaveReports = () => {
     {
       field: "leaves",
       headerName: "Leave Taken",
-      flex: 4,
+      flex: 3,
       renderCell: (params) => (
         <Typography
           style={{

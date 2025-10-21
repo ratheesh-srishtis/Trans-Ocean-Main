@@ -621,7 +621,7 @@ const ViewJobForOPS = ({
                               </td>
 
                               <td>
-                                {(() => {
+                                {/* {(() => {
                                   // Collect valid vendor IDs and their corresponding isPrivateVendor flags
                                   const vendorFields = [
                                     {
@@ -674,6 +674,60 @@ const ViewJobForOPS = ({
                                         {idx + 1}: {vendorName}
                                       </div>
                                     ));
+                                })()} */}
+                                {(() => {
+                                  // Collect valid vendor IDs and their corresponding isPrivateVendor flags
+                                  const vendorFields = [
+                                    {
+                                      id: charge.vendorId,
+                                      isPrivate: charge.isPrivateVendor,
+                                    },
+                                    {
+                                      id: charge.vendor2Id,
+                                      isPrivate: charge.isPrivateVendor2,
+                                    },
+                                    {
+                                      id: charge.vendor3Id,
+                                      isPrivate: charge.isPrivateVendor3,
+                                    },
+                                    {
+                                      id: charge.vendor4Id,
+                                      isPrivate: charge.isPrivateVendor4,
+                                    },
+                                  ].filter((v) => v.id); // Only keep vendors with an ID
+
+                                  // Move console.log here
+                                  console.log(vendorFields, "vendorFields");
+
+                                  if (vendorFields.length === 0) {
+                                    return <div>N/A</div>;
+                                  }
+
+                                  if (
+                                    vendorFields.length > 0 &&
+                                    vendorFields.every((v) => v.isPrivate)
+                                  ) {
+                                    return <div></div>;
+                                  }
+
+                                  return vendorFields
+                                    .map((v, idx) => {
+                                      if (!v.isPrivate) {
+                                        const vendorName = vendors?.find(
+                                          (vendor) => vendor._id === v.id
+                                        )?.vendorName;
+                                        return (
+                                          <div key={v.id}>
+                                            {idx + 1}:{" "}
+                                            {vendorName && vendorName.trim()
+                                              ? vendorName
+                                              : ""}
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    })
+                                    .filter(Boolean);
                                 })()}
                               </td>
                               {/* <td>

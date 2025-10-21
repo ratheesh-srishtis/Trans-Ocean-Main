@@ -112,10 +112,10 @@ const Dashboard = () => {
                   </a>
                 </li>
               </ul>
-              <div class="order-2 order-md-2 align-self-end mt-3 mt-md-0">
+              <div className="order-2 order-md-2 align-self-end mt-3 mt-md-0">
                 <button
                   type="button"
-                  class="btn infobtn"
+                  className="btn infobtn"
                   onClick={() => handleNavigation()}
                 >
                   Create New PDA

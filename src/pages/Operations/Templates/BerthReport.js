@@ -523,10 +523,10 @@ const BerthReport = ({
           fullWidth
           maxWidth="lg"
         >
-          <div className="d-flex justify-content-between " onClick={onClose}>
+          <div className="d-flex justify-content-between ">
             <DialogTitle> </DialogTitle>
             <div className="closeicon">
-              <i className="bi bi-x-lg "></i>
+              <i className="bi bi-x-lg " onClick={onClose}></i>
             </div>
           </div>
           <DialogContent style={{ marginBottom: "40px" }}>
@@ -839,7 +839,12 @@ const BerthReport = ({
                       <div className="d-flex">
                         <input
                           type="text"
-                          className="form-control vessel-voyage  timeslotnewloadingeta"
+                          style={{
+                            width: "45px !important",
+                            marginLeft: "5px",
+                            height: "38px",
+                          }}
+                          className="form-control   "
                           id="exampleFormControlInput1"
                           placeholder="00"
                           value={etaHours}
@@ -847,7 +852,12 @@ const BerthReport = ({
                         />
                         <input
                           type="text"
-                          className="form-control vessel-voyage  timeslotnew"
+                          style={{
+                            width: "45px !important",
+                            marginLeft: "5px",
+                            height: "38px",
+                          }}
+                          className="form-control   "
                           id="exampleFormControlInput1"
                           value={etaMinutes}
                           onChange={handleEtaMinuteChange}

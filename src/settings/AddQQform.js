@@ -112,12 +112,12 @@ const AddQQform = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between" onClick={onClose}>
+        <div className="d-flex justify-content-between">
           <DialogTitle>
             {editMode ? "Edit QQForm Question" : "Add QQ Form Question"}
           </DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "60px" }}>

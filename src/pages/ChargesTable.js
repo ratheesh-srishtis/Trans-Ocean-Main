@@ -441,7 +441,7 @@ const ChargesTable = ({
                               {(
                                 parseFloat(formattedTotals.customerOMR) +
                                 parseFloat(formattedTotals.customerVAT)
-                              ).toFixed(2)}
+                              ).toFixed(3)}
                             </td>
                             <td>{formattedTotals.customerTotalUSD}</td>
                             {isAction == true && (

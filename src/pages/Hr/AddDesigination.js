@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { saveDesignation, editDesignation } from '../../services/apiHrSettings';
+import { saveDesignation, editDesignation } from "../../services/apiHrSettings";
 import PopUp from ".././PopUp";
 import "../../css/payment.css";
 
-const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginations, errors, setErrors }) => {
+const AddDesigination = ({
+  open,
+  onClose,
+  listDesiginations,
+  editMode,
+  desiginations,
+  errors,
+  setErrors,
+}) => {
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [formData, setFormData] = useState({
     designationName: "",
-  
   });
 
   useEffect(() => {
     if (editMode && desiginations) {
-    
       setFormData({
-        designationName: desiginations.designationName || '',
-       
+        designationName: desiginations.designationName || "",
       });
     } else {
       setFormData({
-        designationName: '',
-     
+        designationName: "",
       });
     }
   }, [editMode, desiginations]);
@@ -32,7 +36,6 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
       setErrors({});
       setFormData({
         designationName: "",
-    
       });
     }
   }, [open, setErrors]);
@@ -43,12 +46,13 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
       ...prevData,
       [name]: value,
     }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.designationName) newErrors.designationName = "Designation name is required";
+    if (!formData.designationName)
+      newErrors.designationName = "Designation name is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -64,23 +68,19 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
     if (!validateForm()) return;
 
     try {
-      
       let response = "";
-      if (editMode){
+      if (editMode) {
         formData.designationId = desiginations._id;
         response = await editDesignation(formData);
+      } else {
+        response = await saveDesignation(formData);
       }
-       else{
-         response = await saveDesignation(formData);
-      }
-        
 
       if (response.status === true) {
         setOpenPopUp(true);
         setMessage(response.message);
         setFormData({
           designationName: "",
-       
         });
         onClose();
       } else {
@@ -111,10 +111,12 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between " onClick={onClose}>
-          <DialogTitle>{editMode ? "Edit Designation" : "Add Designation"}</DialogTitle>
+        <div className="d-flex justify-content-between ">
+          <DialogTitle>
+            {editMode ? "Edit Designation" : "Add Designation"}
+          </DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "40px" }}>
@@ -123,7 +125,7 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
               <div className="col-6 mb-3 align-items-start">
                 <div className="">
                   <label htmlFor="leaveFrom" className="form-label">
-                  Designation Name <span className="required"> * </span>:
+                    Designation Name <span className="required"> * </span>:
                   </label>
                   <input
                     name="designationName"
@@ -134,12 +136,13 @@ const AddDesigination = ({ open, onClose, listDesiginations, editMode, desiginat
                     onChange={handleChange}
                     value={formData.designationName}
                   ></input>
-                  {errors.designationName && (<span className="invalid">{errors.designationName}</span>)}
+                  {errors.designationName && (
+                    <span className="invalid">{errors.designationName}</span>
+                  )}
                 </div>
               </div>
-             
             </div>
-          
+
             <div className="btnuser">
               <button className="btn btna submit-button btnfsize">
                 Submit

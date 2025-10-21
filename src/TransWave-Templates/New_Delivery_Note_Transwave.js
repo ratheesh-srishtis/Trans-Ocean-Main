@@ -182,14 +182,11 @@ const NewDeliveryNoteTranswave = ({
   return (
     <>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-        <div
-          className="d-flex justify-content-between "
-          onClick={() => onClose()}
-        >
+        <div className="d-flex justify-content-between ">
           {" "}
           <DialogTitle></DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={() => onClose()}></i>
           </div>
         </div>
 

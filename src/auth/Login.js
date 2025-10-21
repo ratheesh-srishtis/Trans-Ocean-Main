@@ -40,12 +40,17 @@ const Login = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Trim spaces from username and password
+    const trimmedEmailOrUsername = emailOrUsername.trim();
+    const trimmedPassword = password.trim();
+
     // Add console logs to check values before submission
-    console.log("Email or Username: ", emailOrUsername);
-    console.log("Password: ", password);
+    console.log("Email or Username: ", trimmedEmailOrUsername);
+    console.log("Password: ", trimmedPassword);
     console.log("Remember Me: ", rememberMe);
     // navigate("/")
-    login(emailOrUsername, password, rememberMe);
+    login(trimmedEmailOrUsername, trimmedPassword, rememberMe);
     // try {
     //   const data = await login(emailOrUsername, password, rememberMe);
     //   console.log("Login successful!", data);
@@ -274,7 +279,7 @@ const Login = () => {
           </p>
         </div>
         <div className="d-flex justify-content-center loginpageversion">
-          Version: 0.108
+          Version: 0.114
         </div>
       </div>
 

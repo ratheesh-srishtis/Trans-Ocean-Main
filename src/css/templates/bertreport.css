@@ -61,5 +61,14 @@
   height: 38px;
 }
 
-.sof-eta-time {
+/* Highlight today's date in DatePicker */
+.react-datepicker__day--today {
+  background-color: #4079ed !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.react-datepicker__day--today:hover {
+  background-color: #4079ed !important;
+  color: white !important;
 }

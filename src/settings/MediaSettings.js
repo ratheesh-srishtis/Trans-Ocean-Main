@@ -39,7 +39,7 @@ const MediaSettings = () => {
         const response = await uploadCompanyMedia(formData);
         console.log(response, "response_handleLogoChange");
         if (response?.status == true) {
-          setMessage("Successfully uploaded image");
+          setMessage("Image uploaded successfully");
           setOpenPopUp(true);
           // after API upload success
           await getMediaFiles(); // 👈 refresh context immediately
@@ -59,7 +59,7 @@ const MediaSettings = () => {
         {/* Logo Upload Section */}
         <div className="row  mb-4">
           <div className="col-md-4 col-lg-4 col-xl-3 col-12 ">
-            <h6 className="subheadmediafont">Logo Upload</h6>
+            <h6 className="subheadmediafont">Logo</h6>
             <div className="media-logo-preview">
               <img
                 src={logoPreview}
@@ -81,7 +81,7 @@ const MediaSettings = () => {
             </div>
           </div>
           <div className="col-md-4 col-lg-4 col-xl-3  col-12 ">
-            <h6 className="subheadmediafont">PDF Header Image Upload</h6>
+            <h6 className="subheadmediafont">PDF Header Image</h6>
             <div className="media-logo-preview">
               <img
                 src={headerPreview}
@@ -103,7 +103,7 @@ const MediaSettings = () => {
             </div>
           </div>
           <div className="col-md-4 col-lg-4 col-xl-3 col-12 ">
-            <h6 className="subheadmediafont">PDF Footer Image Upload</h6>
+            <h6 className="subheadmediafont">PDF Footer Image</h6>
             <div className="media-logo-preview">
               <img
                 src={footerPreview}

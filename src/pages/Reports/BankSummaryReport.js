@@ -541,7 +541,7 @@ const BankSummaryReport = ({ employees }) => {
           <img src={Group}></img>
         </div>
       </div>
-      <div class=" banksmrymar-right mt-3 mb-3">
+      <div className=" banksmrymar-right mt-3 mb-3">
         <div className="d-flex justify-content-end  gap-2 ">
           <button
             className="btn btn-info filbtnjob"

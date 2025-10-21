@@ -398,9 +398,9 @@ const PettyCashReport = () => {
                 return {
                   id: index,
                   employee: item?.employee?.[0]?.name || "N/A",
-                  totalPetty: usedPetties ?? "N/A",
-                  usedPetties: item.totalPetty,
-                  balancePetties: balancePetties,
+                  totalPetty: usedPetties.toFixed(3) ?? "N/A",
+                  usedPetties: item.totalPetty.toFixed(3),
+                  balancePetties: balancePetties.toFixed(3),
                 };
               })
             : []

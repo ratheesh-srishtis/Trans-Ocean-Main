@@ -205,10 +205,10 @@ const Content = ({ onNotFound }) => {
     "/aed-conversion-rate",
     "/test-page",
     "/media-settings",
-    "/company-bank-details",
+    "/company-bank-info",
     "/profile",
     "/user-leave",
-    "/employee-details-modifications",
+    "/update-employee-info",
     "/view-employee-details",
     "/leave-requests",
     "/leave",
@@ -258,10 +258,7 @@ const Content = ({ onNotFound }) => {
       <Route path="/desiginations" element={<Desiginations />} />
       <Route path="/employee-leaves" element={<EmployeeLeaves />} />
       <Route path="/leave" element={<Leave loginResponse={loginResponse} />} />
-      <Route
-        path="/employee-details-modifications"
-        element={<EmployeeModification />}
-      />
+      <Route path="/update-employee-info" element={<EmployeeModification />} />
       <Route path="/hr-settings" element={<HrSettings />} />
       <Route path="/leavereports" element={<LeaveReports />} />
       <Route
@@ -360,7 +357,7 @@ const Content = ({ onNotFound }) => {
         element={<AnchorageStayCharges />}
       />
       <Route path="/media-settings" element={<MediaSettings />} />
-      <Route path="/company-bank-details" element={<CompanyBankDetails />} />
+      <Route path="/company-bank-info" element={<CompanyBankDetails />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/user-leave" element={<UserLeave />} />
       <Route path="/stay-charge" element={<StayCharge />} />

@@ -179,10 +179,10 @@ const AddLeave = ({
         fullWidth
         maxWidth="lg"
       >
-        <div className="d-flex justify-content-between " onClick={onClose}>
+        <div className="d-flex justify-content-between ">
           <DialogTitle>{editMode ? "Edit Leave" : "Add Leave"}</DialogTitle>
           <div className="closeicon">
-            <i className="bi bi-x-lg "></i>
+            <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
         </div>
         <DialogContent style={{ marginBottom: "40px" }}>
@@ -249,6 +249,7 @@ const AddLeave = ({
                     placeholder=""
                     onChange={handleChange}
                     value={formData.leaveFrom}
+                    max={formData.leaveTo}
                   ></input>
                   {errors.leaveFrom && (
                     <span className="invalid">{errors.leaveFrom}</span>
@@ -268,6 +269,7 @@ const AddLeave = ({
                     placeholder=""
                     onChange={handleChange}
                     value={formData.leaveTo}
+                    min={formData.leaveFrom}
                   ></input>
                   {errors.leaveTo && (
                     <span className="invalid">{errors.leaveTo}</span>
