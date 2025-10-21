@@ -175,7 +175,7 @@ const AddUser = ({
       setSelectedRoleType(selectedRoleObj?.roleType || "");
     }
 
-    // Handle employee selection
+    // Handle employee selection: selected a real employee
     if (name === "employeeId" && value) {
       const selectedEmployee = EmployeeList.find((emp) => emp._id === value);
       if (selectedEmployee) {
@@ -205,6 +205,25 @@ const AddUser = ({
 
         return;
       }
+    }
+
+    // If 'Choose Employee' (empty value) is selected in Add mode, clear prefilled fields
+    if (name === "employeeId" && value === "" && editMode === false) {
+      setFormData((prevData) => ({
+        ...prevData,
+        employeeId: "",
+        name: "",
+        email: "",
+        phonenumber: "",
+      }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        employeeId: "",
+        name: "",
+        email: "",
+        phonenumber: "",
+      }));
+      return;
     }
 
     // Default change handler

@@ -304,9 +304,9 @@
 
 /* Add padding to input so text doesn't overlap icon */
 .form-control.vessel-voyage {
-  padding-right: 2.5rem;
+  /* padding-right: 2.5rem; */
 }
-.cupaymentddfont{
+.cupaymentddfont {
   font-size: 12px !important;
 }
 /* Leave Count Cards Styles */

@@ -251,7 +251,7 @@ const Profile = () => {
     setIsEditMode((prev) => !prev);
     let empObj = {
       employeeId: employeeId,
-      employeeName: empdata.employeeName,
+      employeeName: empdata?.employeeName,
       username: empdata.username,
       password: empdata.password,
       employeeLastName: empdata.employeeLastName,
