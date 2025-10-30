@@ -133,12 +133,16 @@ const Header = () => {
       return "User Leave";
     } else if (location.pathname == "/update-employee-info") {
       return "Update Employee Info";
-    } else if (location.pathname == "/update-employee-info") {
+    } else if (location.pathname == "/leave-requests") {
       return "Leave Requests";
     } else if (location.pathname == "/leave") {
       return "Leave";
-    } else if (location.pathname == "/view-employee-details") {
+    } 
+    else if (location.pathname == "/view-employee-details") {
       return "View Employee Details";
+    }
+    else if (location.pathname == "/anchorage-stay-charges") {
+      return "Anchorage Stay Charges";
     }
 
     // Add more conditions as needed for other routes
@@ -291,7 +295,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.115</div>
+            <div className="version">Version: 0.120</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">

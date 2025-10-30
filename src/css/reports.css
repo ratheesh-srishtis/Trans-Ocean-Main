@@ -9,3 +9,67 @@
     font-size: 18px;
 
 }
+
+.remarks-section {
+  margin: 30px;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.remarks-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  color: #333;
+}
+.remark-field {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.remark-field label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+
+.remark-textarea {
+  resize: vertical;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background: #fff;
+  min-height: 60px;
+  transition: border-color 0.2s;
+}
+
+.remark-textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.update-remarks-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.update-remarks-btn:disabled {
+  background: #b0c4de;
+  cursor: not-allowed;
+}
+.remarks-message {
+  margin-top: 12px;
+  color: #007bff;
+  font-weight: 500;
+}

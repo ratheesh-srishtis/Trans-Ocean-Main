@@ -366,7 +366,7 @@ const Content = ({ onNotFound }) => {
       <Route path="/QQform-settings" element={<QQFormSettings />} />
       <Route path="/Bank-settings" element={<BankSettings />} />
       <Route path="/password-requests" element={<PasswordRequests />} />
-      <Route path="/reports" element={<Reports />} />
+      <Route path="/reports" element={<Reports loginResponse={loginResponse} />} />
       <Route path="/cost-centre-breakup" element={<CostCenterBreakup />} />
       <Route
         path="/cost-centre-summary"

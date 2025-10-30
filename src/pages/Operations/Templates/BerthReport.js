@@ -531,7 +531,7 @@ const BerthReport = ({
           </div>
           <DialogContent style={{ marginBottom: "40px" }}>
             <div className=" statement">
-              <h3>Statement of Facts</h3>
+              <h3>STATEMENT OF FACTS</h3>
             </div>
 
             <table className="tabmain">

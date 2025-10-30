@@ -259,7 +259,11 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                           </td>
 
                           <td className="voucherpartfour text-center">
-                            {payment?.currency?.toUpperCase()} {payment?.amount}
+                            {payment?.currency?.toUpperCase()} {payment?.currency?.toUpperCase() === "OMR"
+                              ? Number(payment?.amount).toFixed(3)
+                              : payment?.currency?.toUpperCase() === "USD"
+                              ? Number(payment?.amount).toFixed(2)
+                              : payment?.amount}
                           </td>
                         </tr>
                       ))}
@@ -278,7 +282,11 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                       )}{" "}
                     </td>
                     <td className="voucheramountrate text-center">
-                      {getvoucher?.currency} {getvoucher?.recvamount}
+                      {getvoucher?.currency} {getvoucher?.currency === "OMR"
+                        ? Number(getvoucher?.recvamount).toFixed(3)
+                        : getvoucher?.currency === "USD"
+                        ? Number(getvoucher?.recvamount).toFixed(2)
+                        : getvoucher?.recvamount}
                     </td>
                   </tr>
                 </tbody>

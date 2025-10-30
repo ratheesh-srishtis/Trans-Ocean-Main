@@ -147,7 +147,8 @@ const NotificationPage = ({ open, onClose, onOpen }) => {
     console.log(notification, "notification");
     let row = notification?.pdaId;
     console.log(row, "notification_row");
-    if (loginResponse?.data?.userRole?.roleType == "finance") {
+    if(row){
+ if (loginResponse?.data?.userRole?.roleType == "finance") {
       navigate("/create-pda", { state: { row } });
       onClose();
     } else if (loginResponse?.data?.userRole?.roleType == "operations") {
@@ -157,7 +158,9 @@ const NotificationPage = ({ open, onClose, onOpen }) => {
       navigate("/create-pda", { state: { row } });
       onClose();
     }
-  };
+    }
+   
+  }; 
 
   return (
     <>

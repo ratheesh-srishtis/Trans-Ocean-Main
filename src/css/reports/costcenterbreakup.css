@@ -99,8 +99,16 @@
   }
 }
 
-.costcenter-breakup .MuiDataGrid-row {
+/* .costcenter-breakup .MuiDataGrid-row {
   max-height: 145px !important;
   min-height: 125px !important;
   --height: 130px !important;
+} */
+
+.job-no-size{
+  width: 60px !important;
+}
+
+.vessel-new-size{
+  width: 85px !important;
 }

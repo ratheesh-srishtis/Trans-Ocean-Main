@@ -850,6 +850,15 @@ export const editAedRate = async (data) => {
     throw error;
   }
 };
+export const generateServiceReportPDF = async (data) => {
+  try {
+    const response = await axiosInstance.post("/generateServiceReportPDF", data);
+    return response.data;
+  } catch (error) {
+    console.error("Get generateServiceReportPDF API Error:", error);
+    throw error;
+  }
+};
 
 export const getCompanyMedias = async () => {
   try {

@@ -128,6 +128,7 @@ const NewJobReport = ({ ports, loginResponse }) => {
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     };
     fetchJobReport(payload);
   }, [hydrated, filterType, selectedMonth, selectedYear, selectedIds]);
@@ -164,6 +165,7 @@ const NewJobReport = ({ ports, loginResponse }) => {
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     };
     fetchJobReport(payload);
   };
