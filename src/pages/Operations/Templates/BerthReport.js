@@ -398,6 +398,9 @@ const BerthReport = ({
       generalRemarks: generalRemarks,
       shipperRemarks: shipperRemarks,
       masterRemarks: masterRemarks,
+      berth: formState.berth,
+      terminal: formState.terminal,
+      anchorage: formState.anchorage,
     };
     // Proceed with the API call
     setIsLoading(true);
@@ -487,6 +490,12 @@ const BerthReport = ({
         setGeneralRemarks(templateData?.generalRemarks);
         setShipperRemarks(templateData?.shipperRemarks);
         setMasterRemarks(templateData?.masterRemarks);
+        setFormState((prevFormState) => ({
+          ...prevFormState,
+          berth: templateData?.berth,
+          terminal: templateData?.terminal,
+          anchorage: templateData?.anchorage,
+        }));
       }
 
       console.log("getPdaTemplateData:", response);
@@ -502,6 +511,16 @@ const BerthReport = ({
       getPdaTemplateData();
     }
   }, [isEdit]);
+
+  useEffect(() => {
+    console.log(pdaResponse, "pdaResponse");
+    setFormState((prevFormState) => ({
+      ...prevFormState,
+      berth: pdaResponse?.berth,
+      terminal: pdaResponse?.terminal,
+      anchorage: pdaResponse?.anchorage,
+    }));
+  }, [pdaResponse]);
 
   return (
     <>
@@ -870,6 +889,59 @@ const BerthReport = ({
                     <small className="text-danger mt-1">{etaTimeError}</small>
                   )}
                 </div>
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-4">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  Berth Number/ Name:
+                </label>
+                <input
+                  type="text"
+                  className="form-control crewfontt"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  name="berth"
+                  value={formState.berth}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
+              <div className="col-4">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  Terminal:
+                </label>
+                <input
+                  type="text"
+                  className="form-control crewfontt"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  name="terminal"
+                  value={formState.terminal}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
+              <div className="col-4">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  Anchorage:
+                </label>
+                <input
+                  type="text"
+                  className="form-control crewfontt"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  name="anchorage"
+                  value={formState.anchorage}
+                  onChange={handleInputChange}
+                ></input>
               </div>
             </div>
             <div className="mt-3">

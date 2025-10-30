@@ -345,6 +345,23 @@ export const uploadDocuments = async (formData) => {
     throw error;
   }
 };
+export const uploadConnectionFlightImage = async (formData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/uploadConnectionFlightImage",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Required for file uploads
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("uploadConnectionFlightImage API Error:", error);
+    throw error;
+  }
+};
 
 export const uploadSingleImage = async (formData) => {
   try {
@@ -852,7 +869,10 @@ export const editAedRate = async (data) => {
 };
 export const generateServiceReportPDF = async (data) => {
   try {
-    const response = await axiosInstance.post("/generateServiceReportPDF", data);
+    const response = await axiosInstance.post(
+      "/generateServiceReportPDF",
+      data
+    );
     return response.data;
   } catch (error) {
     console.error("Get generateServiceReportPDF API Error:", error);

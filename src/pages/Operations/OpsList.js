@@ -37,11 +37,15 @@ const OpsList = () => {
   const [message, setMessage] = useState("");
   const fetchQuotations = async (type) => {
     setSelectedTab(type);
-
     try {
       setIsLoading(true);
       let userData = {
         filter: type,
+        assignedEmployee: ["operationsmanager", "operationshead"].includes(
+          loginResponse?.data?.userRole?.role?.designationType?.toLowerCase()
+        )
+          ? ""
+          : loginResponse?.data?._id,
       };
       const quotations = await getAllJobs(userData);
       console.log("Quotations:", quotations);

@@ -1,9 +1,9 @@
 import React from "react";
 import "../css/popup.css";
 
-const PopUp = ({ message, closePopup}) => {
+const PopUp = ({ message, closePopup }) => {
   const btLogo = require("../assets/images/check.png");
- 
+
   return (
     <div className="popupbackground">
       <div className="popupcontainermain">

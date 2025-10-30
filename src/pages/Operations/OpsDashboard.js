@@ -5,7 +5,10 @@ import { getAllJobs, deleteQuotation } from "../../services/apiService";
 import Loader from "../Loader";
 import Swal from "sweetalert2";
 import PopUp from "../PopUp";
+import { useAuth } from "../../context/AuthContext";
 const OpsDashboard = () => {
+  const { loginResponse } = useAuth();
+
   const Group = require("../../assets/images/hugeicons_new-job.png");
   const [jobsList, setJobsList] = useState([]); // Loader state
   const navigate = useNavigate();
@@ -24,6 +27,11 @@ const OpsDashboard = () => {
         filter: type, // Always include the filter
         statusFilter: status, // Include statusFilter if selectedStatus has a value
         searchKey: searchValue, // Include searchKey if searchTerm has a value
+        assignedEmployee: ["operationsmanager", "operationshead"].includes(
+          loginResponse?.data?.userRole?.role?.designationType?.toLowerCase()
+        )
+          ? ""
+          : loginResponse?.data?._id,
       };
       const quotations = await getAllJobs(userData);
       console.log("Quotations:", quotations);

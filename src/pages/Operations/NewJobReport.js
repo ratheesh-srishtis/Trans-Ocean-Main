@@ -128,7 +128,11 @@ const NewJobReport = ({ ports, loginResponse }) => {
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
-      assignedEmployee: "",
+      assignedEmployee: ["operationsmanager", "operationshead"].includes(
+        loginResponse?.data?.userRole?.role?.designationType?.toLowerCase()
+      )
+        ? ""
+        : loginResponse?.data?._id,
     };
     fetchJobReport(payload);
   }, [hydrated, filterType, selectedMonth, selectedYear, selectedIds]);
@@ -165,7 +169,11 @@ const NewJobReport = ({ ports, loginResponse }) => {
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
-      assignedEmployee: "",
+      assignedEmployee: ["operationsmanager", "operationshead"].includes(
+        loginResponse?.data?.userRole?.role?.designationType?.toLowerCase()
+      )
+        ? ""
+        : loginResponse?.data?._id,
     };
     fetchJobReport(payload);
   };

@@ -1,6 +1,7 @@
 // ResponsiveDialog.js
 import React, { useState, useEffect } from "react";
 import "../../../css/templates/oktb.css";
+import { uploadConnectionFlightImage } from "../../../services/apiService";
 import {
   Dialog,
   DialogActions,
@@ -347,6 +348,72 @@ As agents only`);
     console.log(passengers, "passengers");
   }, [passengers]);
 
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const documentsUpload = async (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const formData = new FormData();
+
+      // Append all selected files to FormData
+      Array.from(event.target.files).forEach((file) => {
+        console.log(file, "file");
+        formData.append("files", file); // "files" is the expected key for your API
+      });
+
+      try {
+        setUploadStatus("Uploading...");
+        const response = await uploadConnectionFlightImage(formData);
+
+        if (response.status) {
+          setUploadStatus("Upload successful!");
+          setUploadedFiles((prevFiles) => [...prevFiles, ...response.data]); // Append new files to existing ones
+        } else {
+          setUploadStatus("Upload failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("File upload error:", error);
+        setUploadStatus("An error occurred during upload.");
+      }
+    }
+  };
+
+  const handleFileDelete = async (fileUrl, index) => {
+    // // Update the state by filtering out the file with the specified URL
+    // // const updatedFiles = uploadedFiles.filter((file) => file.url !== fileUrl);
+    // // setUploadedFiles(updatedFiles);
+    // console.log(fileUrl, "fileUrl");
+    // if (fileUrl?._id) {
+    //   let payload = {
+    //     pdaId: editData?._id,
+    //     documentId: fileUrl?._id,
+    //   };``
+    //   try {
+    //     const response = await deleteConnectionFlightImage(payload);
+    //     if (response.status) {
+    //       const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
+    //       console.log(updatedFiles, "updatedFiles");
+    //       setUploadedFiles(updatedFiles);
+    //       setMessage("File has been deleted successfully");
+    //       setOpenPopUp(true);
+    //       fetchPdaDetails(editData?._id);
+    //     } else {
+    //       setMessage("Failed please try again!");
+    //       setOpenPopUp(true);
+    //     }
+    //   } catch (error) {
+    //     setMessage("Failed please try again!");
+    //     setOpenPopUp(true);
+    //   }
+    // } else if (!fileUrl?._id) {
+    //   const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
+    //   console.log(updatedFiles, "updatedFiles");
+    //   setUploadedFiles(updatedFiles);
+    //   setMessage("File has been deleted successfully");
+    //   setOpenPopUp(true);
+    // }
+  };
+
   return (
     <>
       <div>
@@ -538,6 +605,70 @@ As agents only`);
                     ></textarea>
                   </div>
                 </div>
+
+                <div className="typesofcall-row ">
+                  <div className="row align-items-start mt-3">
+                    <div className="mb-2 col-12 docuplo">
+                      <label htmlFor="formFile" className="form-label">
+                        Connection Flight Images Upload:
+                      </label>
+                      <input
+                        className="form-control documentsfsize linheight"
+                        type="file"
+                        id="portofolio"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => {
+                          documentsUpload(e); // Call your upload handler
+                          e.target.value = ""; // Reset the file input value to hide uploaded file names
+                        }}
+                      ></input>
+                    </div>
+                    <div className="mb-2 col-8">
+                      {uploadedFiles && uploadedFiles?.length > 0 && (
+                        <>
+                          <div className="templatelink">Uploaded Files:</div>
+                          <div className="templateouter">
+                            {uploadedFiles?.length > 0 &&
+                              uploadedFiles?.map((file, index) => {
+                                return (
+                                  <>
+                                    <div className="d-flex justify-content-between ">
+                                      <div className="tempgenerated ">
+                                        {file?.originalName}
+                                      </div>
+                                      <div className="d-flex">
+                                        <div
+                                          className="icondown"
+                                          onClick={() =>
+                                            window.open(
+                                              `${process.env.REACT_APP_ASSET_URL}${file?.url}`,
+                                              "_blank"
+                                            )
+                                          }
+                                        >
+                                          <i className="bi bi-eye"></i>
+                                        </div>
+                                        <div
+                                          className="iconpdf"
+                                          onClick={() =>
+                                            handleFileDelete(file, index)
+                                          }
+                                        >
+                                          <i className="bi bi-trash"></i>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                );
+                              })}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
                 <div className="attention-section mt-2">
                   {passengers?.map((passenger, index) => (
                     <>
