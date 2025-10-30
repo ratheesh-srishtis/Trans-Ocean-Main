@@ -26,10 +26,9 @@ const Dashboard = () => {
   const img_4 = require("../assets/images/4.png");
   const img_5 = require("../assets/images/job completed.png");
   const img_6 = require("../assets/images/finalinvoicenew.png");
-
   const [counts, setCounts] = useState(null);
   const [userType, setUserType] = useState(null);
-
+  console.log(counts, "counts");
   const fetchDashboardDetails = async (type) => {
     setSelectedTab(type);
     setIsLoading(true);
@@ -125,35 +124,50 @@ const Dashboard = () => {
 
             <div className="row">
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards received-quot" onClick={() => navigate('/quotations')}>
+                <div
+                  className="dashboard_cards received-quot"
+                  onClick={() => navigate("/quotations")}
+                >
                   <img className="img-size" src={img_2} />
                   <h3 className="card_count">{counts?.receivedQuotation}</h3>
                   <h5 className="card_title">Quotation Prepared</h5>
                 </div>
               </div>
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards pending-quot" onClick={() => navigate('/quotations')}>
+                <div
+                  className="dashboard_cards pending-quot"
+                  onClick={() => navigate("/quotations")}
+                >
                   <img className="img-size" src={img_3} />
                   <h3 className="card_count">{counts?.submittedQuotation}</h3>
                   <h5 className="card_title">Submitted Quotations</h5>
                 </div>
               </div>
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards approved-quot" onClick={() => navigate('/jobs')}>
+                <div
+                  className="dashboard_cards approved-quot"
+                  onClick={() => navigate("/jobs")}
+                >
                   <img className="img-size" src={img_4} />
                   <h3 className="card_count">{counts?.approvedQuotation}</h3>
                   <h5 className="card_title">Approval of Jobs to OPS</h5>
                 </div>
               </div>
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards ops" onClick={() => navigate('/jobs')}>
+                <div
+                  className="dashboard_cards ops"
+                  onClick={() => navigate("/jobs")}
+                >
                   <img className="img-size" src={img_1} />
                   <h3 className="card_count">{counts?.processedQuotation}</h3>
                   <h5 className="card_title">Job in Process</h5>
                 </div>
               </div>
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards jobscomp" onClick={() => navigate('/jobs')}>
+                <div
+                  className="dashboard_cards jobscomp"
+                  onClick={() => navigate("/jobs")}
+                >
                   <img className="img-size" src={img_5} />
                   <h3 className="card_count">{counts?.completedQuotation}</h3>
                   <h5 className="card_title">Job Completed</h5>
