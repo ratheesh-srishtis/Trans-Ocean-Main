@@ -201,6 +201,7 @@ const OKTBReport = ({
       arrivalFlightDetails: airportArrivalDetails,
       description: footerMessage,
       passengers: validPassengers,
+      connectionFlightImage: uploadedFiles,
     };
 
     // Proceed with the API call
@@ -257,6 +258,7 @@ const OKTBReport = ({
 
         // setRefNumber(templateData?.refNo);
         setBookingRef(templateData?.bookingRefNo);
+        setUploadedFiles(templateData?.connectionFlightImage);
         setSirportArrivalDetails(templateData?.arrivalFlightDetails);
         setFooterMessage(templateData?.description);
         setIsCustomMessage(true); // Prevent auto-overwrites
@@ -358,7 +360,7 @@ As agents only`);
       // Append all selected files to FormData
       Array.from(event.target.files).forEach((file) => {
         console.log(file, "file");
-        formData.append("files", file); // "files" is the expected key for your API
+        formData.append("file", file); // "files" is the expected key for your API
       });
 
       try {
@@ -367,7 +369,8 @@ As agents only`);
 
         if (response.status) {
           setUploadStatus("Upload successful!");
-          setUploadedFiles((prevFiles) => [...prevFiles, ...response.data]); // Append new files to existing ones
+          // setUploadedFiles((prevFiles) => [...prevFiles, ...response.data]); // Append new files to existing ones
+          setUploadedFiles((prevFiles) => [...prevFiles, response.data]); // ✅ fixed
         } else {
           setUploadStatus("Upload failed. Please try again.");
         }
@@ -378,40 +381,12 @@ As agents only`);
     }
   };
 
-  const handleFileDelete = async (fileUrl, index) => {
-    // // Update the state by filtering out the file with the specified URL
-    // // const updatedFiles = uploadedFiles.filter((file) => file.url !== fileUrl);
-    // // setUploadedFiles(updatedFiles);
-    // console.log(fileUrl, "fileUrl");
-    // if (fileUrl?._id) {
-    //   let payload = {
-    //     pdaId: editData?._id,
-    //     documentId: fileUrl?._id,
-    //   };``
-    //   try {
-    //     const response = await deleteConnectionFlightImage(payload);
-    //     if (response.status) {
-    //       const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
-    //       console.log(updatedFiles, "updatedFiles");
-    //       setUploadedFiles(updatedFiles);
-    //       setMessage("File has been deleted successfully");
-    //       setOpenPopUp(true);
-    //       fetchPdaDetails(editData?._id);
-    //     } else {
-    //       setMessage("Failed please try again!");
-    //       setOpenPopUp(true);
-    //     }
-    //   } catch (error) {
-    //     setMessage("Failed please try again!");
-    //     setOpenPopUp(true);
-    //   }
-    // } else if (!fileUrl?._id) {
-    //   const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
-    //   console.log(updatedFiles, "updatedFiles");
-    //   setUploadedFiles(updatedFiles);
-    //   setMessage("File has been deleted successfully");
-    //   setOpenPopUp(true);
-    // }
+  useEffect(() => {
+    console.log("Uploaded files updated:", uploadedFiles);
+  }, [uploadedFiles]); // 👈 runs every time uploadedFiles changes
+
+  const handleFileDelete = (fileToDelete, index) => {
+    setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
@@ -624,7 +599,7 @@ As agents only`);
                         }}
                       ></input>
                     </div>
-                    <div className="mb-2 col-8">
+                    <div className="mb-2 col-12">
                       {uploadedFiles && uploadedFiles?.length > 0 && (
                         <>
                           <div className="templatelink">Uploaded Files:</div>

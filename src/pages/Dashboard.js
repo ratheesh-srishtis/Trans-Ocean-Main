@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDashbordDetails } from "../services/apiService";
+import {
+  getDashbordDetails,
+  financeDashboardDetails,
+} from "../services/apiService";
 import { Oval } from "react-loader-spinner"; // Import a loader type from react-loader-spinner
 import { useAuth } from "../context/AuthContext";
 import OpsDashboard from "./Operations/OpsDashboard";
@@ -28,6 +31,7 @@ const Dashboard = () => {
   const img_6 = require("../assets/images/finalinvoicenew.png");
   const [counts, setCounts] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [selectedCardNumber, setSelectedCardNumber] = useState("6");
   console.log(counts, "counts");
   const fetchDashboardDetails = async (type) => {
     setSelectedTab(type);
@@ -44,6 +48,51 @@ const Dashboard = () => {
       console.error("Failed to fetch quotations:", error);
       setIsLoading(false);
     } finally {
+    }
+  };
+
+  // Finance details call (only for finance role)
+  const fetchFinanceDashboardDetails = async (filterValue, cardNumberValue) => {
+    try {
+      if (
+        loginResponse?.data?.userRole?.roleType?.toLowerCase() === "finance"
+      ) {
+        const payload = {
+          filter: filterValue,
+          cardNumber: String(cardNumberValue),
+        };
+        const res = await financeDashboardDetails(payload);
+        if (res.status == true) {
+          if (cardNumberValue == "1") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.receivedQuotation || [] },
+            });
+          } else if (cardNumberValue == "2") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.submittedQuotation || [] },
+            });
+          } else if (cardNumberValue == "3") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.approvedQuotation || [] },
+            });
+          } else if (cardNumberValue == "4") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.processedQuotation || [] },
+            });
+          } else if (cardNumberValue == "5") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.completedQuotation || [] },
+            });
+          } else if (cardNumberValue == "6") {
+            navigate("/quotations", {
+              state: { quotationsFromDashboard: res?.invoiceSubmitted || [] },
+            });
+          }
+        }
+        console.log("financeDashboardDetails:", payload, res);
+      }
+    } catch (err) {
+      console.error("financeDashboardDetails error:", err);
     }
   };
 
@@ -75,7 +124,9 @@ const Dashboard = () => {
                       selectedTab === "all" ? "active-nav-style" : ""
                     }`}
                     aria-current="page"
-                    onClick={() => fetchDashboardDetails("all")}
+                    onClick={() => {
+                      fetchDashboardDetails("all");
+                    }}
                   >
                     All
                   </a>
@@ -85,7 +136,9 @@ const Dashboard = () => {
                     className={`nav-link carduppercontent ${
                       selectedTab === "day" ? "active-nav-style" : ""
                     }`}
-                    onClick={() => fetchDashboardDetails("day")}
+                    onClick={() => {
+                      fetchDashboardDetails("day");
+                    }}
                   >
                     Last 24 Hour
                   </a>
@@ -95,7 +148,9 @@ const Dashboard = () => {
                     className={`nav-link carduppercontent ${
                       selectedTab === "week" ? "active-nav-style" : ""
                     }`}
-                    onClick={() => fetchDashboardDetails("week")}
+                    onClick={() => {
+                      fetchDashboardDetails("week");
+                    }}
                   >
                     Last Week
                   </a>
@@ -105,7 +160,9 @@ const Dashboard = () => {
                     className={`nav-link carduppercontent ${
                       selectedTab === "month" ? "active-nav-style" : ""
                     }`}
-                    onClick={() => fetchDashboardDetails("month")}
+                    onClick={() => {
+                      fetchDashboardDetails("month");
+                    }}
                   >
                     Last Month
                   </a>
@@ -126,7 +183,10 @@ const Dashboard = () => {
               <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards received-quot"
-                  onClick={() => navigate("/quotations")}
+                  onClick={() => {
+                    setSelectedCardNumber("1");
+                    fetchFinanceDashboardDetails(selectedTab, "1");
+                  }}
                 >
                   <img className="img-size" src={img_2} />
                   <h3 className="card_count">{counts?.receivedQuotation}</h3>
@@ -136,7 +196,10 @@ const Dashboard = () => {
               <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards pending-quot"
-                  onClick={() => navigate("/quotations")}
+                  onClick={() => {
+                    setSelectedCardNumber("2");
+                    fetchFinanceDashboardDetails(selectedTab, "2");
+                  }}
                 >
                   <img className="img-size" src={img_3} />
                   <h3 className="card_count">{counts?.submittedQuotation}</h3>
@@ -146,7 +209,10 @@ const Dashboard = () => {
               <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards approved-quot"
-                  onClick={() => navigate("/jobs")}
+                  onClick={() => {
+                    setSelectedCardNumber("3");
+                    fetchFinanceDashboardDetails(selectedTab, "3");
+                  }}
                 >
                   <img className="img-size" src={img_4} />
                   <h3 className="card_count">{counts?.approvedQuotation}</h3>
@@ -156,7 +222,10 @@ const Dashboard = () => {
               <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards ops"
-                  onClick={() => navigate("/jobs")}
+                  onClick={() => {
+                    setSelectedCardNumber("4");
+                    fetchFinanceDashboardDetails(selectedTab, "4");
+                  }}
                 >
                   <img className="img-size" src={img_1} />
                   <h3 className="card_count">{counts?.processedQuotation}</h3>
@@ -166,7 +235,10 @@ const Dashboard = () => {
               <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards jobscomp"
-                  onClick={() => navigate("/jobs")}
+                  onClick={() => {
+                    setSelectedCardNumber("5");
+                    fetchFinanceDashboardDetails(selectedTab, "5");
+                  }}
                 >
                   <img className="img-size" src={img_5} />
                   <h3 className="card_count">{counts?.completedQuotation}</h3>
@@ -174,7 +246,13 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="col-md-4 mb-2 mb-md-4">
-                <div className="dashboard_cards finalinvoicestatus">
+                <div
+                  className="dashboard_cards finalinvoicestatus"
+                  onClick={() => {
+                    setSelectedCardNumber("6");
+                    fetchFinanceDashboardDetails(selectedTab, "6");
+                  }}
+                >
                   <img className="img-size" src={img_6} />
                   <h3 className="card_count">{counts?.invoiceSubmitted}</h3>
                   <h5 className="card_title">Final Invoice Status</h5>

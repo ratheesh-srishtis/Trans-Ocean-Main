@@ -195,7 +195,7 @@ const StayCharge = ({ portName, onClick }) => {
       <div className="p-3">
         <div className="jobreport-header">
           <div className="summary"></div>
-          <div className="col-1 getdownloadpdf">
+          <div className="col-1 ">
             <button
               type="button"
               onClick={() => handleOpen()}

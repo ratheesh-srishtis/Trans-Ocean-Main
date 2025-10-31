@@ -151,7 +151,7 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
             </div>
             <div className="voucherpadding">
               <div className=" headheadvoucher">
-                <div className="headvoucher">Voucher</div>
+                <div className="headvoucher">VOUCHER</div>
 
                 <div className="downloadbutnvoucher">
                   <button
@@ -249,8 +249,8 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
                       )}{" "}
                     </td>
                     <td className="voucheramountrate text-center">
-
-                      {getvoucher?.currency} {getvoucher?.currency === "OMR"
+                      {getvoucher?.currency}{" "}
+                      {getvoucher?.currency === "OMR"
                         ? Number(getvoucher?.amount).toFixed(3)
                         : getvoucher?.currency === "USD"
                         ? Number(getvoucher?.amount).toFixed(2)

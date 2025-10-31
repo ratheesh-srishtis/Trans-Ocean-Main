@@ -137,11 +137,9 @@ const Header = () => {
       return "Leave Requests";
     } else if (location.pathname == "/leave") {
       return "Leave";
-    } 
-    else if (location.pathname == "/view-employee-details") {
+    } else if (location.pathname == "/view-employee-details") {
       return "View Employee Details";
-    }
-    else if (location.pathname == "/anchorage-stay-charges") {
+    } else if (location.pathname == "/anchorage-stay-charges") {
       return "Anchorage Stay Charges";
     }
 
@@ -295,7 +293,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.120</div>
+            <div className="version">Version: 0.121</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">

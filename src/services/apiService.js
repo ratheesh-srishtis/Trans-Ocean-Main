@@ -262,16 +262,6 @@ export const getPdaDetails = async (data) => {
   }
 };
 
-export const getDashbordDetails = async (data) => {
-  try {
-    const response = await axiosInstance.post("/financeDashboard", data);
-    return response.data;
-  } catch (error) {
-    console.error("financeDashboard API Error:", error);
-    throw error;
-  }
-};
-
 export const getPdaFile = async (data) => {
   try {
     const response = await axiosInstance.post("/generateQuotationPDF", data);
@@ -348,7 +338,7 @@ export const uploadDocuments = async (formData) => {
 export const uploadConnectionFlightImage = async (formData) => {
   try {
     const response = await axiosInstance.post(
-      "/uploadConnectionFlightImage",
+      "/uploadConnetionFlightImage",
       formData,
       {
         headers: {
@@ -900,6 +890,26 @@ export const uploadCompanyMedia = async (formData) => {
     return response.data;
   } catch (error) {
     console.error("uploadDocuments API Error:", error);
+    throw error;
+  }
+};
+
+export const financeDashboardDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post("/financeDashboardDetails", data);
+    return response.data;
+  } catch (error) {
+    console.error("Get financeDashboardDetails API Error:", error);
+    throw error;
+  }
+};
+
+export const getDashbordDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post("/financeDashboard", data);
+    return response.data;
+  } catch (error) {
+    console.error("financeDashboard API Error:", error);
     throw error;
   }
 };

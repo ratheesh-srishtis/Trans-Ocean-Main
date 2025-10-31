@@ -108,7 +108,7 @@ const AddAnchorageStay = ({
         response = await editAnchorageStayCharge(payload);
 
         if (response.status === true) {
-          setMessage("Anchorage stay charge updated successfully");
+          setMessage("Anchorage Stay Charge details saved successfully");
           setOpenPopUp(true);
           setFormData({
             days: "",
@@ -318,9 +318,12 @@ const AddAnchorageStay = ({
               </div>
             </div>
 
-            <div className="btnrole">
+            <div
+              className="btnrole"
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
               <button type="submit" className="btn btna submit-button btnfsize">
-                Submit
+                Add Charge Details
               </button>
             </div>
           </form>

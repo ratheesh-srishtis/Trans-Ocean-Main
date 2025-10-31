@@ -323,7 +323,7 @@ const Profile = () => {
 
       // Personal Information Sheet
       const personalData = [
-        ["Personal Information", ""],
+        ["PERSONAL INFORMATION", ""],
         ["First Name", formData.employeeName || ""],
         ["Last Name", formData.employeeLastName || ""],
         ["Date of Birth", formatDate(formData.dob) || ""],

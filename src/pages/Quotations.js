@@ -5,7 +5,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../css/quotation.css";
 import {
   getAllQuotations,
@@ -35,6 +35,7 @@ const Quotations = ({
   vessels,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   console.log(loginResponse, "loginResponse_quoatations_page");
   const [selectedRows, setSelectedRows] = useState([]);
   const [quotationsList, setQuotationsList] = useState([]);
@@ -74,8 +75,15 @@ const Quotations = ({
     }
   };
 
+  // If navigated from Dashboard with state, use it; otherwise fetch
   useEffect(() => {
-    fetchQuotations("all");
+    const fromDashboardData = location?.state?.quotationsFromDashboard;
+    if (Array.isArray(fromDashboardData) && fromDashboardData.length > 0) {
+      setQuotationsList(fromDashboardData);
+    } else {
+      fetchQuotations("all");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDate = (date) => {
