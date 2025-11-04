@@ -50,7 +50,8 @@ const EditOperation = ({
   const [anchorageLocations, setAnchorageLocations] = useState([]);
   const [anchorageLocationID, setAnchorageLocationID] = useState("");
   const [opsPhoneNumber, setOpsPhoneNumber] = useState("");
-
+  const [selectedBerth, setSelectedBerth] = useState(null);
+  const [selectedTerminal, setSelectedTerminal] = useState(null);
   const row = location.state?.row; // Access the passed row object
   const [editData, setEditData] = useState(null);
   const [fetchInitiated, setFetchInitiated] = useState(false); // State to track fetch initiation
@@ -143,6 +144,8 @@ const EditOperation = ({
     setSelectedPdaId(response?.pda?._id);
     setSelectedPdaStatus(response?.pda?.pdaStatus);
     setRemarks(response?.pda?.remark);
+    setSelectedBerth(response?.pda?.berth);
+    setSelectedTerminal(response?.pda?.terminal);
 
     // setUploadedFiles((prevFiles) => [
     //   ...prevFiles,
@@ -258,6 +261,10 @@ const EditOperation = ({
     const { name, value } = e.target;
     if (name === "remarks") {
       setRemarks(value);
+    } else if (name === "berth") {
+      setSelectedBerth(value);
+    } else if (name === "terminal") {
+      setSelectedTerminal(value);
     }
   };
 
@@ -359,6 +366,8 @@ const EditOperation = ({
         pdaStatus: Number(selectedStatus),
         anchorageLocation: selectedAnchorageLocation?._id,
         remark: remarks,
+        berth: selectedBerth,
+        terminal: selectedTerminal,
       };
       console.log(pdaPayload, "pdaPayload");
       try {
@@ -889,6 +898,40 @@ const EditOperation = ({
                 </>
               )}
             </div>
+
+            {loginResponse?.data?.userRole?.roleType?.toLowerCase() ===
+              "operations" && (
+              <>
+                <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Berth:
+                  </label>
+                  <input
+                    type="text"
+                    name="berth"
+                    className="form-control vessel-voyage voyageblock"
+                    id="exampleFormControlInput1"
+                    placeholder=""
+                    value={selectedBerth}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Terminal:
+                  </label>
+                  <input
+                    type="text"
+                    name="terminal"
+                    className="form-control vessel-voyage voyageblock"
+                    id="terminal"
+                    placeholder=""
+                    value={selectedTerminal}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
         {/* <div className="templateouter">
@@ -939,25 +982,22 @@ const EditOperation = ({
               </div>
             </div>
           </div>
-          {pdaResponse?.pdaStatus != 7 && (
-            <>
-              <div className="col-2 addserv">
-                <div className="mb-3">
-                  <div className="col">
-                    <button
-                      type="button"
-                      className="btn addcharge-button text-center serviceaddbtn"
-                      onClick={() => {
-                        addServices();
-                      }}
-                    >
-                      Request Service
-                    </button>
-                  </div>
-                </div>
+
+          <div className="col-2 addserv">
+            <div className="mb-3">
+              <div className="col">
+                <button
+                  type="button"
+                  className="btn addcharge-button text-center serviceaddbtn"
+                  onClick={() => {
+                    addServices();
+                  }}
+                >
+                  Request Service
+                </button>
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
 
         <div className="charges-table">

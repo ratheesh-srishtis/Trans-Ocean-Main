@@ -52,8 +52,6 @@ const CreatePDA = ({
   const [selectedCargoCapacity, setSelectedCargoCapacity] = useState(null);
   const [selectedCargoCapacityError, setSelectedCargoCapacityError] =
     useState(null);
-  const [selectedBerth, setSelectedBerth] = useState(null);
-  const [selectedTerminal, setSelectedTerminal] = useState(null);
   const [selectedAnchorageLocation, setSelectedAnchorageLocation] =
     useState(null);
   const [selectedVesselType, setSelectedVesselType] = useState(null);
@@ -198,10 +196,6 @@ const CreatePDA = ({
     if (name === "cargoCapacity") {
       setSelectedCargoCapacity(value);
       setSelectedCargoCapacityError(false);
-    } else if (name === "berth") {
-      setSelectedBerth(value);
-    } else if (name === "terminal") {
-      setSelectedTerminal(value);
     }
 
     // Clear individual field error if user starts typing
@@ -651,12 +645,6 @@ const CreatePDA = ({
         charges: finalChargesArray,
         anchorageLocation: selectedAnchorageLocation?._id,
         cargoCapacity: selectedCargoCapacity,
-        // ✅ Include 'berth' only if userRole is 'operations'
-        ...(loginResponse?.data?.userRole?.roleType?.toLowerCase() ===
-          "operations" && {
-          berth: selectedBerth,
-          terminal: selectedTerminal,
-        }),
       };
       console.log(pdaPayload, "pdaPayload");
       if (!pdaResponse?._id) {
@@ -941,8 +929,7 @@ const CreatePDA = ({
     setAnchorageLocationID(response?.pda?.anchorageLocation);
     setIsVessels(response?.pda?.isVessels);
     setIsServices(response?.pda?.isServices);
-    setSelectedBerth(response?.pda?.berth);
-    setSelectedTerminal(response?.pda?.terminal);
+
     setSelectedCargoCapacity(response?.pda?.cargoCapacity);
     setUploadedFiles(response?.pda?.documents); // Append new files to existing ones
 
@@ -1869,45 +1856,6 @@ const CreatePDA = ({
                   </>
                 )}
               </div>
-              {loginResponse?.data?.userRole?.roleType?.toLowerCase() ===
-                "operations" && (
-                <>
-                  <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
-                    <label
-                      for="exampleFormControlInput1"
-                      className="form-label"
-                    >
-                      Berth:
-                    </label>
-                    <input
-                      type="text"
-                      name="berth"
-                      className="form-control vessel-voyage voyageblock"
-                      id="exampleFormControlInput1"
-                      placeholder=""
-                      value={selectedBerth}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
-                    <label
-                      for="exampleFormControlInput1"
-                      className="form-label"
-                    >
-                      Terminal:
-                    </label>
-                    <input
-                      type="text"
-                      name="terminal"
-                      className="form-control vessel-voyage voyageblock"
-                      id="terminal"
-                      placeholder=""
-                      value={selectedTerminal}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </>
-              )}
 
               <div className="col-lg-2 col-md-6 col-sm-12 nrt mb-3">
                 <label
@@ -1977,40 +1925,35 @@ const CreatePDA = ({
             </div>
           </div>
           <div className="row align-items-start d-flex justify-content-end">
-            {pdaResponse?.pdaStatus != 7 && (
-              <>
-                {requestedServices.length > 0 && (
-                  <>
-                    <div className="col-2">
-                      <button
-                        type="button"
-                        className="btn addcharge-button text-center"
-                        onClick={() => {
-                          handleServiceRequestOpen();
-                        }}
-                      >
-                        Service Request
-                      </button>
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-            {pdaResponse?.pdaStatus != 7 && (
-              <>
-                <div className="col-lg-2 col-md-6 col-sm-12">
-                  <button
-                    type="button"
-                    className="btn addcharge-button text-center"
-                    onClick={() => {
-                      openDialog();
-                    }}
-                  >
-                    Add charge
-                  </button>
-                </div>
-              </>
-            )}
+            <>
+              {requestedServices.length > 0 && (
+                <>
+                  <div className="col-2">
+                    <button
+                      type="button"
+                      className="btn addcharge-button text-center"
+                      onClick={() => {
+                        handleServiceRequestOpen();
+                      }}
+                    >
+                      Service Request
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
+
+            <div className="col-lg-2 col-md-6 col-sm-12">
+              <button
+                type="button"
+                className="btn addcharge-button text-center"
+                onClick={() => {
+                  openDialog();
+                }}
+              >
+                Add charge
+              </button>
+            </div>
           </div>
 
           <div className="row mt-2">

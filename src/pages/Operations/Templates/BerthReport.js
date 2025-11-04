@@ -398,9 +398,6 @@ const BerthReport = ({
       generalRemarks: generalRemarks,
       shipperRemarks: shipperRemarks,
       masterRemarks: masterRemarks,
-      berth: formState.berth,
-      terminal: formState.terminal,
-      anchorage: formState.anchorage,
     };
     // Proceed with the API call
     setIsLoading(true);
@@ -451,20 +448,57 @@ const BerthReport = ({
         }
 
         // Update formData with respective fields
+        // Process API data to extract hours and minutes
+        const apiReportDetails =
+          templateData?.reportDetails?.map((item) => {
+            const [datePart, timePart] = item.reportDate.split(" "); // "2025-06-12", "12:15"
+            const [hours, minutes] = timePart.split(":");
 
-        const updatedReportDetails = templateData?.reportDetails.map((item) => {
-          const [datePart, timePart] = item.reportDate.split(" "); // "2025-06-12", "12:15"
-          const [hours, minutes] = timePart.split(":");
+            return {
+              description: item.description,
+              reportDate: item.reportDate,
+              hours,
+              minutes,
+            };
+          }) || [];
 
-          return {
-            description: item.description,
-            reportDate: item.reportDate,
-            hours,
-            minutes,
-          };
+        // Merge API data with default reportRows structure
+        // Keep all default rows and update matching ones with API data
+        setReportRows((prevRows) => {
+          // Create a map of API data by description for quick lookup
+          const apiDataMap = new Map();
+          apiReportDetails.forEach((apiItem) => {
+            apiDataMap.set(apiItem.description.trim(), apiItem);
+          });
+
+          // Update existing rows with matching API data, keep all default rows
+          const mergedRows = prevRows.map((row) => {
+            const matchingApiData = apiDataMap.get(row.description.trim());
+            if (matchingApiData) {
+              // Update this row with API data
+              return {
+                description: row.description, // Keep original description
+                reportDate: matchingApiData.reportDate,
+                hours: matchingApiData.hours,
+                minutes: matchingApiData.minutes,
+              };
+            }
+            // Keep original row if no API data matches
+            return row;
+          });
+
+          // Add any API rows that don't match default descriptions (additional rows)
+          apiReportDetails.forEach((apiItem) => {
+            const existsInDefault = prevRows.some(
+              (row) => row.description.trim() === apiItem.description.trim()
+            );
+            if (!existsInDefault) {
+              mergedRows.push(apiItem);
+            }
+          });
+
+          return mergedRows;
         });
-
-        setReportRows(updatedReportDetails);
 
         // Update formState with the respective fields
         setFormState((prevFormState) => ({
@@ -490,12 +524,6 @@ const BerthReport = ({
         setGeneralRemarks(templateData?.generalRemarks);
         setShipperRemarks(templateData?.shipperRemarks);
         setMasterRemarks(templateData?.masterRemarks);
-        setFormState((prevFormState) => ({
-          ...prevFormState,
-          berth: templateData?.berth,
-          terminal: templateData?.terminal,
-          anchorage: templateData?.anchorage,
-        }));
       }
 
       console.log("getPdaTemplateData:", response);
@@ -514,12 +542,6 @@ const BerthReport = ({
 
   useEffect(() => {
     console.log(pdaResponse, "pdaResponse");
-    setFormState((prevFormState) => ({
-      ...prevFormState,
-      berth: pdaResponse?.berth,
-      terminal: pdaResponse?.terminal,
-      anchorage: pdaResponse?.anchorage,
-    }));
   }, [pdaResponse]);
 
   return (
@@ -891,59 +913,7 @@ const BerthReport = ({
                 </div>
               </div>
             </div>
-            <div className="row mt-3">
-              <div className="col-4">
-                <label
-                  htmlFor="exampleFormControlInput1"
-                  className="form-label"
-                >
-                  Berth Number/ Name:
-                </label>
-                <input
-                  type="text"
-                  className="form-control crewfontt"
-                  id="exampleFormControlInput1"
-                  placeholder=""
-                  name="berth"
-                  value={formState.berth}
-                  onChange={handleInputChange}
-                ></input>
-              </div>
-              <div className="col-4">
-                <label
-                  htmlFor="exampleFormControlInput1"
-                  className="form-label"
-                >
-                  Terminal:
-                </label>
-                <input
-                  type="text"
-                  className="form-control crewfontt"
-                  id="exampleFormControlInput1"
-                  placeholder=""
-                  name="terminal"
-                  value={formState.terminal}
-                  onChange={handleInputChange}
-                ></input>
-              </div>
-              <div className="col-4">
-                <label
-                  htmlFor="exampleFormControlInput1"
-                  className="form-label"
-                >
-                  Anchorage:
-                </label>
-                <input
-                  type="text"
-                  className="form-control crewfontt"
-                  id="exampleFormControlInput1"
-                  placeholder=""
-                  name="anchorage"
-                  value={formState.anchorage}
-                  onChange={handleInputChange}
-                ></input>
-              </div>
-            </div>
+
             <div className="mt-3">
               <label
                 htmlFor="exampleFormControlTextarea1"
