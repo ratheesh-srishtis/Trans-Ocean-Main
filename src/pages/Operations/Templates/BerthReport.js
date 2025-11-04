@@ -34,7 +34,10 @@ const BerthReport = ({
   const [isLoading, setIsLoading] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [selectedBerth, setSelectedBerth] = useState(null);
+  const [selectedTerminal, setSelectedTerminal] = useState(null);
+  const [selectedAnchorageLocation, setSelectedAnchorageLocation] =
+    useState(null);
   const [reportRows, setReportRows] = useState([
     { description: "ESOP", reportDate: "", hours: "", minutes: "" },
     { description: "ANCHORED", reportDate: "", hours: "", minutes: "" },
@@ -108,6 +111,12 @@ const BerthReport = ({
       setShipperRemarks(value);
     } else if (name === "masterRemarks") {
       setMasterRemarks(value);
+    } else if (name === "berth") {
+      setSelectedBerth(value);
+    } else if (name === "terminal") {
+      setSelectedTerminal(value);
+    } else if (name === "anchorageLocation") {
+      setSelectedAnchorageLocation(value);
     }
     setFormState((prevState) => ({
       ...prevState,
@@ -398,6 +407,9 @@ const BerthReport = ({
       generalRemarks: generalRemarks,
       shipperRemarks: shipperRemarks,
       masterRemarks: masterRemarks,
+      berth: selectedBerth,
+      terminal: selectedTerminal,
+      anchorageLocation: selectedAnchorageLocation,
     };
     // Proceed with the API call
     setIsLoading(true);
@@ -524,6 +536,9 @@ const BerthReport = ({
         setGeneralRemarks(templateData?.generalRemarks);
         setShipperRemarks(templateData?.shipperRemarks);
         setMasterRemarks(templateData?.masterRemarks);
+        setSelectedBerth(templateData?.berth);
+        setSelectedTerminal(templateData?.terminal);
+        setSelectedAnchorageLocation(templateData?.anchorageLocation);
       }
 
       console.log("getPdaTemplateData:", response);
@@ -911,6 +926,51 @@ const BerthReport = ({
                     <small className="text-danger mt-1">{etaTimeError}</small>
                   )}
                 </div>
+              </div>
+            </div>
+
+            <div className="row mt-3">
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Berth:
+                </label>
+                <input
+                  type="text"
+                  name="berth"
+                  className="form-control vessel-voyage voyageblock"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  value={selectedBerth}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Terminal:
+                </label>
+                <input
+                  type="text"
+                  name="terminal"
+                  className="form-control vessel-voyage voyageblock"
+                  id="terminal"
+                  placeholder=""
+                  value={selectedTerminal}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Anchorage Location:
+                </label>
+                <input
+                  type="text"
+                  name="anchorageLocation"
+                  className="form-control vessel-voyage voyageblock"
+                  id="anchorageLocation"
+                  placeholder=""
+                  value={selectedAnchorageLocation}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
 
