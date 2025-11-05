@@ -227,7 +227,7 @@ const EmployeePetty = () => {
               </label>
               <div className="vessel-select">
                 <select
-                  className="form-select vesselbox statusscustomer"
+                  className="form-select vesselbox statusscustomer  "
                   name="vendors"
                   value={selectedEmppettyid || ""}
                   onChange={handleChange}
