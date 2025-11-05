@@ -14,6 +14,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { Box, Typography } from "@mui/material";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 const PayableSummary = () => {
   const Group = require("../../assets/images/reporttttt.png");
 
@@ -359,10 +361,46 @@ const PayableSummary = () => {
     }
   };
 
-  // Create Excel for Payable Summary
-  const createExcel = () => {
+  // // Create Excel for Payable Summary
+  // const createExcel = () => {
+  //   if (!reportList || reportList?.length === 0) return;
+  //   const excelData = reportList?.map((report) => {
+  //     const vendorName = report?.vendorName ? report?.vendorName : "-";
+  //     const amountOMR = formatAmount(
+  //       report.totalInvoiceAmount - report.paidAmount
+  //     );
+  //     const remark = report ? report.remark : "";
+  //     const remarkDate =
+  //       remark && report?.remarkDate
+  //         ? new Date(report?.remarkDate).toLocaleDateString("en-GB")
+  //         : "N/A";
+  //     return {
+  //       "Vendor Name": vendorName,
+  //       "Amount in OMR": `${amountOMR}`,
+  //       "Status/ Remarks": remark || "N/A",
+  //       "Remark Date": remark ? remarkDate : "N/A",
+  //     };
+  //   });
+  //   // Add totals row in the last row, column 3 and 4
+  //   excelData.push({
+  //     "Vendor Name": "",
+  //     "Amount in OMR": "",
+  //     "Status/ Remarks": "Total Payable:",
+  //     "Remark Date": totalPayable,
+  //   });
+  //   // Re-create worksheet and workbook with the totals row
+  //   const XLSX = require("xlsx");
+  //   const worksheet = XLSX.utils.json_to_sheet(excelData);
+  //   worksheet["!cols"] = [{ wch: 25 }, { wch: 18 }, { wch: 30 }, { wch: 18 }];
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "PayableSummary");
+  //   XLSX.writeFile(workbook, "Payable Summary Report.xlsx");
+  // };
+
+  const createExcel = async () => {
     if (!reportList || reportList?.length === 0) return;
-    const excelData = reportList?.map((report) => {
+
+    const rowsData = reportList.map((report) => {
       const vendorName = report?.vendorName ? report?.vendorName : "-";
       const amountOMR = formatAmount(
         report.totalInvoiceAmount - report.paidAmount
@@ -372,6 +410,7 @@ const PayableSummary = () => {
         remark && report?.remarkDate
           ? new Date(report?.remarkDate).toLocaleDateString("en-GB")
           : "N/A";
+
       return {
         "Vendor Name": vendorName,
         "Amount in OMR": `${amountOMR}`,
@@ -379,22 +418,99 @@ const PayableSummary = () => {
         "Remark Date": remark ? remarkDate : "N/A",
       };
     });
-    // Add totals row in the last row, column 3 and 4
-    excelData.push({
+
+    // Totals row
+    rowsData.push({
       "Vendor Name": "",
       "Amount in OMR": "",
       "Status/ Remarks": "Total Payable:",
       "Remark Date": totalPayable,
     });
-    // Re-create worksheet and workbook with the totals row
-    const XLSX = require("xlsx");
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    worksheet["!cols"] = [{ wch: 25 }, { wch: 18 }, { wch: 30 }, { wch: 18 }];
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "PayableSummary");
-    XLSX.writeFile(workbook, "Payable Summary Report.xlsx");
-  };
 
+    const headers = Object.keys(rowsData[0] || {});
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Payable Summary", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header row
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    rowsData.forEach((row) => {
+      const r = worksheet.addRow(headers.map((h) => row[h]));
+      r.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+
+      // Increase row height if remarks are multiline
+      const remarkLines = (row["Status/ Remarks"] || "")
+        .toString()
+        .split("\n").length;
+      if (remarkLines > 1) {
+        r.height = Math.max(18, remarkLines * 15);
+      }
+    });
+
+    // Auto-size columns (clamped)
+    const minWidth = 15;
+    const maxWidth = 60;
+    headers.forEach((h, i) => {
+      let maxLen = (h || "").toString().length;
+      rowsData.forEach((row) => {
+        const val = row[h];
+        const len = val == null ? 0 : val.toString().length;
+        if (len > maxLen) maxLen = len;
+      });
+      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+      worksheet.getColumn(i + 1).width = width;
+    });
+    // Ensure key columns are comfortably wide
+    worksheet.getColumn(1).width = Math.max(
+      worksheet.getColumn(1).width || 0,
+      25
+    ); // Vendor Name
+    worksheet.getColumn(3).width = Math.max(
+      worksheet.getColumn(3).width || 0,
+      30
+    ); // Status/ Remarks
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Payable Summary Report.xlsx");
+  };
   return (
     <>
       <div className="p-2">

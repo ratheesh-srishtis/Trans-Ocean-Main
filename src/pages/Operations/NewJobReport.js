@@ -14,6 +14,8 @@ import Loader from "../Loader";
 import PopUp from "../PopUp";
 import { getAllJobs } from "../../services/apiService";
 import { jobReportPDF } from "../../services/apiService";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 const NewJobReport = ({ ports, loginResponse }) => {
   const [hydrated, setHydrated] = useState(false);
   const Group = require("../../assets/images/reporttttt.png");
@@ -350,6 +352,33 @@ const NewJobReport = ({ ports, loginResponse }) => {
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: (() => {
+        // First check: if roleType is not "operations", return ""
+        if (
+          loginResponse?.data?.userRole?.roleType?.toLowerCase() !==
+          "operations"
+        ) {
+          return "";
+        }
+
+        // If roleType is "operations", check designationType
+        const designationType =
+          loginResponse?.data?.userRole?.role?.designationType?.toLowerCase();
+
+        // If designationType is "operationsmanager" or "operationshead", return ""
+        if (["operationsmanager", "operationshead"].includes(designationType)) {
+          return "";
+        }
+
+        // If designationType is empty (""), return the user ID
+        // Note: If you meant roleType instead of _id, you can change this line
+        if (!designationType || designationType === "") {
+          return loginResponse?.data?._id;
+        }
+
+        // Default fallback
+        return "";
+      })(),
     };
     console.log(payload, "payload_getReport");
     try {
@@ -377,9 +406,45 @@ const NewJobReport = ({ ports, loginResponse }) => {
     }
   };
 
-  const createExcel = () => {
+  // const createExcel = () => {
+  //   if (!filteredQuotations || filteredQuotations.length === 0) return;
+  //   const excelData = filteredQuotations.map((item) => ({
+  //     "Job ID": item.jobId || "N/A",
+  //     "Vessel Name": item.vesselId?.[0]?.vesselName || "N/A",
+  //     Job:
+  //       item.jobs
+  //         ?.map((job) => job.service?.[0]?.serviceName || "N/A")
+  //         ?.join(", ") || "N/A",
+  //     "Port Name": item.portId?.[0]?.portName || "N/A",
+  //     "Ops By": item.assignedEmployee?.[0]?.name || "N/A",
+  //     Status:
+  //       item.pdaStatus === 5
+  //         ? "Customer Approved"
+  //         : item.pdaStatus === 6
+  //         ? "Pending from operations"
+  //         : item.pdaStatus === 7
+  //         ? "Operations Completed"
+  //         : "Unknown Status",
+  //   }));
+  //   const XLSX = require("xlsx");
+  //   const worksheet = XLSX.utils.json_to_sheet(excelData);
+  //   worksheet["!cols"] = [
+  //     { wch: 15 }, // Job ID
+  //     { wch: 20 }, // Vessel Name
+  //     { wch: 30 }, // Job
+  //     { wch: 20 }, // Port Name
+  //     { wch: 20 }, // Ops By
+  //     { wch: 20 }, // Status
+  //   ];
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "JobReport");
+  //   XLSX.writeFile(workbook, "Job Report.xlsx");
+  // };
+
+  const createExcel = async () => {
     if (!filteredQuotations || filteredQuotations.length === 0) return;
-    const excelData = filteredQuotations.map((item) => ({
+
+    const rowsData = filteredQuotations.map((item) => ({
       "Job ID": item.jobId || "N/A",
       "Vessel Name": item.vesselId?.[0]?.vesselName || "N/A",
       Job:
@@ -397,19 +462,81 @@ const NewJobReport = ({ ports, loginResponse }) => {
           ? "Operations Completed"
           : "Unknown Status",
     }));
-    const XLSX = require("xlsx");
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    worksheet["!cols"] = [
-      { wch: 15 }, // Job ID
-      { wch: 20 }, // Vessel Name
-      { wch: 30 }, // Job
-      { wch: 20 }, // Port Name
-      { wch: 20 }, // Ops By
-      { wch: 20 }, // Status
-    ];
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "JobReport");
-    XLSX.writeFile(workbook, "Job Report.xlsx");
+
+    const headers = Object.keys(rowsData[0] || {});
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Job Report", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header row
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    rowsData.forEach((row) => {
+      const r = worksheet.addRow(headers.map((h) => row[h]));
+      r.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // Auto-size columns based on content length (clamped)
+    const minWidth = 15;
+    const maxWidth = 60;
+    headers.forEach((h, i) => {
+      let maxLen = (h || "").toString().length;
+      rowsData.forEach((row) => {
+        const val = row[h];
+        const len = val == null ? 0 : val.toString().length;
+        if (len > maxLen) maxLen = len;
+      });
+      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+      worksheet.getColumn(i + 1).width = width;
+      worksheet.getColumn(1).width = Math.max(
+        worksheet.getColumn(1).width || 0,
+        28
+      );
+    });
+    // Let Excel auto-adjust row heights for wrapped text
+    worksheet.eachRow((row) => {
+      row.height = undefined;
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Job Report.xlsx");
   };
 
   useEffect(() => {
