@@ -8,6 +8,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import "../css/reports.css";
 import AddAnchorageStay from "./AddAnchorageStay";
 import {
   getAnchorageStayCharge,
@@ -195,7 +196,7 @@ const StayCharge = ({ portName, onClick }) => {
       <div className="p-3">
         <div className="jobreport-header">
           <div className="summary"></div>
-          <div className="col-1 ">
+          <div className="col-2 staychrg ">
             <button
               type="button"
               onClick={() => handleOpen()}
