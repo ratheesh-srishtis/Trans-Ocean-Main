@@ -511,7 +511,7 @@ const AddVoucher = ({
             </div>
 
             <div className="row">
-              {/* <div className=" col-6 mb-3 align-items-start">
+              <div className=" col-6 mb-3 align-items-start">
                 <label
                   htmlFor="exampleFormControlInput1"
                   className="form-label filterbypayment "
@@ -534,7 +534,7 @@ const AddVoucher = ({
                     ))}
                   </select>
                 </div>
-              </div> */}
+              </div>
               <div className=" col-6 mb-3 align-items-start">
                 <label
                   htmlFor="exampleFormControlInput1"

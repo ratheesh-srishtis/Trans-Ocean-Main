@@ -262,46 +262,62 @@ const CustomerPayments = () => {
   );
 
   const columns = [
-    { field: "jobId", headerName: "Job ID", flex: 2 },
+    { field: "jobId", headerName: "Job ID", flex: 1 },
     {
       field: "quotation",
-      headerName: "Quotation Number",
-      flex: 2,
+      headerName: (
+        <span>
+          Quotation<br />Number
+        </span>
+      ),
+      flex: 1,
       minWidth: 150,
     },
-    { field: "invoice", headerName: "Invoice", flex: 2 },
+    { field: "invoice", headerName: "Invoice", flex: 1 },
     {
       field: "recvamount",
-      headerName: "Received Amount",
-      flex: 2,
+      headerName: (
+        <span>
+          Received<br />Amount
+        </span>
+      ),
+      flex: 1,
       minWidth: 100,
     },
-    { field: "amount", headerName: "Paid Amount", flex: 2, minWidth: 100 },
-    { field: "currency", headerName: "Currency", flex: 2, minWidth: 100 },
+    { field: "amount",   headerName: (
+        <span>
+          Paid<br />Amount
+        </span>
+      ), flex: 1, minWidth: 100 },
+    { field: "currency", headerName: "Currency", flex: 1, minWidth: 100 },
     {
       field: "exchangeLoss",
       headerName: "Exchange Loss",
-      flex: 2,
+      flex: 1,
       minWidth: 100,
     },
     {
       field: "discountAmount",
       headerName: `Discount (OMR)`,
-      flex: 2,
+      flex: 1,
       minWidth: 100,
     },
     {
       field: "modeofPayment",
-      headerName: "Mode of Payment",
-      flex: 2,
+       headerName: (
+        <span>
+          Mode of<br />Payment
+        </span>
+      ),
+      flex: 1,
       minWidth: 150,
     },
-    { field: "dateofpay", headerName: "Payment Date", flex: 2, minWidth: 120 },
-    { field: "banks", headerName: "Bank", flex: 2 },
+    { field: "dateofpay", headerName: "Payment Date", flex: 1, minWidth: 120 },
+    // { field: "banks", headerName: "Bank", flex: 1 },
     {
       field: "actions",
       headerName: "Action",
-      flex: 3,
+      flex: 2,
       renderCell: (params) => (
         <>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -601,8 +617,8 @@ const CustomerPayments = () => {
                 currency: currencyVal || "N/A",
                 modeofPayment: modeofpay || "N/A",
                 dateofpay: formattedDate || "N/A",
-                banks:
-                  item.bank && item.bank.bankName ? item.bank.bankName : "N/A",
+                // banks:
+                //   item.bank && item.bank.bankName ? item.bank.bankName : "N/A",
               };
             })}
             columns={columns}

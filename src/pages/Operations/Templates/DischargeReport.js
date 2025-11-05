@@ -64,7 +64,8 @@ const DischargeReport = ({
   const [etaHours, setEtaHours] = useState("");
   const [etaMinutes, setEtaMinutes] = useState("");
   const [etaTimeError, setEtaTimeError] = useState("");
-
+  const [selectedBerth, setSelectedBerth] = useState(null);
+  const [selectedTerminal, setSelectedTerminal] = useState(null);
   const [formState, setFormState] = useState({
     draftOnArrivalFWD: "",
     draftOnArrivalAFT: "",
@@ -181,6 +182,10 @@ const DischargeReport = ({
       setShipperRemarks(value);
     } else if (name === "masterRemarks") {
       setMasterRemarks(value);
+    } else if (name === "berth") {
+      setSelectedBerth(value);
+    } else if (name === "terminal") {
+      setSelectedTerminal(value);
     }
     setFormState((prevState) => ({
       ...prevState,
@@ -279,6 +284,8 @@ const DischargeReport = ({
       pdaChargeId: charge?._id,
       templateId: selectedTemplate,
       templateName: selectedTemplateName,
+      berth: selectedBerth,
+      terminal: selectedTerminal,
       ...formattedFormData, // Use the formatted date values
       // draftOnArrivalFWD: formState.draftOnArrivalFWD,
       // draftOnArrivalAFT: formState.draftOnArrivalAFT,
@@ -355,7 +362,8 @@ const DischargeReport = ({
         setGeneralRemarks(templateData?.generalRemarks);
         setShipperRemarks(templateData?.shipperRemarks);
         setMasterRemarks(templateData?.masterRemarks);
-
+        setSelectedBerth(templateData?.berth);
+        setSelectedTerminal(templateData?.terminal);
         setFormData((prevFormData) => {
           const updatedFormData = {
             grade: templateData?.grade,
@@ -882,6 +890,37 @@ const DischargeReport = ({
 <div  className=" mt-2 master">
   Agent
 </div> */}
+
+            <div className="row mt-3">
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Berth:
+                </label>
+                <input
+                  type="text"
+                  name="berth"
+                  className="form-control vessel-voyage voyageblock"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  value={selectedBerth}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Terminal:
+                </label>
+                <input
+                  type="text"
+                  name="terminal"
+                  className="form-control vessel-voyage voyageblock"
+                  id="terminal"
+                  placeholder=""
+                  value={selectedTerminal}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
             <div className="footer-button d-flex justify-content-center mt-3">
               <button type="button" className="btn btncancel" onClick={onClose}>
                 Cancel

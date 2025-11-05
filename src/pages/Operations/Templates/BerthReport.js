@@ -34,7 +34,10 @@ const BerthReport = ({
   const [isLoading, setIsLoading] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [selectedBerth, setSelectedBerth] = useState(null);
+  const [selectedTerminal, setSelectedTerminal] = useState(null);
+  const [selectedAnchorageLocation, setSelectedAnchorageLocation] =
+    useState(null);
   const [reportRows, setReportRows] = useState([
     { description: "ESOP", reportDate: "", hours: "", minutes: "" },
     { description: "ANCHORED", reportDate: "", hours: "", minutes: "" },
@@ -108,6 +111,12 @@ const BerthReport = ({
       setShipperRemarks(value);
     } else if (name === "masterRemarks") {
       setMasterRemarks(value);
+    } else if (name === "berth") {
+      setSelectedBerth(value);
+    } else if (name === "terminal") {
+      setSelectedTerminal(value);
+    } else if (name === "anchorageLocation") {
+      setSelectedAnchorageLocation(value);
     }
     setFormState((prevState) => ({
       ...prevState,
@@ -398,6 +407,9 @@ const BerthReport = ({
       generalRemarks: generalRemarks,
       shipperRemarks: shipperRemarks,
       masterRemarks: masterRemarks,
+      berth: selectedBerth,
+      terminal: selectedTerminal,
+      anchorageLocation: selectedAnchorageLocation,
     };
     // Proceed with the API call
     setIsLoading(true);
@@ -448,20 +460,57 @@ const BerthReport = ({
         }
 
         // Update formData with respective fields
+        // Process API data to extract hours and minutes
+        const apiReportDetails =
+          templateData?.reportDetails?.map((item) => {
+            const [datePart, timePart] = item.reportDate.split(" "); // "2025-06-12", "12:15"
+            const [hours, minutes] = timePart.split(":");
 
-        const updatedReportDetails = templateData?.reportDetails.map((item) => {
-          const [datePart, timePart] = item.reportDate.split(" "); // "2025-06-12", "12:15"
-          const [hours, minutes] = timePart.split(":");
+            return {
+              description: item.description,
+              reportDate: item.reportDate,
+              hours,
+              minutes,
+            };
+          }) || [];
 
-          return {
-            description: item.description,
-            reportDate: item.reportDate,
-            hours,
-            minutes,
-          };
+        // Merge API data with default reportRows structure
+        // Keep all default rows and update matching ones with API data
+        setReportRows((prevRows) => {
+          // Create a map of API data by description for quick lookup
+          const apiDataMap = new Map();
+          apiReportDetails.forEach((apiItem) => {
+            apiDataMap.set(apiItem.description.trim(), apiItem);
+          });
+
+          // Update existing rows with matching API data, keep all default rows
+          const mergedRows = prevRows.map((row) => {
+            const matchingApiData = apiDataMap.get(row.description.trim());
+            if (matchingApiData) {
+              // Update this row with API data
+              return {
+                description: row.description, // Keep original description
+                reportDate: matchingApiData.reportDate,
+                hours: matchingApiData.hours,
+                minutes: matchingApiData.minutes,
+              };
+            }
+            // Keep original row if no API data matches
+            return row;
+          });
+
+          // Add any API rows that don't match default descriptions (additional rows)
+          apiReportDetails.forEach((apiItem) => {
+            const existsInDefault = prevRows.some(
+              (row) => row.description.trim() === apiItem.description.trim()
+            );
+            if (!existsInDefault) {
+              mergedRows.push(apiItem);
+            }
+          });
+
+          return mergedRows;
         });
-
-        setReportRows(updatedReportDetails);
 
         // Update formState with the respective fields
         setFormState((prevFormState) => ({
@@ -487,6 +536,9 @@ const BerthReport = ({
         setGeneralRemarks(templateData?.generalRemarks);
         setShipperRemarks(templateData?.shipperRemarks);
         setMasterRemarks(templateData?.masterRemarks);
+        setSelectedBerth(templateData?.berth);
+        setSelectedTerminal(templateData?.terminal);
+        setSelectedAnchorageLocation(templateData?.anchorageLocation);
       }
 
       console.log("getPdaTemplateData:", response);
@@ -502,6 +554,10 @@ const BerthReport = ({
       getPdaTemplateData();
     }
   }, [isEdit]);
+
+  useEffect(() => {
+    console.log(pdaResponse, "pdaResponse");
+  }, [pdaResponse]);
 
   return (
     <>
@@ -531,7 +587,7 @@ const BerthReport = ({
           </div>
           <DialogContent style={{ marginBottom: "40px" }}>
             <div className=" statement">
-              <h3>Statement of Facts</h3>
+              <h3>STATEMENT OF FACTS</h3>
             </div>
 
             <table className="tabmain">
@@ -829,7 +885,7 @@ const BerthReport = ({
                         dateFormat="dd/MM/yyyy"
                         selected={eta ? new Date(eta) : null} // Inline date conversion for prefilled value
                         onChange={handleEtaChange}
-                        className="form-control date-input dateheight"
+                        className="form-control date-input dateheight sof-eta-width"
                         id="eta-picker"
                         placeholderText=""
                         autoComplete="off"
@@ -872,6 +928,52 @@ const BerthReport = ({
                 </div>
               </div>
             </div>
+
+            <div className="row mt-3">
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Berth:
+                </label>
+                <input
+                  type="text"
+                  name="berth"
+                  className="form-control vessel-voyage voyageblock"
+                  id="exampleFormControlInput1"
+                  placeholder=""
+                  value={selectedBerth}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Terminal:
+                </label>
+                <input
+                  type="text"
+                  name="terminal"
+                  className="form-control vessel-voyage voyageblock"
+                  id="terminal"
+                  placeholder=""
+                  value={selectedTerminal}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="col-lg-4 col-md-4 col-sm-12 nrt mb-3 ">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Anchorage Location:
+                </label>
+                <input
+                  type="text"
+                  name="anchorageLocation"
+                  className="form-control vessel-voyage voyageblock"
+                  id="anchorageLocation"
+                  placeholder=""
+                  value={selectedAnchorageLocation}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
             <div className="mt-3">
               <label
                 htmlFor="exampleFormControlTextarea1"

@@ -98,7 +98,7 @@ const Soa = ({}) => {
       balanceusd = (balance * 2.62).toFixed(2);
 
       let balanceAed;
-      balanceAed = (balanceusd * 3.6725).toFixed(2);
+      balanceAed = (balanceusd * 3.6725).toFixed(4);
       const baseRow = {
         "Quotation Number": item.pdaNumber || "N/A",
         "Invoice NO": item.invoiceId || "N/A",
@@ -165,7 +165,7 @@ const Soa = ({}) => {
             3.6725,
         0
       )
-      .toFixed(3);
+      .toFixed(4);
     const totalUSD = soaList
       .reduce((sum, item) => sum + (item.totalAmountOMR || 0) * 2.62, 0)
       .toFixed(2);
@@ -672,7 +672,7 @@ const Soa = ({}) => {
 
               let balanceUsdNew;
               balanceUsdNew = (balance * 2.62).toFixed(2);
-              const balanceAed = (balanceUsdNew * 3.6725).toFixed(2);
+              const balanceAed = (balanceUsdNew * 3.6725).toFixed(4);
 
               return {
                 id: item._id,
@@ -757,7 +757,7 @@ const Soa = ({}) => {
                         3.6725,
                     0
                   )
-                  .toFixed(2),
+                  .toFixed(4),
                 days: "",
               },
             ])}

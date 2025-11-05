@@ -5,7 +5,10 @@ import { getAllJobs, deleteQuotation } from "../../services/apiService";
 import Loader from "../Loader";
 import Swal from "sweetalert2";
 import PopUp from "../PopUp";
+import { useAuth } from "../../context/AuthContext";
 const OpsDashboard = () => {
+  const { loginResponse } = useAuth();
+
   const Group = require("../../assets/images/hugeicons_new-job.png");
   const [jobsList, setJobsList] = useState([]); // Loader state
   const navigate = useNavigate();
@@ -24,6 +27,35 @@ const OpsDashboard = () => {
         filter: type, // Always include the filter
         statusFilter: status, // Include statusFilter if selectedStatus has a value
         searchKey: searchValue, // Include searchKey if searchTerm has a value
+        assignedEmployee: (() => {
+          // First check: if roleType is not "operations", return ""
+          if (
+            loginResponse?.data?.userRole?.roleType?.toLowerCase() !==
+            "operations"
+          ) {
+            return "";
+          }
+
+          // If roleType is "operations", check designationType
+          const designationType =
+            loginResponse?.data?.userRole?.role?.designationType?.toLowerCase();
+
+          // If designationType is "operationsmanager" or "operationshead", return ""
+          if (
+            ["operationsmanager", "operationshead"].includes(designationType)
+          ) {
+            return "";
+          }
+
+          // If designationType is empty (""), return the user ID
+          // Note: If you meant roleType instead of _id, you can change this line
+          if (!designationType || designationType === "") {
+            return loginResponse?.data?._id;
+          }
+
+          // Default fallback
+          return "";
+        })(),
       };
       const quotations = await getAllJobs(userData);
       console.log("Quotations:", quotations);

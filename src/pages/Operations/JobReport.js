@@ -62,10 +62,12 @@ const JobReport = ({
       month: newMonth,
       year: String(newYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     });
   };
 
   const fetchJobReport = async (customPayload = null) => {
+    alert("fetchJobReport called");
     console.log(selectedYear, "selectedYear_fetchJobReport");
     setIsLoading(true);
     // Use the customPayload if provided, else use the current state values
@@ -74,6 +76,7 @@ const JobReport = ({
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     };
     console.log(customPayload, "customPayload_fetchJobReport");
     console.log(payload, "payload_fetchJobReport");
@@ -91,14 +94,17 @@ const JobReport = ({
   };
 
   const fetchInitialJobReport = async () => {
+    // alert("fetchInitialJobReport called");
     setIsLoading(true);
     const payload = {
       filter: filterType,
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     };
     try {
+
       const reportResponse = await getJobReport(payload);
       console.log(reportResponse, "reportResponse");
       setSelectedJobs(reportResponse?.jobs);
@@ -141,6 +147,7 @@ const JobReport = ({
       month: selectedMonth,
       year: String(selectedYear),
       jobs: selectedIds,
+      assignedEmployee: "",
     };
     console.log(payload, "payload_getReport");
     try {

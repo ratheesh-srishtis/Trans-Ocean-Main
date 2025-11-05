@@ -252,22 +252,19 @@ const VendorVouchers = () => {
       flex: 5,
       renderCell: (params) => {
         console.log("params", params);
-        const hasValidVendorId =
-          params.row.vendorId &&
-          params.row.vendorId !== null &&
-          params.row.vendorId !== undefined &&
-          params.row.vendorId !== "";
+        // Use isVendorPetty to determine button visibility
+        const isVendorPetty = params.row.isVendorPetty === true;
 
         return (
           <div style={{ display: "flex", alignItems: "center" }}>
             <button
               className="btn btna submitpaymentbutton btnfsize"
               onClick={() => handleView(params.row)}
-              style={{ marginRight: "8px" }} // Add some space between buttons
+              style={{ marginRight: "8px" }}
             >
               View
             </button>
-            {!hasValidVendorId && (
+            {!isVendorPetty && (
               <>
                 <IconButton
                   color="primary"
@@ -519,7 +516,7 @@ const VendorVouchers = () => {
               dateofPay: formattedDate || "N/A",
               amount: item.amount || "N/A",
               vendorId: item.vendorId?._id || "",
-              // vendorName: item.vendorId?.vendorName || "N/A",
+              vendorName: item.vendorId?.vendorName || "N/A",
               remark: item.remark || "N/A",
               // modeofPayment: modeofpay || "N/A",
               // banks:

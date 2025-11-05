@@ -323,7 +323,7 @@ const Profile = () => {
 
       // Personal Information Sheet
       const personalData = [
-        ["Personal Information", ""],
+        ["PERSONAL INFORMATION", ""],
         ["First Name", formData.employeeName || ""],
         ["Last Name", formData.employeeLastName || ""],
         ["Date of Birth", formatDate(formData.dob) || ""],
@@ -361,7 +361,7 @@ const Profile = () => {
           ]);
           personalData.push([
             `Passport ${idx + 1} - Expiry Date`,
-            item.dateOfExpiry || "",
+            formatDate(item.dateOfExpiry) || "",
           ]);
           personalData.push([
             `Passport ${idx + 1} - Document`,
@@ -380,12 +380,8 @@ const Profile = () => {
             item.contractName || "",
           ]);
           personalData.push([
-            `Contract ${idx + 1} - Start Date`,
-            item.contractStartDate || "",
-          ]);
-          personalData.push([
-            `Contract ${idx + 1} - End Date`,
-            item.contractEndDate || "",
+            `Contract ${idx + 1} - Expiry Date`,
+            formatDate(item.dateOfExpiry) || "",
           ]);
           personalData.push([
             `Contract ${idx + 1} - Document`,
@@ -405,7 +401,7 @@ const Profile = () => {
           ]);
           personalData.push([
             `Visa ${idx + 1} - Expiry Date`,
-            item.dateOfExpiry || "",
+            formatDate(item.dateOfExpiry) || "",
           ]);
           personalData.push([
             `Visa ${idx + 1} - Document`,
@@ -425,7 +421,7 @@ const Profile = () => {
           ]);
           personalData.push([
             `License ${idx + 1} - Expiry Date`,
-            item.dateOfExpiry || "",
+            formatDate(item.dateOfExpiry) || "",
           ]);
           personalData.push([
             `License ${idx + 1} - Document`,

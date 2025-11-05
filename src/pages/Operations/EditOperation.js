@@ -831,6 +831,7 @@ const EditOperation = ({
           </div>
         </div>
         {/* fifthrowdocumentsupload */}
+
         <div className="typesofcall-row ">
           <div className="row align-items-start">
             <div className="mb-2 col-4 docuplo">
@@ -939,25 +940,22 @@ const EditOperation = ({
               </div>
             </div>
           </div>
-          {pdaResponse?.pdaStatus != 7 && (
-            <>
-              <div className="col-2 addserv">
-                <div className="mb-3">
-                  <div className="col">
-                    <button
-                      type="button"
-                      className="btn addcharge-button text-center serviceaddbtn"
-                      onClick={() => {
-                        addServices();
-                      }}
-                    >
-                      Request Service
-                    </button>
-                  </div>
-                </div>
+
+          <div className="col-2 addserv">
+            <div className="mb-3">
+              <div className="col">
+                <button
+                  type="button"
+                  className="btn addcharge-button text-center serviceaddbtn"
+                  onClick={() => {
+                    addServices();
+                  }}
+                >
+                  Request Service
+                </button>
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
 
         <div className="charges-table">

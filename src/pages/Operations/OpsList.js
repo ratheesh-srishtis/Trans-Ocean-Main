@@ -37,11 +37,39 @@ const OpsList = () => {
   const [message, setMessage] = useState("");
   const fetchQuotations = async (type) => {
     setSelectedTab(type);
-
     try {
       setIsLoading(true);
       let userData = {
         filter: type,
+        assignedEmployee: (() => {
+          // First check: if roleType is not "operations", return ""
+          if (
+            loginResponse?.data?.userRole?.roleType?.toLowerCase() !==
+            "operations"
+          ) {
+            return "";
+          }
+
+          // If roleType is "operations", check designationType
+          const designationType =
+            loginResponse?.data?.userRole?.role?.designationType?.toLowerCase();
+
+          // If designationType is "operationsmanager" or "operationshead", return ""
+          if (
+            ["operationsmanager", "operationshead"].includes(designationType)
+          ) {
+            return "";
+          }
+
+          // If designationType is empty (""), return the user ID
+          // Note: If you meant roleType instead of _id, you can change this line
+          if (!designationType || designationType === "") {
+            return loginResponse?.data?._id;
+          }
+
+          // Default fallback
+          return "";
+        })(),
       };
       const quotations = await getAllJobs(userData);
       console.log("Quotations:", quotations);
