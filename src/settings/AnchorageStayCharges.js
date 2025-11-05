@@ -144,13 +144,15 @@ const AnchorageStayCharges = () => {
               disabled={isUpdating}
             />
           </div>
-          <button
-            className="update-remarks-btn"
-            onClick={handleUpdateRemarks}
-            disabled={isUpdating || isLoading}
-          >
-            {isUpdating ? "Updating..." : "Update Remarks"}
-          </button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button
+              className="btn update-remarks-btn"
+              onClick={handleUpdateRemarks}
+              disabled={isUpdating || isLoading}
+            >
+              {isUpdating ? "Updating..." : "Update Remarks"}
+            </button>
+          </div>
         </div>
       </div>
       <Loader isLoading={isLoading} />

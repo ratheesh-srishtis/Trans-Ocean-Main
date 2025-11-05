@@ -27,11 +27,35 @@ const OpsDashboard = () => {
         filter: type, // Always include the filter
         statusFilter: status, // Include statusFilter if selectedStatus has a value
         searchKey: searchValue, // Include searchKey if searchTerm has a value
-        assignedEmployee: ["operationsmanager", "operationshead"].includes(
-          loginResponse?.data?.userRole?.role?.designationType?.toLowerCase()
-        )
-          ? ""
-          : loginResponse?.data?._id,
+        assignedEmployee: (() => {
+          // First check: if roleType is not "operations", return ""
+          if (
+            loginResponse?.data?.userRole?.roleType?.toLowerCase() !==
+            "operations"
+          ) {
+            return "";
+          }
+
+          // If roleType is "operations", check designationType
+          const designationType =
+            loginResponse?.data?.userRole?.role?.designationType?.toLowerCase();
+
+          // If designationType is "operationsmanager" or "operationshead", return ""
+          if (
+            ["operationsmanager", "operationshead"].includes(designationType)
+          ) {
+            return "";
+          }
+
+          // If designationType is empty (""), return the user ID
+          // Note: If you meant roleType instead of _id, you can change this line
+          if (!designationType || designationType === "") {
+            return loginResponse?.data?._id;
+          }
+
+          // Default fallback
+          return "";
+        })(),
       };
       const quotations = await getAllJobs(userData);
       console.log("Quotations:", quotations);
