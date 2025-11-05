@@ -147,15 +147,35 @@ const NotificationPage = ({ open, onClose, onOpen }) => {
     console.log(notification, "notification");
     let row = notification?.pdaId;
     console.log(row, "notification_row");
-    if (loginResponse?.data?.userRole?.roleType == "finance") {
-      navigate("/create-pda", { state: { row } });
-      onClose();
-    } else if (loginResponse?.data?.userRole?.roleType == "operations") {
-      navigate("/edit-operation", { state: { row } });
-      onClose();
-    } else if (loginResponse?.data?.userRole?.roleType == "admin") {
-      navigate("/create-pda", { state: { row } });
-      onClose();
+    if (row) {
+      // Prefer routing based on pdaStatus when available
+      const pdaStatus =
+        typeof row?.pdaStatus === "number"
+          ? row.pdaStatus
+          : Number(row?.pdaStatus);
+      if (!isNaN(pdaStatus)) {
+        if (pdaStatus < 5) {
+          navigate("/create-pda", { state: { row } });
+          onClose();
+          return;
+        } else {
+          navigate("/edit-operation", { state: { row } });
+          onClose();
+          return;
+        }
+      }
+
+      // Fallback to existing role-based conditions
+      if (loginResponse?.data?.userRole?.roleType == "finance") {
+        navigate("/create-pda", { state: { row } });
+        onClose();
+      } else if (loginResponse?.data?.userRole?.roleType == "operations") {
+        navigate("/edit-operation", { state: { row } });
+        onClose();
+      } else if (loginResponse?.data?.userRole?.roleType == "admin") {
+        navigate("/create-pda", { state: { row } });
+        onClose();
+      }
     }
   };
 

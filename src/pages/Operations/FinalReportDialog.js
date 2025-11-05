@@ -10,6 +10,8 @@ import {
   Grid,
   Button,
 } from "@mui/material";
+import PopUp from "../PopUp";
+import Loader from "../Loader";
 import {
   getServiceReport,
   getPdaDetails,
@@ -18,12 +20,15 @@ import {
 import { useRef } from "react";
 import moment from "moment";
 import { useMedia } from "../../context/MediaContext";
+import { generateServiceReportPDF } from "../../services/apiService";
 const FinalReportDialog = ({ open, onClose, pdaId, ports }) => {
   const [serviceReports, setServiceReports] = useState([]);
   const [pdaResponse, setPdaResponse] = useState(null);
   const [anchorageLocations, setAnchorageLocations] = useState([]);
   const { logoPreview, headerPreview, footerPreview } = useMedia() || {};
-
+  const [openPopUp, setOpenPopUp] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Loader state
   const serviceReportGet = async (id) => {
     let data = {
       pdaId: id,
@@ -109,6 +114,40 @@ const FinalReportDialog = ({ open, onClose, pdaId, ports }) => {
     }
   };
 
+  const getPDF = async () => {
+    let payload = {
+      pdaId: pdaId,
+    };
+    console.log(payload, "payload_getReport");
+    try {
+      const response = await generateServiceReportPDF(payload);
+      console.log("getPettyCashReport", response);
+      if (response?.status == true) {
+        if (response?.pdfPath) {
+          const pdfUrl = `${response.pdfPath}`;
+          // Fetch the PDF as a Blob
+          const pdfResponse = await fetch(pdfUrl);
+          const pdfBlob = await pdfResponse.blob();
+          const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+          // Create a hidden anchor tag to trigger the download
+          const link = document.createElement("a");
+          link.href = pdfBlobUrl;
+          link.setAttribute("download", "Final Report.pdf"); // Set the file name
+          document.body.appendChild(link);
+          link.click();
+          // Clean up
+          document.body.removeChild(link);
+          URL.revokeObjectURL(pdfBlobUrl);
+        }
+      } else {
+        setMessage(response?.message);
+        setOpenPopUp(true);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+    }
+  };
+
   return (
     <>
       <div>
@@ -136,6 +175,16 @@ const FinalReportDialog = ({ open, onClose, pdaId, ports }) => {
             </div>
           </div>
           <DialogContent style={{ marginBottom: "40px" }}>
+            <div className="download-btn-container">
+              <button
+                className="btn btn-info filbtnjobccbrkup"
+                onClick={() => {
+                  getPDF();
+                }}
+              >
+                Download PDF
+              </button>
+            </div>
             <div>
               <img className="header-image" src={headerPreview}></img>
             </div>
@@ -222,6 +271,10 @@ const FinalReportDialog = ({ open, onClose, pdaId, ports }) => {
           </DialogContent>
         </Dialog>
       </div>
+      {openPopUp && (
+        <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
+      )}{" "}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

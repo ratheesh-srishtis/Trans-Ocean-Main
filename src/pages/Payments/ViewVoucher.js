@@ -139,7 +139,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
             </div>
             <div className="voucherpadding">
               <div className=" headheadvoucher">
-                <div className="headvoucher">Petty</div>
+                <div className="headvoucher">PETTY</div>
 
                 <div className="downloadbutnvoucher">
                   <button
@@ -173,7 +173,13 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                   </tr>
                   <tr>
                     <td className="voucherprinting">{particulars}</td>
-                    <td className="voucheramountrate text-center">{amount}</td>
+                    <td className="voucheramountrate text-center">
+                      {amount !== undefined &&
+                      amount !== null &&
+                      !isNaN(Number(amount))
+                        ? Number(amount).toFixed(3)
+                        : "N/A"}
+                    </td>
                   </tr>
                   <tr>
                     <td className="voucherpartthree">
@@ -208,10 +214,15 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
                   </tr>
                   <tr>
                     <td className="voucherprinting">
-                      {getWordRepresentation(amount, "Dirham")}
+                      {getWordRepresentation(amount, "OMR")}
                     </td>
                     <td className="voucheramountrate text-center">
-                      OMR {amount}
+                      OMR{" "}
+                      {amount !== undefined &&
+                      amount !== null &&
+                      !isNaN(Number(amount))
+                        ? Number(amount).toFixed(3)
+                        : "N/A"}
                     </td>
                   </tr>
                 </tbody>

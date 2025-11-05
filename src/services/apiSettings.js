@@ -662,6 +662,14 @@ export const getAnchorageStayChargePorts = async () => {
     console.log("Error in getAnchorageStayChargePorts", error);
   }
 };
+export const updateAnchorageStayRemark = async (userData) => {
+  try {
+    const response = await axiosInstance.post("/updateAnchorageStayRemark", userData);
+    return response.data;
+  } catch (error) {
+    console.log("Error in updateAnchorageStayRemark", error);
+  }
+};
 export const getAnchorageStayCharge = async (userData) => {
   try {
     const response = await axiosInstance.post(

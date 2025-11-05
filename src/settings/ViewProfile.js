@@ -152,7 +152,7 @@ const ViewProfile = ({ formData, desiginationlist, handleView, BASE_URL }) => {
   }, []);
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 0 }}>
       {/* Personal Information */}
       <InfoCard title="Personal Information" icon={getSectionIcon("personal")}>
         <Grid container spacing={2}>

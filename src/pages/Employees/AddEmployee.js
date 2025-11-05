@@ -1198,7 +1198,7 @@ const AddEmployee = () => {
               </label>
               <input
                 type="date"
-                className="form-control vessel-voyage"
+                className="form-control custom-picker-styles"
                 id="dob"
                 placeholder=""
                 name="dob"
@@ -1423,7 +1423,7 @@ const AddEmployee = () => {
               </label>
               <input
                 type="date"
-                className="form-control vessel-voyage"
+                className="form-control custom-picker-styles"
                 id="dateofjoining"
                 placeholder=""
                 name="dateOfJoining"
@@ -1565,7 +1565,7 @@ const AddEmployee = () => {
                   </label>
                   <input
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="passportdetail_expiry"
                     placeholder=""
                     name="passportdetail_expiry"
@@ -1651,7 +1651,7 @@ const AddEmployee = () => {
                   </label>
                   <input
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="contractdetail_expiry"
                     placeholder=""
                     name="contractdetail_expiry"
@@ -1737,7 +1737,7 @@ const AddEmployee = () => {
                   </label>
                   <input
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="visa_expiry"
                     placeholder=""
                     name="visa_expiry"
@@ -1826,7 +1826,7 @@ const AddEmployee = () => {
                   </label>
                   <input
                     type="date"
-                    className="form-control vessel-voyage"
+                    className="form-control custom-picker-styles"
                     id="license_date"
                     placeholder=""
                     name="license_date"

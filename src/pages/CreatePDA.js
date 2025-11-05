@@ -52,7 +52,6 @@ const CreatePDA = ({
   const [selectedCargoCapacity, setSelectedCargoCapacity] = useState(null);
   const [selectedCargoCapacityError, setSelectedCargoCapacityError] =
     useState(null);
-  const [selectedBerth, setSelectedBerth] = useState(null);
   const [selectedAnchorageLocation, setSelectedAnchorageLocation] =
     useState(null);
   const [selectedVesselType, setSelectedVesselType] = useState(null);
@@ -197,8 +196,6 @@ const CreatePDA = ({
     if (name === "cargoCapacity") {
       setSelectedCargoCapacity(value);
       setSelectedCargoCapacityError(false);
-    } else if (name === "berth") {
-      setSelectedBerth(value);
     }
 
     // Clear individual field error if user starts typing
@@ -648,7 +645,6 @@ const CreatePDA = ({
         charges: finalChargesArray,
         anchorageLocation: selectedAnchorageLocation?._id,
         cargoCapacity: selectedCargoCapacity,
-        berth: selectedBerth,
       };
       console.log(pdaPayload, "pdaPayload");
       if (!pdaResponse?._id) {
@@ -933,7 +929,7 @@ const CreatePDA = ({
     setAnchorageLocationID(response?.pda?.anchorageLocation);
     setIsVessels(response?.pda?.isVessels);
     setIsServices(response?.pda?.isServices);
-    setSelectedBerth(response?.pda?.berth);
+
     setSelectedCargoCapacity(response?.pda?.cargoCapacity);
     setUploadedFiles(response?.pda?.documents); // Append new files to existing ones
 
@@ -1335,20 +1331,20 @@ const CreatePDA = ({
                     {pdaResponse?.pdaStatus == 1
                       ? "Draft PDA"
                       : pdaResponse?.pdaStatus == 2
-                        ? "Waiting For Approval From FM"
-                        : pdaResponse?.pdaStatus == 3
-                          ? "Internally Approved"
-                          : pdaResponse?.pdaStatus == 4
-                            ? "Rejected By FM"
-                            : pdaResponse?.pdaStatus == 5
-                              ? "Customer Approved"
-                              : pdaResponse?.pdaStatus == 6
-                                ? "Pending From Operations"
-                                : pdaResponse?.pdaStatus == 7
-                                  ? "Operations Completed"
-                                  : pdaResponse?.pdaStatus == 8
-                                    ? "Closed"
-                                    : ""}
+                      ? "Waiting For Approval From FM"
+                      : pdaResponse?.pdaStatus == 3
+                      ? "Internally Approved"
+                      : pdaResponse?.pdaStatus == 4
+                      ? "Rejected By FM"
+                      : pdaResponse?.pdaStatus == 5
+                      ? "Customer Approved"
+                      : pdaResponse?.pdaStatus == 6
+                      ? "Pending From Operations"
+                      : pdaResponse?.pdaStatus == 7
+                      ? "Operations Completed"
+                      : pdaResponse?.pdaStatus == 8
+                      ? "Closed"
+                      : ""}
                   </div>
                 </div>
 
@@ -1379,8 +1375,8 @@ const CreatePDA = ({
               <img
                 src={
                   location.pathname.includes("/create-pda") &&
-                    location.state &&
-                    location.state.row
+                  location.state &&
+                  location.state.row
                     ? updatePdaImage
                     : createPdaImage
                 }
@@ -1565,31 +1561,30 @@ const CreatePDA = ({
                   onWheel={handleWheel}
                 />
               </div>
-                                <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
-                    <label
-                      htmlFor="exampleFormControlInput1"
-                      className="form-label"
-                    >
-                      Anchorage Location:
-                    </label>
-                    <div className="vessel-select">
-                      <select
-                        name="anchorageLocation"
-                        className="form-select vesselbox vboxholder"
-                        onChange={handleSelectChange}
-                        aria-label="Default select example"
-                        value={selectedAnchorageLocation?._id}
-                      >
-                        <option value="">Choose Anchorage Location</option>
-                        {anchorageLocations.map((location) => (
-                          <option key={location._id} value={location._id}>
-                            {location.area}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
+              <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label"
+                >
+                  Anchorage Location:
+                </label>
+                <div className="vessel-select">
+                  <select
+                    name="anchorageLocation"
+                    className="form-select vesselbox vboxholder"
+                    onChange={handleSelectChange}
+                    aria-label="Default select example"
+                    value={selectedAnchorageLocation?._id}
+                  >
+                    <option value="">Choose Anchorage Location</option>
+                    {anchorageLocations.map((location) => (
+                      <option key={location._id} value={location._id}>
+                        {location.area}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <div className="thirdrow mb-3 row">
@@ -1759,18 +1754,18 @@ const CreatePDA = ({
                     <div className="d-flex">
                       <input
                         type="text"
-                        name="berth"
+                        name="etaHours"
                         className="form-control vessel-voyage voyageblock timespace"
-                        id="exampleFormControlInput1"
+                        id="etaHours"
                         placeholder="00"
                         value={etaHours}
                         onChange={handleEtaHoursChange}
                       />
                       <input
                         type="text"
-                        name="berth"
+                        name="etaMinutes"
                         className="form-control vessel-voyage voyageblock timespace"
-                        id="exampleFormControlInput1"
+                        id="etaMinutes"
                         placeholder="00"
                         value={etaMinutes}
                         onChange={handleEtaMinutesChange}
@@ -1827,18 +1822,18 @@ const CreatePDA = ({
                     <div className="d-flex">
                       <input
                         type="text"
-                        name="berth"
+                        name="etdHours"
                         className="form-control vessel-voyage voyageblock timespace"
-                        id="exampleFormControlInput1"
+                        id="etdHours"
                         placeholder="00"
                         value={etdHours}
                         onChange={handleEtdHoursChange}
                       />
                       <input
                         type="text"
-                        name="berth"
+                        name="etdMinutes"
                         className="form-control vessel-voyage voyageblock timespace"
-                        id="exampleFormControlInput1"
+                        id="etdMinutes"
                         placeholder="00"
                         value={etdMinutes}
                         onChange={handleEtdMinutesChange}
@@ -1861,20 +1856,7 @@ const CreatePDA = ({
                   </>
                 )}
               </div>
-              <div className="col-lg-1 col-md-6 col-sm-12 nrt mb-3 ">
-                <label for="exampleFormControlInput1" className="form-label">
-                  Berth:
-                </label>
-                <input
-                  type="text"
-                  name="berth"
-                  className="form-control vessel-voyage voyageblock"
-                  id="exampleFormControlInput1"
-                  placeholder=""
-                  value={selectedBerth}
-                  onChange={handleInputChange}
-                />
-              </div>
+
               <div className="col-lg-2 col-md-6 col-sm-12 nrt mb-3">
                 <label
                   htmlFor="exampleFormControlInput1"
@@ -1940,46 +1922,39 @@ const CreatePDA = ({
                   </div>
                 </>
               )}
-
-
             </div>
           </div>
-                        <div className="row align-items-start d-flex justify-content-end">
-                {pdaResponse?.pdaStatus != 7 && (
-                  <>
-                    {requestedServices.length > 0 && (
-                      <>
-                        <div className="col-2">
-                          <button
-                            type="button"
-                            className="btn addcharge-button text-center"
-                            onClick={() => {
-                              handleServiceRequestOpen();
-                            }}
-                          >
-                            Service Request
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
-                {pdaResponse?.pdaStatus != 7 && (
-                  <>
-                    <div className="col-lg-2 col-md-6 col-sm-12">
-                      <button
-                        type="button"
-                        className="btn addcharge-button text-center"
-                        onClick={() => {
-                          openDialog();
-                        }}
-                      >
-                        Add charge
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+          <div className="row align-items-start d-flex justify-content-end">
+            <>
+              {requestedServices.length > 0 && (
+                <>
+                  <div className="col-2">
+                    <button
+                      type="button"
+                      className="btn addcharge-button text-center"
+                      onClick={() => {
+                        handleServiceRequestOpen();
+                      }}
+                    >
+                      Service Request
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
+
+            <div className="col-lg-2 col-md-6 col-sm-12">
+              <button
+                type="button"
+                className="btn addcharge-button text-center"
+                onClick={() => {
+                  openDialog();
+                }}
+              >
+                Add charge
+              </button>
+            </div>
+          </div>
 
           <div className="row mt-2">
             <div className="col-12">
@@ -2059,17 +2034,17 @@ const CreatePDA = ({
                     {(pdaResponse === null ||
                       pdaResponse === undefined ||
                       pdaResponse?.pdaStatus <= 1) && (
-                        <button
-                          className="btn btna generate-button"
-                          onClick={() => {
-                            submitPda(1);
-                          }}
-                        >
-                          {pdaResponse === null || pdaResponse === undefined
-                            ? " Save As Draft"
-                            : "Edit Draft"}
-                        </button>
-                      )}
+                      <button
+                        className="btn btna generate-button"
+                        onClick={() => {
+                          submitPda(1);
+                        }}
+                      >
+                        {pdaResponse === null || pdaResponse === undefined
+                          ? " Save As Draft"
+                          : "Edit Draft"}
+                      </button>
+                    )}
                   </div>
 
                   <div className="right d-flex">
@@ -2149,54 +2124,54 @@ const CreatePDA = ({
 
                         {loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() !==
                           "financemanager" && (
-                            <>
-                              {pdaResponse?.pdaStatus === 4 && (
-                                <>
-                                  <button
-                                    className="btn btna submit-button"
-                                    onClick={() => {
-                                      resubmitPDA();
-                                    }}
-                                  >
-                                    Resubmit for FM Approval
-                                  </button>
-                                </>
-                              )}
-                            </>
-                          )}
+                          <>
+                            {pdaResponse?.pdaStatus === 4 && (
+                              <>
+                                <button
+                                  className="btn btna submit-button"
+                                  onClick={() => {
+                                    resubmitPDA();
+                                  }}
+                                >
+                                  Resubmit for FM Approval
+                                </button>
+                              </>
+                            )}
+                          </>
+                        )}
 
                         {(loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
                           "financemanager" ||
                           loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
-                          "operationsmanager") && (
-                            <>
-                              {(pdaResponse?.pdaStatus == 2 ||
-                                pdaResponse?.pdaStatus == 4) && (
-                                  <>
-                                    <button
-                                      className="btn btna generate-button"
-                                      onClick={() => {
-                                        updateQuotation("3");
-                                      }}
-                                    >
-                                      Approve
-                                    </button>
-                                  </>
-                                )}
-                              {pdaResponse?.pdaStatus == 2 && (
-                                <>
-                                  <button
-                                    className="btn btna generate-button"
-                                    onClick={() => {
-                                      updateQuotation("4");
-                                    }}
-                                  >
-                                    Reject
-                                  </button>
-                                </>
-                              )}
-                            </>
-                          )}
+                            "operationsmanager") && (
+                          <>
+                            {(pdaResponse?.pdaStatus == 2 ||
+                              pdaResponse?.pdaStatus == 4) && (
+                              <>
+                                <button
+                                  className="btn btna generate-button"
+                                  onClick={() => {
+                                    updateQuotation("3");
+                                  }}
+                                >
+                                  Approve
+                                </button>
+                              </>
+                            )}
+                            {pdaResponse?.pdaStatus == 2 && (
+                              <>
+                                <button
+                                  className="btn btna generate-button"
+                                  onClick={() => {
+                                    updateQuotation("4");
+                                  }}
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            )}
+                          </>
+                        )}
                       </>
                     )}
                   </div>

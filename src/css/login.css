@@ -222,6 +222,7 @@ body {
 .dashboard_cards {
   border-radius: 10px;
   padding: 5px 16px;
+  cursor: pointer;
 }
 
 .card_title {

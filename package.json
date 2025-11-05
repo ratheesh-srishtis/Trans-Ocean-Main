@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "dotenv-cli": "^8.0.0",
-    "env-cmd": "^10.1.0"
+    "env-cmd": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8"
   }
 }

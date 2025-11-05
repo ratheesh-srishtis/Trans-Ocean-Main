@@ -252,7 +252,7 @@ const ViewEmployeeDetails = () => {
         {/* Toggle button and view/edit logic */}
         <React.Fragment>
           <>
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ py: 2 }}>
               {/* Personal Information */}
               <InfoCard
                 title="Personal Information"
@@ -532,7 +532,7 @@ const ViewEmployeeDetails = () => {
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "15px",
-                marginTop: "20px",
+                marginTop: "15px",
                 marginBottom: "60px",
               }}
             >
