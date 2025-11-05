@@ -66,3 +66,8 @@
   color: #007bff;
   font-weight: 500;
 }
+
+.staychrg{
+  display: flex;
+  justify-content: center;
+}
