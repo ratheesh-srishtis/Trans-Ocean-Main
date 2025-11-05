@@ -108,7 +108,7 @@ const AddAnchorageStay = ({
         response = await editAnchorageStayCharge(payload);
 
         if (response.status === true) {
-          setMessage("Anchorage Stay Charge details saved successfully");
+          setMessage("Anchorage Stay Charge details updated successfully");
           setOpenPopUp(true);
           setFormData({
             days: "",
@@ -132,19 +132,18 @@ const AddAnchorageStay = ({
           order: formData.order,
         };
         response = await saveAnchorageStayCharge(payload);
-      }
-
-      if (response.status === true) {
-        setMessage("Anchorage stay charge saved successfully");
-        setOpenPopUp(true);
-        setFormData({
-          days: "",
-          description: "",
-          chargeOMR: 0,
-          chargeUSD: 0,
-          order: 0,
-        });
-        onSubmit();
+        if (response.status === true) {
+          setMessage("Anchorage Stay Charge details submitted successfully");
+          setOpenPopUp(true);
+          setFormData({
+            days: "",
+            description: "",
+            chargeOMR: 0,
+            chargeUSD: 0,
+            order: 0,
+          });
+          onSubmit();
+        }
       }
     } catch (error) {
       setMessage("Please try again");
@@ -182,7 +181,9 @@ const AddAnchorageStay = ({
         maxWidth="lg"
       >
         <div className="d-flex justify-content-between ">
-          <DialogTitle>{editMode ? "Edit Charge" : "Add Charge"}</DialogTitle>
+          <DialogTitle>
+            {editMode ? "Edit Charge Details" : "Add Charge Details"}
+          </DialogTitle>
           <div className="closeicon">
             <i className="bi bi-x-lg " onClick={onClose}></i>
           </div>
@@ -191,7 +192,7 @@ const AddAnchorageStay = ({
           <form onSubmit={handleSubmit}>
             <div className="typesofcall-row ">
               <div className="row mb-3 align-items-start">
-                <div className="col-4">
+                <div className="col-6">
                   <label
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
@@ -215,7 +216,7 @@ const AddAnchorageStay = ({
                     )}
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-6">
                   <label
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
@@ -242,7 +243,7 @@ const AddAnchorageStay = ({
                 </div>
               </div>
               <div className="row mb-3 align-items-start">
-                <div className="col-4">
+                <div className="col-6">
                   <label
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
@@ -266,7 +267,7 @@ const AddAnchorageStay = ({
                     )}
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-6">
                   <label
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
@@ -292,7 +293,7 @@ const AddAnchorageStay = ({
                 </div>
               </div>
               <div className="row mb-3 align-items-start">
-                <div className="col-4">
+                <div className="col-12">
                   <label
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
@@ -323,7 +324,7 @@ const AddAnchorageStay = ({
               style={{ display: "flex", justifyContent: "flex-end" }}
             >
               <button type="submit" className="btn btna submit-button btnfsize">
-                Add Charge Details
+                Submit
               </button>
             </div>
           </form>

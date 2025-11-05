@@ -134,7 +134,7 @@ const StayCharge = ({ portName, onClick }) => {
             };
             const response = await deleteAnchorageStayCharge(payload);
             console.log("Fetched Charges:", response);
-            setMessage("Charge has been successfully deleted");
+            setMessage("Anchorage Stay Charge details deleted successfully");
             setOpenPopUp(true);
             setIsLoading(false);
 
@@ -199,9 +199,9 @@ const StayCharge = ({ portName, onClick }) => {
             <button
               type="button"
               onClick={() => handleOpen()}
-              className="btn btn-info infobtn"
+              className="btn btn-info infobtn "
             >
-              Add Charge
+              Add Charge Details
             </button>
           </div>
         </div>
