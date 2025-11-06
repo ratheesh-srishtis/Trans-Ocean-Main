@@ -48,9 +48,9 @@ const Quotations = ({
   const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const [remarksOpen, setRemarksOpen] = useState(false);
-// Add this state variable around line 40 with other state declarations
-const [fromDashboard, setFromDashboard] = useState(false);
-const [cardNumber, setCardNumber] = useState(null);
+  // Add this state variable around line 40 with other state declarations
+  const [fromDashboard, setFromDashboard] = useState(false);
+  const [cardNumber, setCardNumber] = useState(null);
   const acceptedIcon = require("../assets/images/accepted.png");
   const rejectedIcon = require("../assets/images/rejected.png");
   const messageIcon = require("../assets/images/chat_icon.png");
@@ -79,23 +79,22 @@ const [cardNumber, setCardNumber] = useState(null);
   // };
 
   // Replace the existing fetchQuotations function (around lines 55-73) with this:
-const fetchQuotations = async (type) => {
-  setSelectedTab(type);
-  try {
-    setIsLoading(true);
-    
-    if (fromDashboard && cardNumber) {
-      // Use dashboard API when data came from dashboard
-      const payload = {
-        filter: type,
-        cardNumber: String(cardNumber),
-      };
-      const res = await financeDashboardDetails(payload);
-      
-      
+  const fetchQuotations = async (type) => {
+    setSelectedTab(type);
+    try {
+      setIsLoading(true);
+
+      if (fromDashboard && cardNumber) {
+        // Use dashboard API when data came from dashboard
+        const payload = {
+          filter: type,
+          cardNumber: String(cardNumber),
+        };
+        const res = await financeDashboardDetails(payload);
+
         if (res.status == true) {
           if (cardNumber == "1") {
-           setQuotationsList(res?.receivedQuotation || []);
+            setQuotationsList(res?.receivedQuotation || []);
           } else if (cardNumber == "2") {
             setQuotationsList(res?.submittedQuotation || []);
           } else if (cardNumber == "3") {
@@ -106,41 +105,40 @@ const fetchQuotations = async (type) => {
             setQuotationsList(res?.completedQuotation || []);
           } else if (cardNumber == "6") {
             setQuotationsList(res?.invoiceSubmitted || []);
-            
           }
         }
-    } else {
-      // Use existing API when data didn't come from dashboard
-      let userData = {
-        filter: type,
-      };
-      const quotations = await getAllQuotations(userData);
-      setQuotationsList(quotations?.pda || []);
+      } else {
+        // Use existing API when data didn't come from dashboard
+        let userData = {
+          filter: type,
+        };
+        const quotations = await getAllQuotations(userData);
+        setQuotationsList(quotations?.pda || []);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
-  } catch (error) {
-    console.error("Failed to fetch quotations:", error);
-    setIsLoading(false);
-  }
-};
+  };
 
   // If navigated from Dashboard with state, use it; otherwise fetch
-// Replace the existing useEffect (around lines 75-83) with this:
-useEffect(() => {
-  const fromDashboardData = location?.state?.quotationsFromDashboard;
-  const cardNumberValue = location?.state?.cardNumber; // Assuming cardNumber comes from state
-  
-  if (Array.isArray(fromDashboardData) && fromDashboardData.length > 0) {
-    setQuotationsList(fromDashboardData);
-    setFromDashboard(true);
-    setCardNumber(cardNumberValue);
-  } else {
-    setFromDashboard(false);
-    fetchQuotations("all");
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
+  // Replace the existing useEffect (around lines 75-83) with this:
+  useEffect(() => {
+    const fromDashboardData = location?.state?.quotationsFromDashboard;
+    const cardNumberValue = location?.state?.cardNumber; // Assuming cardNumber comes from state
+
+    if (Array.isArray(fromDashboardData) && fromDashboardData.length > 0) {
+      setQuotationsList(fromDashboardData);
+      setFromDashboard(true);
+      setCardNumber(cardNumberValue);
+    } else {
+      setFromDashboard(false);
+      fetchQuotations("all");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const formatDate = (date) => {
     if (!date) return "N/A";
@@ -708,30 +706,28 @@ useEffect(() => {
             />
             <i className="bi bi-search searchicon"></i>
           </div>
-          {
-            !fromDashboard && (
-              <>
-                <div className=" filtermain filquofil">
-            <i className="bi bi-funnel-fill filtericon"></i>
-            <select
-              className="form-select form-select-sm filter"
-              aria-label="Small select example"
-              name="status"
-              onChange={handleSelectChange}
-              value={selectedStatus}
-            >
-              <option value="">All</option>
-              {statusList?.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
-          </div>
-              </>
-            )
-          }
-        
+          {(!fromDashboard || (fromDashboard && cardNumber === "1")) && (
+            <>
+              <div className=" filtermain filquofil">
+                <i className="bi bi-funnel-fill filtericon"></i>
+                <select
+                  className="form-select form-select-sm filter"
+                  aria-label="Small select example"
+                  name="status"
+                  onChange={handleSelectChange}
+                  value={selectedStatus}
+                >
+                  <option value="">All</option>
+                  {statusList?.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
           <div className=" createbtn crtq" style={{ width: "100%" }}>
             <button
               type="button"

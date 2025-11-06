@@ -466,7 +466,10 @@ const Chats = () => {
                       {newChatList?.newMessages?.map((chat) => {
                         // pick logo based on senderUser
                         let logoPath = "";
-                        if (chat?.senderUser === "admin") {
+                        if (
+                          chat?.senderUser === "admin" ||
+                          chat?.senderUser === "superadmin"
+                        ) {
                           logoPath =
                             chat?.departmentLogoId?.adminDepartmentLogo;
                         } else if (chat?.senderUser === "finance") {

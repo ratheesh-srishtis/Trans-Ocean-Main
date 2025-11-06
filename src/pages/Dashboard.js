@@ -54,49 +54,57 @@ const Dashboard = () => {
   // Finance details call (only for finance role)
   const fetchFinanceDashboardDetails = async (filterValue, cardNumberValue) => {
     try {
-      if (
-        loginResponse?.data?.userRole?.roleType?.toLowerCase() === "finance"
-      ) {
-        const payload = {
-          filter: filterValue,
-          cardNumber: String(cardNumberValue),
-        };
-        const res = await financeDashboardDetails(payload);
-        if (res.status == true) {
-          if (cardNumberValue == "1") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.receivedQuotation || [],
-              cardNumber: cardNumberValue  },
-            });
-          } else if (cardNumberValue == "2") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.submittedQuotation || [],
-              cardNumber: cardNumberValue  },
-            });
-          } else if (cardNumberValue == "3") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.approvedQuotation || [],
-              cardNumber: cardNumberValue  },
-            });
-          } else if (cardNumberValue == "4") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.processedQuotation || [],
-              cardNumber: cardNumberValue  },
-            });
-          } else if (cardNumberValue == "5") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.completedQuotation || [],
-              cardNumber: cardNumberValue  },
-            });
-          } else if (cardNumberValue == "6") {
-            navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.invoiceSubmitted || [],
-              cardNumber: cardNumberValue  },
-            });
-          }
+      const payload = {
+        filter: filterValue,
+        cardNumber: String(cardNumberValue),
+      };
+      const res = await financeDashboardDetails(payload);
+      if (res.status == true) {
+        if (cardNumberValue == "1") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.receivedQuotation || [],
+              cardNumber: cardNumberValue,
+            },
+          });
+        } else if (cardNumberValue == "2") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.submittedQuotation || [],
+              cardNumber: cardNumberValue,
+            },
+          });
+        } else if (cardNumberValue == "3") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.approvedQuotation || [],
+              cardNumber: cardNumberValue,
+            },
+          });
+        } else if (cardNumberValue == "4") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.processedQuotation || [],
+              cardNumber: cardNumberValue,
+            },
+          });
+        } else if (cardNumberValue == "5") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.completedQuotation || [],
+              cardNumber: cardNumberValue,
+            },
+          });
+        } else if (cardNumberValue == "6") {
+          navigate("/quotations", {
+            state: {
+              quotationsFromDashboard: res?.invoiceSubmitted || [],
+              cardNumber: cardNumberValue,
+            },
+          });
         }
-        console.log("financeDashboardDetails:", payload, res);
       }
+      console.log("financeDashboardDetails:", payload, res);
     } catch (err) {
       console.error("financeDashboardDetails error:", err);
     }

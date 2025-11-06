@@ -441,6 +441,111 @@ const NewJobReport = ({ ports, loginResponse }) => {
   //   XLSX.writeFile(workbook, "Job Report.xlsx");
   // };
 
+  // const createExcel = async () => {
+  //   if (!filteredQuotations || filteredQuotations.length === 0) return;
+
+  //   const rowsData = filteredQuotations.map((item) => ({
+  //     "Job ID": item.jobId || "N/A",
+  //     "Vessel Name": item.vesselId?.[0]?.vesselName || "N/A",
+  //     Job:
+  //       item.jobs
+  //         ?.map((job) => job.service?.[0]?.serviceName || "N/A")
+  //         ?.join(", ") || "N/A",
+  //     "Port Name": item.portId?.[0]?.portName || "N/A",
+  //     "Ops By": item.assignedEmployee?.[0]?.name || "N/A",
+  //     Status:
+  //       item.pdaStatus === 5
+  //         ? "Customer Approved"
+  //         : item.pdaStatus === 6
+  //         ? "Pending from operations"
+  //         : item.pdaStatus === 7
+  //         ? "Operations Completed"
+  //         : "Unknown Status",
+  //   }));
+
+  //   const headers = Object.keys(rowsData[0] || {});
+  //   const workbook = new ExcelJS.Workbook();
+  //   const worksheet = workbook.addWorksheet("Job Report", {
+  //     properties: { defaultRowHeight: 18 },
+  //     pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+  //   });
+
+  //   // Header row
+  //   const headerRow = worksheet.addRow(headers);
+  //   headerRow.eachCell((cell) => {
+  //     cell.font = { bold: true };
+  //     cell.alignment = {
+  //       horizontal: "center",
+  //       vertical: "middle",
+  //       wrapText: true,
+  //     };
+  //     cell.border = {
+  //       top: { style: "thin" },
+  //       left: { style: "thin" },
+  //       bottom: { style: "thin" },
+  //       right: { style: "thin" },
+  //     };
+  //     cell.fill = {
+  //       type: "pattern",
+  //       pattern: "solid",
+  //       fgColor: { argb: "FFEFEFEF" },
+  //     };
+  //   });
+
+  //   // Data rows
+  //   rowsData.forEach((row) => {
+  //     const r = worksheet.addRow(headers.map((h) => row[h]));
+  //     r.eachCell((cell) => {
+  //       cell.alignment = {
+  //         horizontal: "center",
+  //         vertical: "middle",
+  //         wrapText: true,
+  //       };
+  //       cell.border = {
+  //         top: { style: "thin" },
+  //         left: { style: "thin" },
+  //         bottom: { style: "thin" },
+  //         right: { style: "thin" },
+  //       };
+  //     });
+  //   });
+
+  //   // Auto-size columns based on content length (clamped)
+  //   const minWidth = 15;
+  //   const maxWidth = 120;
+  //   headers.forEach((h, i) => {
+  //     let maxLen = (h || "").toString().length;
+  //     rowsData.forEach((row) => {
+  //       const val = row[h];
+  //       const len = val == null ? 0 : val.toString().length;
+  //       if (len > maxLen) maxLen = len;
+  //     });
+
+  //     // Special handling for Job column - ensure minimum width
+  //     let width;
+  //     if (h === "Job") {
+  //       width = Math.max(40, Math.min(maxWidth, maxLen + 2)); // Minimum 40 for Job column
+  //     } else {
+  //       width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+  //     }
+
+  //     worksheet.getColumn(i + 1).width = width;
+  //   });
+  //   // Let Excel auto-adjust row heights for wrapped text
+  //   worksheet.eachRow((row) => {
+  //     row.height = undefined;
+  //   });
+
+  //   const buffer = await workbook.xlsx.writeBuffer();
+  //   const blob = new Blob([buffer], {
+  //     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //   });
+  //   saveAs(blob, "Job Report.xlsx");
+  // };
+
+  // ...existing code...
+
+  // ...existing code...
   const createExcel = async () => {
     if (!filteredQuotations || filteredQuotations.length === 0) return;
 
@@ -466,12 +571,13 @@ const NewJobReport = ({ ports, loginResponse }) => {
     const headers = Object.keys(rowsData[0] || {});
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Job Report", {
-      properties: { defaultRowHeight: 18 },
+      properties: { defaultRowHeight: 30 }, // Increased default row height
       pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
 
     // Header row
     const headerRow = worksheet.addRow(headers);
+    headerRow.height = 25; // Set explicit height for header
     headerRow.eachCell((cell) => {
       cell.font = { bold: true };
       cell.alignment = {
@@ -493,12 +599,24 @@ const NewJobReport = ({ ports, loginResponse }) => {
     });
 
     // Data rows
-    rowsData.forEach((row) => {
+    rowsData.forEach((row, rowIndex) => {
       const r = worksheet.addRow(headers.map((h) => row[h]));
-      r.eachCell((cell) => {
+
+      // Calculate the required height for this row based on Job column content
+      const jobContent = row["Job"] || "";
+      const jobContentLength = jobContent.toString().length;
+
+      // Estimate lines needed for Job column (50 characters per line for width 50)
+      const estimatedLines = Math.max(1, Math.ceil(jobContentLength / 50));
+
+      // Set row height based on content (minimum 25, add 18 points per additional line)
+      const calculatedHeight = Math.max(25, 18 + (estimatedLines - 1) * 18);
+      r.height = Math.min(calculatedHeight, 120); // Cap at 120 points
+
+      r.eachCell((cell, colNumber) => {
         cell.alignment = {
           horizontal: "center",
-          vertical: "middle",
+          vertical: "top",
           wrapText: true,
         };
         cell.border = {
@@ -510,31 +628,36 @@ const NewJobReport = ({ ports, loginResponse }) => {
       });
     });
 
-    // Auto-size columns based on content length (clamped)
-    const minWidth = 15;
-    const maxWidth = 120;
-   headers.forEach((h, i) => {
-  let maxLen = (h || "").toString().length;
-  rowsData.forEach((row) => {
-    const val = row[h];
-    const len = val == null ? 0 : val.toString().length;
-    if (len > maxLen) maxLen = len;
-  });
-  
-  // Special handling for Job column - ensure minimum width
-  let width;
-  if (h === "Job") {
-    width = Math.max(40, Math.min(maxWidth, maxLen + 2)); // Minimum 40 for Job column
-  } else {
-    width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
-  }
-  
-  worksheet.getColumn(i + 1).width = width;
-});
-    // Let Excel auto-adjust row heights for wrapped text
-    worksheet.eachRow((row) => {
-      row.height = undefined;
+    // Set column widths with special handling for Job column
+    headers.forEach((h, i) => {
+      if (h === "Job" || h == "Job ID") {
+        // Set a fixed width for Job column to ensure wrapping works properly
+        worksheet.getColumn(i + 1).width = 50; // Fixed width of 50 characters
+      } else {
+        // Auto-size other columns
+        let maxLen = (h || "").toString().length;
+        rowsData.forEach((row) => {
+          const val = row[h];
+          const len = val == null ? 0 : val.toString().length;
+          if (len > maxLen) maxLen = len;
+        });
+
+        const minWidth = 15;
+        const maxWidth = 30;
+        const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+        worksheet.getColumn(i + 1).width = width;
+      }
     });
+
+    // Set view options to ensure proper display when opened
+    worksheet.views = [
+      {
+        state: "normal",
+        showGridLines: true,
+        showRowColHeaders: true,
+        rightToLeft: false,
+      },
+    ];
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
@@ -542,6 +665,9 @@ const NewJobReport = ({ ports, loginResponse }) => {
     });
     saveAs(blob, "Job Report.xlsx");
   };
+  // ...existing code...
+
+  // ...existing code...
 
   useEffect(() => {
     console.log(selectedJobs, "selectedJobs");

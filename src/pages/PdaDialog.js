@@ -462,8 +462,8 @@ const PdaDialog = ({
           <div>
             <div className="col-1 note">Note</div>
             <div className="subnote">
-              {companyBankDetails?.anchorageStayRemark}
-              <br />
+              {/* {companyBankDetails?.anchorageStayRemark}
+              <br /> */}
               {companyBankDetails?.quotationPDFNotes} <br />
             </div>
           </div>
