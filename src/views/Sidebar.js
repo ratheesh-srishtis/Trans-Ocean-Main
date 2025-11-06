@@ -16,12 +16,12 @@ const Sidebar = () => {
   const [lastPath, setLastPath] = useState("");
   const [currentPath, setCurrentPath] = useState("");
 
-  useEffect(() => {
-    const path = window.location.pathname;
-    console.log(path, "current_path");
-    const lastSegment = path.substring(path.lastIndexOf("/") + 1);
-    setLastPath(lastSegment);
-  }, []);
+  // useEffect(() => {
+  //   const path = window.location.pathname;
+  //   console.log(path, "current_path");
+  //   const lastSegment = path.substring(path.lastIndexOf("/") + 1);
+  //   setLastPath(lastSegment);
+  // }, []);
 
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("");
@@ -49,20 +49,20 @@ const Sidebar = () => {
   ];
   const handleNavigation = (menuItem) => {
     console.log(menuItem, "menuItem");
-    if (menuArr.includes(menuItem)) {
-      setShowSubmenu(false);
-      setActiveSubMenu("");
-    } else {
-      setShowSubmenu((prev) => !prev);
-      if (menuItem != "settings") setActiveSubMenu(menuItem);
-    }
-    if (lastPath == menuItem) {
-      setActiveMenu(lastPath);
-    } else if (lastPath != menuItem) {
-      setActiveMenu(menuItem);
-    }
-    setActiveMenu(menuItem); // Update the active menu item
-    console.log(menuItem, "handleNavigation");
+  if (menuArr.includes(menuItem)) {
+    setShowSubmenu(false);
+    setActiveSubMenu("");
+  } else {
+    setShowSubmenu((prev) => !prev);
+    if (menuItem != "settings") setActiveSubMenu(menuItem);
+  }
+  
+  // Only set active menu for settings submenu items, let useEffect handle route-based activation
+  if (!menuArr.includes(menuItem)) {
+    setActiveMenu(menuItem);
+  }
+  
+  console.log(menuItem, "handleNavigation");
 
     switch (menuItem) {
       case "dashboard":
@@ -183,16 +183,51 @@ const Sidebar = () => {
     setCurrentPath(formattedPath);
     console.log(formattedPath, "formatted_path"); // Output: /jobs
 
-    if (formattedPath == "/chats") {
-      setActiveMenu("");
+      // Map route paths to menu keys
+  const routeToMenuMap = {
+    '/dashboard': 'dashboard',
+    '/quotations': 'quotations', 
+    '/jobs': 'jobs',
+    '/payments': 'payments',
+    '/soa': 'soa',
+    '/profile': 'profile',
+    '/leave': 'leave',
+    '/employee': 'employee',
+    '/leavereports': 'leave reports',
+    '/reports': 'report',
+    '/general-documents': 'General Documents',
+    '/update-employee-info': 'Update Employee Info',
+    '/leave-requests': 'Leave Requests'
+  };
+
+
+     // Set active menu based on current route
+  const currentRoute = formattedPath;
+  const menuKey = routeToMenuMap[currentRoute];
+  
+  if (menuKey) {
+    setActiveMenu(menuKey);
+    // If it's a settings route, also handle submenu
+    if (currentRoute.includes('-settings') || currentRoute.includes('anchorage-locations') || 
+        currentRoute.includes('password-requests') || currentRoute.includes('anchorage-stay-charges') || 
+        currentRoute.includes('aed-conversion-rate') || currentRoute.includes('company-bank-info') || 
+        currentRoute.includes('media-settings')) {
+      setActiveMenu('settings');
+      setActiveSubMenu(finalPart);
+      setShowSubmenu(true);
     }
+  }
+
+  if (formattedPath === "/chats") {
+    setActiveMenu("");
+  }
   }, [location.pathname]); // Run effect whenever path changes
 
-  useEffect(() => {
-    if (lastPath) {
-      setActiveMenu(lastPath);
-    }
-  }, [lastPath]);
+  // useEffect(() => {
+  //   if (lastPath) {
+  //     setActiveMenu(lastPath);
+  //   }
+  // }, [lastPath]);
 
   useEffect(() => {
     console.log(menuList, "menuList");
@@ -228,12 +263,12 @@ const Sidebar = () => {
     },
   };
 
-  useEffect(() => {
-    console.log(userPermissions, "userPermissions");
-    if (userPermissions.length > 0) {
-      setActiveMenu(userPermissions[0]); // Set the first permissible menu item as active
-    }
-  }, [userPermissions]);
+  // useEffect(() => {
+  //   console.log(userPermissions, "userPermissions");
+  //   if (userPermissions.length > 0) {
+  //     setActiveMenu(userPermissions[0]); // Set the first permissible menu item as active
+  //   }
+  // }, [userPermissions]);
   useEffect(() => {
     console.log(userSettingsPermissions, "userSettingsPermissions");
     console.log(menuItems, "menuItems");

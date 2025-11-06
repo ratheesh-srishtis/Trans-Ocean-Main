@@ -474,8 +474,23 @@ const CreatePDA = ({
     console.log("chargesArray_Submitted: ", chargesArray);
     console.log("handleSubmit_from:", from);
     setFinalChargesArray(chargesArray);
+    updateBadgeStatus()
     handleClose();
   };
+
+  const updateBadgeStatus =async () => { 
+    let data = {
+      pdaId: pdaResponse?._id,
+    };
+    try {
+      const pdaDetails = await getPdaDetails(data); 
+      console.log(pdaDetails, "pdaDetails_after_adding_charges");
+            setPdaResponse(pdaDetails?.pda);     
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+    }
+  };
+  
 
   const handleEdit = (charges, index) => {
     console.log("edit_charges: ", charges);

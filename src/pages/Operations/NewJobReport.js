@@ -512,21 +512,25 @@ const NewJobReport = ({ ports, loginResponse }) => {
 
     // Auto-size columns based on content length (clamped)
     const minWidth = 15;
-    const maxWidth = 60;
-    headers.forEach((h, i) => {
-      let maxLen = (h || "").toString().length;
-      rowsData.forEach((row) => {
-        const val = row[h];
-        const len = val == null ? 0 : val.toString().length;
-        if (len > maxLen) maxLen = len;
-      });
-      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
-      worksheet.getColumn(i + 1).width = width;
-      worksheet.getColumn(1).width = Math.max(
-        worksheet.getColumn(1).width || 0,
-        28
-      );
-    });
+    const maxWidth = 120;
+   headers.forEach((h, i) => {
+  let maxLen = (h || "").toString().length;
+  rowsData.forEach((row) => {
+    const val = row[h];
+    const len = val == null ? 0 : val.toString().length;
+    if (len > maxLen) maxLen = len;
+  });
+  
+  // Special handling for Job column - ensure minimum width
+  let width;
+  if (h === "Job") {
+    width = Math.max(40, Math.min(maxWidth, maxLen + 2)); // Minimum 40 for Job column
+  } else {
+    width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+  }
+  
+  worksheet.getColumn(i + 1).width = width;
+});
     // Let Excel auto-adjust row heights for wrapped text
     worksheet.eachRow((row) => {
       row.height = undefined;

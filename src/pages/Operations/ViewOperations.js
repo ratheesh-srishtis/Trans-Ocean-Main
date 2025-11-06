@@ -269,12 +269,12 @@ const ViewOperations = ({
             </span>
           </div>
 
-          <div className=" col-4 viewhead">
+          {/* <div className=" col-4 viewhead">
             <span> Berth:</span>{" "}
             <span className="viewans">
               {pdaValues?.berth ? pdaValues?.berth : "N/A"}
             </span>
-          </div>
+          </div> */}
 
           <div className=" col-4 viewhead">
             <span> Cargo Capacity: </span>
@@ -282,15 +282,17 @@ const ViewOperations = ({
               {pdaValues?.cargoCapacity ? pdaValues?.cargoCapacity : "N/A"}
             </span>
           </div>
-        </div>
 
-        <div className="row viewquocontent">
           <div className=" col-4 viewhead">
             <span> Customer Name:</span>{" "}
             <span className="viewans">
               {getItemName(pdaValues?.customerId, "customer") || "N/A"}
             </span>
           </div>
+        </div>
+
+        <div className="row viewquocontent">
+          
 
           <div className=" col-4 viewhead">
             <span> Ops By:</span>{" "}

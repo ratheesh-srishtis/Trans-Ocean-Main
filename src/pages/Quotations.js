@@ -6,6 +6,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate, useLocation } from "react-router-dom";
+import { financeDashboardDetails } from "../services/apiService";
 import "../css/quotation.css";
 import {
   getAllQuotations,
@@ -47,44 +48,99 @@ const Quotations = ({
   const [message, setMessage] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const [remarksOpen, setRemarksOpen] = useState(false);
-
+// Add this state variable around line 40 with other state declarations
+const [fromDashboard, setFromDashboard] = useState(false);
+const [cardNumber, setCardNumber] = useState(null);
   const acceptedIcon = require("../assets/images/accepted.png");
   const rejectedIcon = require("../assets/images/rejected.png");
   const messageIcon = require("../assets/images/chat_icon.png");
 
-  const fetchQuotations = async (type) => {
-    setSelectedTab(type);
-    try {
-      setIsLoading(true);
+  // const fetchQuotations = async (type) => {
+  //   setSelectedTab(type);
+  //   try {
+  //     setIsLoading(true);
+  //     let userData = {
+  //       filter: type,
+  //     };
+  //     const quotations = await getAllQuotations(userData);
+  //     console.log("Quotations:", quotations);
+
+  //     const matchId = "6780a9a94d57992670a2a70a";
+  //     const matchedQuotation = quotations?.pda.find((q) => q._id === matchId);
+
+  //     console.log("Matched Quotation:", matchedQuotation);
+
+  //     setQuotationsList(quotations?.pda || []);
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.error("Failed to fetch quotations:", error);
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // Replace the existing fetchQuotations function (around lines 55-73) with this:
+const fetchQuotations = async (type) => {
+  setSelectedTab(type);
+  try {
+    setIsLoading(true);
+    
+    if (fromDashboard && cardNumber) {
+      // Use dashboard API when data came from dashboard
+      const payload = {
+        filter: type,
+        cardNumber: String(cardNumber),
+      };
+      const res = await financeDashboardDetails(payload);
+      
+      
+        if (res.status == true) {
+          if (cardNumber == "1") {
+           setQuotationsList(res?.receivedQuotation || []);
+          } else if (cardNumber == "2") {
+            setQuotationsList(res?.submittedQuotation || []);
+          } else if (cardNumber == "3") {
+            setQuotationsList(res?.approvedQuotation || []);
+          } else if (cardNumber == "4") {
+            setQuotationsList(res?.processedQuotation || []);
+          } else if (cardNumber == "5") {
+            setQuotationsList(res?.completedQuotation || []);
+          } else if (cardNumber == "6") {
+            setQuotationsList(res?.invoiceSubmitted || []);
+            
+          }
+        }
+    } else {
+      // Use existing API when data didn't come from dashboard
       let userData = {
         filter: type,
       };
       const quotations = await getAllQuotations(userData);
-      console.log("Quotations:", quotations);
-
-      const matchId = "6780a9a94d57992670a2a70a";
-      const matchedQuotation = quotations?.pda.find((q) => q._id === matchId);
-
-      console.log("Matched Quotation:", matchedQuotation);
-
       setQuotationsList(quotations?.pda || []);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch quotations:", error);
-      setIsLoading(false);
     }
-  };
+    
+    setIsLoading(false);
+  } catch (error) {
+    console.error("Failed to fetch quotations:", error);
+    setIsLoading(false);
+  }
+};
 
   // If navigated from Dashboard with state, use it; otherwise fetch
-  useEffect(() => {
-    const fromDashboardData = location?.state?.quotationsFromDashboard;
-    if (Array.isArray(fromDashboardData) && fromDashboardData.length > 0) {
-      setQuotationsList(fromDashboardData);
-    } else {
-      fetchQuotations("all");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+// Replace the existing useEffect (around lines 75-83) with this:
+useEffect(() => {
+  const fromDashboardData = location?.state?.quotationsFromDashboard;
+  const cardNumberValue = location?.state?.cardNumber; // Assuming cardNumber comes from state
+  
+  if (Array.isArray(fromDashboardData) && fromDashboardData.length > 0) {
+    setQuotationsList(fromDashboardData);
+    setFromDashboard(true);
+    setCardNumber(cardNumberValue);
+  } else {
+    setFromDashboard(false);
+    fetchQuotations("all");
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   const formatDate = (date) => {
     if (!date) return "N/A";
@@ -652,7 +708,10 @@ const Quotations = ({
             />
             <i className="bi bi-search searchicon"></i>
           </div>
-          <div className=" filtermain ">
+          {
+            !fromDashboard && (
+              <>
+                <div className=" filtermain ">
             <i className="bi bi-funnel-fill filtericon"></i>
             <select
               className="form-select form-select-sm filter"
@@ -669,6 +728,10 @@ const Quotations = ({
               ))}
             </select>
           </div>
+              </>
+            )
+          }
+        
           <div className=" createbtn" style={{ width: "100%" }}>
             <button
               type="button"

@@ -467,17 +467,61 @@ const ReceivableSummary = () => {
 
     // Auto-size columns (clamped)
     const minWidth = 15;
-    const maxWidth = 60;
-    headers.forEach((h, i) => {
-      let maxLen = (h || "").toString().length;
-      rowsData.forEach((row) => {
-        const val = row[h];
-        const len = val == null ? 0 : val.toString().length;
-        if (len > maxLen) maxLen = len;
-      });
-      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
-      worksheet.getColumn(i + 1).width = width;
+    const maxWidth = 120;
+    // Replace lines 507-520 with this completely dynamic approach:
+headers.forEach((h, i) => {
+  let maxLen = (h || "").toString().length;
+  
+  // Find the longest content in this column
+  rowsData.forEach((row) => {
+    const val = row[h];
+    if (val != null) {
+      const content = val.toString();
+      // Consider line breaks and calculate effective display length
+      const lines = content.split('\n');
+      const longestLine = Math.max(...lines.map(line => line.length));
+      if (longestLine > maxLen) maxLen = longestLine;
+    }
+  });
+  
+  // Dynamic width calculation with no arbitrary limits
+  let width = Math.max(15, maxLen + 5); // Minimum 15, plus 5 for padding
+  
+  // Apply reasonable maximum to prevent extremely wide columns
+  if (width > 200) {
+    width = 200; // Cap at 200 for very long content
+  }
+  
+  worksheet.getColumn(i + 1).width = width;
+});
+
+// Replace lines 521-524 with this improved row height logic:
+worksheet.eachRow((row, rowNumber) => {
+  if (rowNumber === 1) {
+    // Header row
+    row.height = 30;
+  } else {
+    // Calculate row height based on content length and wrapping
+    let maxHeight = 20; // Minimum row height
+    
+    row.eachCell((cell) => {
+      if (cell.value) {
+        const content = cell.value.toString();
+        const columnWidth = worksheet.getColumn(cell.col).width || 20;
+        
+        // Estimate lines needed based on content length and column width
+        const estimatedLines = Math.ceil(content.length / (columnWidth * 0.8));
+        const cellHeight = Math.max(20, estimatedLines * 15);
+        
+        if (cellHeight > maxHeight) {
+          maxHeight = cellHeight;
+        }
+      }
     });
+    
+    row.height = Math.min(maxHeight, 150); // Cap at 150 to prevent extremely tall rows
+  }
+});
     // Ensure key columns are comfortably wide
     worksheet.getColumn(1).width = Math.max(
       worksheet.getColumn(1).width || 0,
