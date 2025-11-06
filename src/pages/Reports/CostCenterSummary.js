@@ -1,6 +1,8 @@
 // ResponsiveDialog.js
 import React, { useState, useEffect } from "react";
 import "../../css/reports/costcentersummary.css";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import {
   getCostCentreSummaryReport,
   costCentreSummaryReportPDF,
@@ -178,47 +180,133 @@ const CostCenterSummary = ({ ports, customers }) => {
   };
 
   // Create Excel for Cost Center Summary
-  const createExcel = () => {
+  // const createExcel = () => {
+  //   if (!reportList || reportList.length === 0) return;
+  //   const excelData = reportList.map((item) => ({
+  //     "Job No": item?.jobId || "N/A",
+  //     Sales: item?.sales?.toFixed(3) ?? "N/A",
+  //     Purchase: item?.purchase?.toFixed(3) ?? "N/A",
+  //     "Profit (or Loss)":
+  //       item?.sales && item?.purchase
+  //         ? (item.sales - item.purchase).toFixed(3)
+  //         : "N/A",
+  //   }));
+  //   // Add totals row
+  //   /*
+  //   const totalSales = reportList
+  //     .reduce((sum, item) => sum + (item.sales || 0), 0)
+  //     .toFixed(3);
+  //   const totalPurchase = reportList
+  //     .reduce((sum, item) => sum + (item.purchase || 0), 0)
+  //     .toFixed(3);
+  //   const totalProfit = reportList
+  //     .reduce(
+  //       (sum, item) => sum + ((item.sales || 0) - (item.purchase || 0)),
+  //       0
+  //     )
+  //     .toFixed(3);
+  //   excelData.push({
+  //     "Job No": "Total",
+  //     Sales: totalSales,
+  //     Purchase: totalPurchase,
+  //     "Profit (or Loss)": totalProfit,
+  //   });
+  //   */
+  //   // Create worksheet and workbook
+  //   const XLSX = require("xlsx");
+  //   const worksheet = XLSX.utils.json_to_sheet(excelData);
+  //   worksheet["!cols"] = [{ wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 20 }];
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "CostCenterSummary");
+  //   XLSX.writeFile(workbook, "Cost Center Summary Report.xlsx");
+  // };
+  const createExcel = async () => {
     if (!reportList || reportList.length === 0) return;
-    const excelData = reportList.map((item) => ({
+
+    // Prepare rows for Excel
+    const rowsData = reportList.map((item) => ({
       "Job No": item?.jobId || "N/A",
-      Sales: item?.sales?.toFixed(3) ?? "N/A",
-      Purchase: item?.purchase?.toFixed(3) ?? "N/A",
+      Sales: typeof item?.sales === "number" ? item.sales.toFixed(3) : "N/A",
+      Purchase:
+        typeof item?.purchase === "number" ? item.purchase.toFixed(3) : "N/A",
       "Profit (or Loss)":
-        item?.sales && item?.purchase
+        typeof item?.sales === "number" && typeof item?.purchase === "number"
           ? (item.sales - item.purchase).toFixed(3)
           : "N/A",
     }));
-    // Add totals row
-    /*
-    const totalSales = reportList
-      .reduce((sum, item) => sum + (item.sales || 0), 0)
-      .toFixed(3);
-    const totalPurchase = reportList
-      .reduce((sum, item) => sum + (item.purchase || 0), 0)
-      .toFixed(3);
-    const totalProfit = reportList
-      .reduce(
-        (sum, item) => sum + ((item.sales || 0) - (item.purchase || 0)),
-        0
-      )
-      .toFixed(3);
-    excelData.push({
-      "Job No": "Total",
-      Sales: totalSales,
-      Purchase: totalPurchase,
-      "Profit (or Loss)": totalProfit,
-    });
-    */
-    // Create worksheet and workbook
-    const XLSX = require("xlsx");
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    worksheet["!cols"] = [{ wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 20 }];
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "CostCenterSummary");
-    XLSX.writeFile(workbook, "Cost Center Summary Report.xlsx");
-  };
 
+    const headers = Object.keys(rowsData[0] || {});
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Cost Center Summary", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header row
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    rowsData.forEach((row) => {
+      const r = worksheet.addRow(headers.map((h) => row[h]));
+      r.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // Auto-size columns (clamped), ensure first column wide enough
+    const minWidth = 15;
+    const maxWidth = 60;
+    headers.forEach((h, i) => {
+      let maxLen = (h || "").toString().length;
+      rowsData.forEach((row) => {
+        const val = row[h];
+        const len = val == null ? 0 : val.toString().length;
+        if (len > maxLen) maxLen = len;
+      });
+      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+      worksheet.getColumn(i + 1).width = width;
+    });
+    // Nudge Job No column wider
+    worksheet.getColumn(1).width = Math.max(
+      worksheet.getColumn(1).width || 0,
+      18
+    );
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Cost Center Summary Report.xlsx");
+  };
   return (
     <>
       <div className="p-2">

@@ -14,6 +14,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { Box, Typography } from "@mui/material";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 const PayableSummary = () => {
   const Group = require("../../assets/images/reporttttt.png");
 
@@ -359,10 +361,46 @@ const PayableSummary = () => {
     }
   };
 
-  // Create Excel for Payable Summary
-  const createExcel = () => {
+  // // Create Excel for Payable Summary
+  // const createExcel = () => {
+  //   if (!reportList || reportList?.length === 0) return;
+  //   const excelData = reportList?.map((report) => {
+  //     const vendorName = report?.vendorName ? report?.vendorName : "-";
+  //     const amountOMR = formatAmount(
+  //       report.totalInvoiceAmount - report.paidAmount
+  //     );
+  //     const remark = report ? report.remark : "";
+  //     const remarkDate =
+  //       remark && report?.remarkDate
+  //         ? new Date(report?.remarkDate).toLocaleDateString("en-GB")
+  //         : "N/A";
+  //     return {
+  //       "Vendor Name": vendorName,
+  //       "Amount in OMR": `${amountOMR}`,
+  //       "Status/ Remarks": remark || "N/A",
+  //       "Remark Date": remark ? remarkDate : "N/A",
+  //     };
+  //   });
+  //   // Add totals row in the last row, column 3 and 4
+  //   excelData.push({
+  //     "Vendor Name": "",
+  //     "Amount in OMR": "",
+  //     "Status/ Remarks": "Total Payable:",
+  //     "Remark Date": totalPayable,
+  //   });
+  //   // Re-create worksheet and workbook with the totals row
+  //   const XLSX = require("xlsx");
+  //   const worksheet = XLSX.utils.json_to_sheet(excelData);
+  //   worksheet["!cols"] = [{ wch: 25 }, { wch: 18 }, { wch: 30 }, { wch: 18 }];
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "PayableSummary");
+  //   XLSX.writeFile(workbook, "Payable Summary Report.xlsx");
+  // };
+
+  const createExcel = async () => {
     if (!reportList || reportList?.length === 0) return;
-    const excelData = reportList?.map((report) => {
+
+    const rowsData = reportList.map((report) => {
       const vendorName = report?.vendorName ? report?.vendorName : "-";
       const amountOMR = formatAmount(
         report.totalInvoiceAmount - report.paidAmount
@@ -372,6 +410,7 @@ const PayableSummary = () => {
         remark && report?.remarkDate
           ? new Date(report?.remarkDate).toLocaleDateString("en-GB")
           : "N/A";
+
       return {
         "Vendor Name": vendorName,
         "Amount in OMR": `${amountOMR}`,
@@ -379,22 +418,143 @@ const PayableSummary = () => {
         "Remark Date": remark ? remarkDate : "N/A",
       };
     });
-    // Add totals row in the last row, column 3 and 4
-    excelData.push({
+
+    // Totals row
+    rowsData.push({
       "Vendor Name": "",
       "Amount in OMR": "",
       "Status/ Remarks": "Total Payable:",
       "Remark Date": totalPayable,
     });
-    // Re-create worksheet and workbook with the totals row
-    const XLSX = require("xlsx");
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    worksheet["!cols"] = [{ wch: 25 }, { wch: 18 }, { wch: 30 }, { wch: 18 }];
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "PayableSummary");
-    XLSX.writeFile(workbook, "Payable Summary Report.xlsx");
-  };
 
+    const headers = Object.keys(rowsData[0] || {});
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Payable Summary", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header row
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    rowsData.forEach((row) => {
+      const r = worksheet.addRow(headers.map((h) => row[h]));
+      r.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+
+      // Increase row height if remarks are multiline
+      const remarkLines = (row["Status/ Remarks"] || "")
+        .toString()
+        .split("\n").length;
+      if (remarkLines > 1) {
+        r.height = Math.max(18, remarkLines * 15);
+      }
+    });
+
+    // Auto-size columns (clamped)
+    const minWidth = 15;
+    const maxWidth = 60;
+        // Replace lines 507-520 with this completely dynamic approach:
+headers.forEach((h, i) => {
+  let maxLen = (h || "").toString().length;
+  
+  // Find the longest content in this column
+  rowsData.forEach((row) => {
+    const val = row[h];
+    if (val != null) {
+      const content = val.toString();
+      // Consider line breaks and calculate effective display length
+      const lines = content.split('\n');
+      const longestLine = Math.max(...lines.map(line => line.length));
+      if (longestLine > maxLen) maxLen = longestLine;
+    }
+  });
+  
+  // Dynamic width calculation with no arbitrary limits
+  let width = Math.max(15, maxLen + 5); // Minimum 15, plus 5 for padding
+  
+  // Apply reasonable maximum to prevent extremely wide columns
+  if (width > 200) {
+    width = 200; // Cap at 200 for very long content
+  }
+  
+  worksheet.getColumn(i + 1).width = width;
+});
+
+// Replace lines 521-524 with this improved row height logic:
+worksheet.eachRow((row, rowNumber) => {
+  if (rowNumber === 1) {
+    // Header row
+    row.height = 30;
+  } else {
+    // Calculate row height based on content length and wrapping
+    let maxHeight = 20; // Minimum row height
+    
+    row.eachCell((cell) => {
+      if (cell.value) {
+        const content = cell.value.toString();
+        const columnWidth = worksheet.getColumn(cell.col).width || 20;
+        
+        // Estimate lines needed based on content length and column width
+        const estimatedLines = Math.ceil(content.length / (columnWidth * 0.8));
+        const cellHeight = Math.max(20, estimatedLines * 15);
+        
+        if (cellHeight > maxHeight) {
+          maxHeight = cellHeight;
+        }
+      }
+    });
+    
+    row.height = Math.min(maxHeight, 150); // Cap at 150 to prevent extremely tall rows
+  }
+});
+    // Ensure key columns are comfortably wide
+    worksheet.getColumn(1).width = Math.max(
+      worksheet.getColumn(1).width || 0,
+      25
+    ); // Vendor Name
+    worksheet.getColumn(3).width = Math.max(
+      worksheet.getColumn(3).width || 0,
+      30
+    ); // Status/ Remarks
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Payable Summary Report.xlsx");
+  };
   return (
     <>
       <div className="p-2">
