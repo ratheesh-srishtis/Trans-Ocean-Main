@@ -799,7 +799,7 @@ const NewJobReport = ({ ports, loginResponse }) => {
                             )
                             ?.join(", ") || "N/A", // Updated line to include service names
                         port: item.portId[0]?.portName || "N/A",
-                        AssignedTo: item.assignedEmployee[0]?.name || "N/A",
+                        AssignedTo: item.assignedEmployeeName[0]?.name || "N/A",
                         status: getStatusText(item.pdaStatus),
                         ...item,
                       }))

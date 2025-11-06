@@ -143,39 +143,82 @@ const NotificationPage = ({ open, onClose, onOpen }) => {
     }
   };
 
+  // const viewNotification = async (notification) => {
+  //   console.log(notification, "notification");
+  //   let row = notification?.pdaId;
+  //   console.log(row, "notification_row");
+  //   if (row) {
+  //     // Prefer routing based on pdaStatus when available
+  //     const pdaStatus =
+  //       typeof row?.pdaStatus === "number"
+  //         ? row.pdaStatus
+  //         : Number(row?.pdaStatus);
+  //     if (!isNaN(pdaStatus)) {
+  //       if (pdaStatus < 5) {
+  //         navigate("/create-pda", { state: { row } });
+  //         onClose();
+  //         return;
+  //       } else {
+  //         navigate("/edit-operation", { state: { row } });
+  //         onClose();
+  //         return;
+  //       }
+  //     }
+
+  //     // Fallback to existing role-based conditions
+  //     if (loginResponse?.data?.userRole?.roleType == "finance") {
+  //       navigate("/create-pda", { state: { row } });
+  //       onClose();
+  //     } else if (loginResponse?.data?.userRole?.roleType == "operations") {
+  //       navigate("/edit-operation", { state: { row } });
+  //       onClose();
+  //     } else if (loginResponse?.data?.userRole?.roleType == "admin") {
+  //       navigate("/create-pda", { state: { row } });
+  //       onClose();
+  //     }
+  //   }
+  // };
+
   const viewNotification = async (notification) => {
     console.log(notification, "notification");
     let row = notification?.pdaId;
     console.log(row, "notification_row");
     if (row) {
-      // Prefer routing based on pdaStatus when available
-      const pdaStatus =
-        typeof row?.pdaStatus === "number"
-          ? row.pdaStatus
-          : Number(row?.pdaStatus);
-      if (!isNaN(pdaStatus)) {
-        if (pdaStatus < 5) {
-          navigate("/create-pda", { state: { row } });
-          onClose();
-          return;
-        } else {
-          navigate("/edit-operation", { state: { row } });
-          onClose();
-          return;
-        }
+      const roleType = loginResponse?.data?.userRole?.roleType;
+
+      // Admin and Finance always go to create-pda
+      if (roleType === "admin" || roleType === "finance") {
+        navigate("/create-pda", { state: { row } });
+        onClose();
+        return;
       }
 
-      // Fallback to existing role-based conditions
-      if (loginResponse?.data?.userRole?.roleType == "finance") {
-        navigate("/create-pda", { state: { row } });
-        onClose();
-      } else if (loginResponse?.data?.userRole?.roleType == "operations") {
+      // Operations role: route based on pdaStatus
+      if (roleType === "operations") {
+        const pdaStatus =
+          typeof row?.pdaStatus === "number"
+            ? row.pdaStatus
+            : Number(row?.pdaStatus);
+        if (!isNaN(pdaStatus)) {
+          if (pdaStatus < 5) {
+            navigate("/create-pda", { state: { row } });
+            onClose();
+            return;
+          } else {
+            navigate("/edit-operation", { state: { row } });
+            onClose();
+            return;
+          }
+        }
+        // If pdaStatus is not available, default to edit-operation for operations
         navigate("/edit-operation", { state: { row } });
         onClose();
-      } else if (loginResponse?.data?.userRole?.roleType == "admin") {
-        navigate("/create-pda", { state: { row } });
-        onClose();
+        return;
       }
+
+      // Fallback for any other role types
+      navigate("/create-pda", { state: { row } });
+      onClose();
     }
   };
 

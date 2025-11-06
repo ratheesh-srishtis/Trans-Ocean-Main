@@ -2143,7 +2143,9 @@ const CreatePDA = ({
                         {(loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
                           "financemanager" ||
                           loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
-                            "operationsmanager") && (
+                            "operationsmanager" ||
+                          loginResponse?.data?.userRole?.role?.designationType?.toLowerCase() ===
+                            "financehead") && (
                           <>
                             {(pdaResponse?.pdaStatus == 2 ||
                               pdaResponse?.pdaStatus == 4) && (
