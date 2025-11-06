@@ -151,7 +151,7 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
             </div>
             <div className="voucherpadding">
               <div className=" headheadvoucher">
-                <div className="headvoucher">VOUCHER</div>
+                <div className="headvoucher">VENDOR VOUCHER</div>
 
                 <div className="downloadbutnvoucher">
                   <button

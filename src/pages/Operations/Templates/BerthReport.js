@@ -557,7 +557,16 @@ const BerthReport = ({
 
   useEffect(() => {
     console.log(pdaResponse, "pdaResponse");
+    let anchorageList = JSON.parse(localStorage.getItem("anchorage_locations_list") || "[]");
+console.log(anchorageList, "anchorageList_storage");
+let selected_anchorage_location = anchorageList.find(
+  (location) => location._id === pdaResponse?.anchorageLocation
+);
+console.log(selected_anchorage_location, "selected_anchorage_location_found");
+    setSelectedAnchorageLocation(selected_anchorage_location?.area || null);
   }, [pdaResponse]);
+
+  
 
   return (
     <>

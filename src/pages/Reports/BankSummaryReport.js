@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Loader from "../Loader";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import {
   getBankSummaryReport,
   bankSummaryReportPDF,
@@ -312,45 +314,111 @@ const BankSummaryReport = ({ employees }) => {
   }, [formattedStart, formattedEnd]);
 
   // Create Excel for Bank Summary
-  const createExcel = () => {
-    if (!reportList || reportList.length === 0) return;
-    const excelData = reportList.map((item) => ({
-      "Bank Name": item?.bank || "N/A",
-      "Opening Balance": item?.openingBalance ?? "N/A",
 
-      "Petty Amount": item?.pettySum ?? "N/A",
-      "Received Amount": item?.customerReceived ?? "N/A",
-      "Paid Amount": item?.vendorPaid ?? "N/A",
-      "Balance Amount": item?.bankBalanceAmount ?? "N/A",
+  const createExcel = async () => {
+    if (!reportList || reportList.length === 0) return;
+
+    // Prepare rows for Excel
+    const rowsData = reportList.map((item) => ({
+      "Bank Name": item?.bank || "N/A",
+      "Opening Balance":
+        typeof item?.openingBalance === "number"
+          ? item.openingBalance.toFixed(3)
+          : item?.openingBalance ?? "N/A",
+      "Petty Amount":
+        typeof item?.pettySum === "number"
+          ? item.pettySum.toFixed(3)
+          : item?.pettySum ?? "N/A",
+      "Received Amount":
+        typeof item?.customerReceived === "number"
+          ? item.customerReceived.toFixed(3)
+          : item?.customerReceived ?? "N/A",
+      "Paid Amount":
+        typeof item?.vendorPaid === "number"
+          ? item.vendorPaid.toFixed(3)
+          : item?.vendorPaid ?? "N/A",
+      "Balance Amount":
+        typeof item?.bankBalanceAmount === "number"
+          ? item.bankBalanceAmount.toFixed(3)
+          : item?.bankBalanceAmount ?? "N/A",
     }));
-    // Add totals row (optional, can be customized as needed)
-    /*
-    const totalPetty = reportList.reduce((sum, item) => sum + (item.pettySum || 0), 0).toFixed(3);
-    const totalReceived = reportList.reduce((sum, item) => sum + (item.customerReceived || 0), 0).toFixed(3);
-    const totalPaid = reportList.reduce((sum, item) => sum + (item.vendorPaid || 0), 0).toFixed(3);
-    const totalBalance = reportList.reduce((sum, item) => sum + (item.bankBalanceAmount || 0), 0).toFixed(3);
-    excelData.push({
-      "Bank Name": "Total",
-      "Petty Amount": totalPetty,
-      "Received Amount": totalReceived,
-      "Paid Amount": totalPaid,
-      "Balance Amount": totalBalance,
-      "Opening Balance": "",
+
+    const headers = Object.keys(rowsData[0] || {});
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Bank Summary Report", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
-    */
-    const XLSX = require("xlsx");
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    worksheet["!cols"] = [
-      { wch: 20 },
-      { wch: 15 },
-      { wch: 18 },
-      { wch: 15 },
-      { wch: 18 },
-      { wch: 18 },
-    ];
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "BankSummary");
-    XLSX.writeFile(workbook, "Bank Summary Report.xlsx");
+
+    // Header row
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    rowsData.forEach((row) => {
+      const r = worksheet.addRow(headers.map((h) => row[h]));
+      r.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // Auto-size columns based on content (clamped)
+    const minWidth = 15;
+    const maxWidth = 60;
+    headers.forEach((h, i) => {
+      let maxLen = (h || "").toString().length;
+      rowsData.forEach((row) => {
+        const val = row[h];
+        const len = val == null ? 0 : val.toString().length;
+        if (len > maxLen) maxLen = len;
+      });
+      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+      worksheet.getColumn(i + 1).width = width;
+    });
+    // Ensure Bank Name column has comfortable width
+    worksheet.getColumn(1).width = Math.max(
+      worksheet.getColumn(1).width || 0,
+      30
+    );
+    worksheet.getColumn(1).alignment = {
+      horizontal: "center",
+      vertical: "middle",
+      wrapText: true,
+    };
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Bank Summary Report.xlsx");
   };
 
   return (

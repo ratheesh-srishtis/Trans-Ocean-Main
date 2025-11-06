@@ -353,14 +353,15 @@ As agents only`);
   const [uploadStatus, setUploadStatus] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
+  // Replace the documentsUpload function (around lines 356-380) with this:
   const documentsUpload = async (event) => {
     if (event.target.files && event.target.files.length > 0) {
       const formData = new FormData();
 
-      // Append all selected files to FormData
-      Array.from(event.target.files).forEach((file) => {
-        console.log(file, "file");
-        formData.append("file", file); // "files" is the expected key for your API
+      // Append all selected files to FormData with different keys or as an array
+      Array.from(event.target.files).forEach((file, index) => {
+        console.log(file, `file_${index}`);
+        formData.append("files", file); // Use "files" (plural) to indicate multiple files
       });
 
       try {
@@ -368,15 +369,22 @@ As agents only`);
         const response = await uploadConnectionFlightImage(formData);
 
         if (response.status) {
-          setUploadStatus("Upload successful!");
-          // setUploadedFiles((prevFiles) => [...prevFiles, ...response.data]); // Append new files to existing ones
-          setUploadedFiles((prevFiles) => [...prevFiles, response.data]); // ✅ fixed
+          setOpenPopUp(true);
+          setMessage("Files uploaded successfully!");
+          // Handle multiple files in response - assuming response.data is an array
+          if (Array.isArray(response.data)) {
+            setUploadedFiles((prevFiles) => [...prevFiles, ...response.data]); // Spread array of files
+          } else {
+            setUploadedFiles((prevFiles) => [...prevFiles, response.data]); // Single file response
+          }
         } else {
-          setUploadStatus("Upload failed. Please try again.");
+          setOpenPopUp(true);
+          setMessage("Files uploaded failed!");
         }
       } catch (error) {
         console.error("File upload error:", error);
-        setUploadStatus("An error occurred during upload.");
+        setOpenPopUp(true);
+        setMessage("Files upload failed!");
       }
     }
   };
@@ -585,7 +593,7 @@ As agents only`);
                   <div className="row align-items-start mt-3">
                     <div className="mb-2 col-12 docuplo">
                       <label htmlFor="formFile" className="form-label">
-                        Connection Flight Images Upload:
+                        Upload Connecting Flight Images:
                       </label>
                       <input
                         className="form-control documentsfsize linheight"
@@ -594,6 +602,11 @@ As agents only`);
                         accept="image/*"
                         multiple
                         onChange={(e) => {
+                          if (e.target.files.length > 0) {
+                            console.log(
+                              `${e.target.files.length} files selected`
+                            );
+                          }
                           documentsUpload(e); // Call your upload handler
                           e.target.value = ""; // Reset the file input value to hide uploaded file names
                         }}

@@ -65,27 +65,33 @@ const Dashboard = () => {
         if (res.status == true) {
           if (cardNumberValue == "1") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.receivedQuotation || [] },
+              state: { quotationsFromDashboard: res?.receivedQuotation || [],
+              cardNumber: cardNumberValue  },
             });
           } else if (cardNumberValue == "2") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.submittedQuotation || [] },
+              state: { quotationsFromDashboard: res?.submittedQuotation || [],
+              cardNumber: cardNumberValue  },
             });
           } else if (cardNumberValue == "3") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.approvedQuotation || [] },
+              state: { quotationsFromDashboard: res?.approvedQuotation || [],
+              cardNumber: cardNumberValue  },
             });
           } else if (cardNumberValue == "4") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.processedQuotation || [] },
+              state: { quotationsFromDashboard: res?.processedQuotation || [],
+              cardNumber: cardNumberValue  },
             });
           } else if (cardNumberValue == "5") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.completedQuotation || [] },
+              state: { quotationsFromDashboard: res?.completedQuotation || [],
+              cardNumber: cardNumberValue  },
             });
           } else if (cardNumberValue == "6") {
             navigate("/quotations", {
-              state: { quotationsFromDashboard: res?.invoiceSubmitted || [] },
+              state: { quotationsFromDashboard: res?.invoiceSubmitted || [],
+              cardNumber: cardNumberValue  },
             });
           }
         }

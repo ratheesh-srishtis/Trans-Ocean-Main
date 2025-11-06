@@ -337,7 +337,7 @@ const Profile = () => {
         ["Passport Number", formData.passportNumber || ""],
         ["Civil ID", formData.iqamaNumber || ""],
         ["", ""],
-        ["Official Information", ""],
+        ["OFFICIAL INFORMATION", ""],
         ["Date of Joining", formatDate(formData.dateOfJoining) || ""],
         [
           "Designation",
@@ -353,7 +353,7 @@ const Profile = () => {
       // Add passport details
       if (formData.passportDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["Passport Details", ""]);
+        personalData.push(["PASSPORT DETAILS", ""]);
         formData.passportDetails.forEach((item, idx) => {
           personalData.push([
             `Passport ${idx + 1} - Number`,
@@ -373,7 +373,7 @@ const Profile = () => {
       // Add contract details
       if (formData.contractDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["Contract Details", ""]);
+        personalData.push(["CONTRACT DETAILS", ""]);
         formData.contractDetails.forEach((item, idx) => {
           personalData.push([
             `Contract ${idx + 1} - Name`,
@@ -393,7 +393,7 @@ const Profile = () => {
       // Add visa details
       if (formData.visaDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["Visa Details", ""]);
+        personalData.push(["VISA DETAILS", ""]);
         formData.visaDetails.forEach((item, idx) => {
           personalData.push([
             `Visa ${idx + 1} - Number`,
@@ -413,7 +413,7 @@ const Profile = () => {
       // Add license details
       if (formData.licenseDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["License Details", ""]);
+        personalData.push(["LICENSE DETAILS", ""]);
         formData.licenseDetails.forEach((item, idx) => {
           personalData.push([
             `License ${idx + 1} - Number`,
@@ -433,7 +433,7 @@ const Profile = () => {
       // Add certification details
       if (formData.certificationDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["Certification Details", ""]);
+        personalData.push(["CERTIFICATION DETAILS", ""]);
         formData.certificationDetails.forEach((item, idx) => {
           personalData.push([
             `Certification ${idx + 1} - Name`,
@@ -453,7 +453,7 @@ const Profile = () => {
       // Add medical record details
       if (formData.medicalRecordDetails?.length > 0) {
         personalData.push(["", ""]);
-        personalData.push(["Medical Record Details", ""]);
+        personalData.push(["MEDICAL RECORD DETAILS", ""]);
         formData.medicalRecordDetails.forEach((item, idx) => {
           personalData.push([
             `Medical Record ${idx + 1} - Description`,

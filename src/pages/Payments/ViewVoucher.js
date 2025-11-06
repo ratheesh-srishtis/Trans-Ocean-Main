@@ -139,7 +139,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
             </div>
             <div className="voucherpadding">
               <div className=" headheadvoucher">
-                <div className="headvoucher">PETTY</div>
+                <div className="headvoucher">PETTY VOUCHER</div>
 
                 <div className="downloadbutnvoucher">
                   <button
