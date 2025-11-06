@@ -40,6 +40,10 @@
 .statusbadge i {
   font-size: 15px;
 }
+.filquofil{
+  min-width:284px !important;
+  margin-left: 0px !important;
+}
 .search {
   border: 1px solid #80808041;
   width: 150px;
@@ -234,4 +238,22 @@
 }
 .yearjobreport {
   margin-right: 23px;
+}
+@media (max-width: 768px) {
+.qurigh{
+  display: flex;
+  flex-direction: column;
+}
+.srchquo{
+  width:332px;
+  margin-left: 19px;
+}
+.filquofil{
+  margin-left: 19px !important;
+  width:100% !important;
+  max-width: 331px !important;
+}
+.crtq{
+  margin-left: 19px;
+}
 }
