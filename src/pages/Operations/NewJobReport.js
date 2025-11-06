@@ -688,7 +688,7 @@ const NewJobReport = ({ ports, loginResponse }) => {
 
         <div className="d-flex  headerb mb-3 mt-3 ">
           <div className=" d-flex">
-            <div className=" filtermainleft mqfiltermainleftjob ">
+            <div className=" jjffilterf mqfiltermainleftjob ">
               <i className="bi bi-funnel-fill filtericon"></i>
               <select
                 className="form-select form-select-sm filter"
