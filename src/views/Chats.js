@@ -10,6 +10,8 @@ import {
 } from "../services/chatApiService";
 import { useAuth } from "../context/AuthContext";
 import PopUp from "../pages/PopUp";
+import Loader from "../pages/Loader";
+
 import { useChat } from "./ChatContext";
 const Chats = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -262,6 +264,7 @@ const Chats = () => {
   };
 
   const getUnreadCount = async (limit, offset) => {
+    setIsLoading(true);
     let payload = {
       userId: userId,
     };
@@ -271,8 +274,10 @@ const Chats = () => {
       setChatLogos(response);
       updateUnreadCounts(response); // Update chatUsers dynamically
       console.log("getUnreadChatCount", response);
+      setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
     }
   };
 
@@ -630,6 +635,7 @@ const Chats = () => {
       {openPopUp && (
         <PopUp message={popupMessage} closePopup={() => setOpenPopUp(false)} />
       )}{" "}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

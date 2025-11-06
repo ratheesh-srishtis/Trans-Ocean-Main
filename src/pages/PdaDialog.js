@@ -83,7 +83,7 @@ const PdaDialog = ({
   };
 
   useEffect(() => {
-    console.log(pdaDetails, "pdaDetails");
+    console.log(pdaDetails, "pdaDetails_Dialog");
     console.log(pdaServices, "pdaServices");
     console.log(anchorageStayCharges, "anchorageStayCharges");
     console.log(marineCharge, "marineCharge");
@@ -462,12 +462,9 @@ const PdaDialog = ({
           <div>
             <div className="col-1 note">Note</div>
             <div className="subnote">
-              **“Effective from 16th April 2021, 5% of VAT will applicable as
-              per new Government regulation in the Sultanate of Oman."
+              {companyBankDetails?.anchorageStayRemark}
               <br />
-              ***Denotes estimated charges and actual as per port bills <br />
-              ****Agency fess does not include Immarsat calls or telexes. If
-              necessary will be charged out of costs
+              {companyBankDetails?.quotationPDFNotes} <br />
             </div>
           </div>
 
@@ -503,8 +500,7 @@ const PdaDialog = ({
 
                     <tr>
                       <td colSpan="6" className="styln">
-                        Vessels waiting at anchorage due non-availability of
-                        berth shall not be charged anchorage fees.
+                        {companyBankDetails?.anchorageStayRemark}
                       </td>
                     </tr>
                   </tbody>
@@ -555,8 +551,7 @@ const PdaDialog = ({
 
                     <tr>
                       <td colSpan="6" className="styln">
-                        Vessels waiting at anchorage due non-availability of
-                        berth shall not be charged anchorage fees.
+                        {companyBankDetails?.anchorageStayRemark}
                       </td>
                     </tr>
                   </tbody>
