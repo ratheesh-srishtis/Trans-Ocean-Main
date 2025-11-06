@@ -207,7 +207,7 @@
 
  .headerb {
      align-items: center;
-     margin-left: 23px;
+     margin-left: 0px;
  }
 
  .filter {
@@ -226,7 +226,15 @@
  }
 
 
-
+.jjffilterf {
+    position: relative;
+    border: 1px solid #80808041;
+    
+    width: 177px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
  .headerb {
      align-items: start;
  }
