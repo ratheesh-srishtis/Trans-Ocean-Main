@@ -124,6 +124,13 @@
 }
 .nonvalue {
   margin-right: -46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.necus{
+  display: flex;
+  justify-content: center;
 }
 .form-labele {
   font-size: 0.7rem;
@@ -140,6 +147,10 @@
 }
 .monthcustomerpay {
   width: 135px;
+  font-size: .7rem !important;
+}
+.neevocu{
+  margin-top: 8px;
 }
 .statussbycustomer {
   height: 34px;
@@ -300,6 +311,10 @@
   user-select: none;
 }
 
+.cccsut{
+  display: flex;
+  align-items: center;
+}
 /* Change color on hover */
 .password-toggle:hover {
   color: #000;
@@ -410,6 +425,25 @@
 
   .leave-card-title {
     font-size: 13px;
+  }
+  .neevocu{
+    margin-top: 0px;
+  }
+  .datebycustomerpayment{
+width:222px
+  }
+  .necus{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .paymentcustomermargin{
+    margin-left: 11px;
+    margin-top: 5px;
+  }
+  .paymentbycus {
+  margin-left: 9px;}
+  .voucherbypayment{
+    width:308px;
   }
 }
 

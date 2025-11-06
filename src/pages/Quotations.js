@@ -696,11 +696,11 @@ useEffect(() => {
           </ul>
         </div>
 
-        <div className="d-flex gap-3 rightside">
+        <div className="d-flex gap-3 rightside qurigh">
           <div className=" searchmain">
             <input
               type="text"
-              className="form-control search"
+              className="form-control search srchquo"
               id="exampleFormControlInput1"
               placeholder="Search"
               value={searchTerm}
@@ -711,7 +711,7 @@ useEffect(() => {
           {
             !fromDashboard && (
               <>
-                <div className=" filtermain ">
+                <div className=" filtermain filquofil">
             <i className="bi bi-funnel-fill filtericon"></i>
             <select
               className="form-select form-select-sm filter"
@@ -732,7 +732,7 @@ useEffect(() => {
             )
           }
         
-          <div className=" createbtn" style={{ width: "100%" }}>
+          <div className=" createbtn crtq" style={{ width: "100%" }}>
             <button
               type="button"
               onClick={() => handleNavigation()}

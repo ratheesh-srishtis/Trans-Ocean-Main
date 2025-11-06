@@ -284,11 +284,13 @@ const CustomerPayments = () => {
       flex: 1,
       minWidth: 100,
     },
-    { field: "amount",   headerName: (
+    {
+      field: "amount", headerName: (
         <span>
           Paid<br />Amount
         </span>
-      ), flex: 1, minWidth: 100 },
+      ), flex: 1, minWidth: 100
+    },
     { field: "currency", headerName: "Currency", flex: 1, minWidth: 100 },
     {
       field: "exchangeLoss",
@@ -304,7 +306,7 @@ const CustomerPayments = () => {
     },
     {
       field: "modeofPayment",
-       headerName: (
+      headerName: (
         <span>
           Mode of<br />Payment
         </span>
@@ -400,7 +402,8 @@ const CustomerPayments = () => {
               </select>
             </div>
           </div>
-          <div className="cusbydate">
+          <div className="cccsut mt-2 mb-2">        
+              <div className="cusbydate">
             <label
               htmlFor="inputPassword"
               className=" form-labele col-form-label text-nowrap"
@@ -411,18 +414,20 @@ const CustomerPayments = () => {
               <div className="fw-bolder paymentpdafontweight"></div>
             </div>
           </div>
-          <div className="">
-            {/*<i className="bi bi-funnel-fill filtericon"></i>*/}
-            <input
-              type="date"
-              name="paymentDate"
-              className="datebycustomerpayment form-control vesselbox statusspayment"
-              placeholder="Select Date"
-              onChange={handleTimeperiod}
-              value={inputFilterDate}
-            ></input>
-          </div>
-          <div className="voucherbypayment">
+            <div className="">
+              {/*<i className="bi bi-funnel-fill filtericon"></i>*/}
+              <input
+                type="date"
+                name="paymentDate"
+                className="datebycustomerpayment form-control vesselbox statusspayment"
+                placeholder="Select Date"
+                onChange={handleTimeperiod}
+                value={inputFilterDate}
+              ></input>
+            </div>
+            </div>
+<div className="neevocu">
+            <div className="voucherbypayment mb-2">
             <i className="bi bi-funnel-fill filtericon"></i>
             <select
               name="pdaId"
@@ -439,7 +444,9 @@ const CustomerPayments = () => {
               ))}
             </select>
           </div>
-          <div className=" d-flex filterpayment">
+</div>
+<div className="necus">
+            <div className=" d-flex filterpayment">
             <label
               htmlFor="exampleFormControlInput1"
               className="form-labele filterbycustpayment "
@@ -494,6 +501,7 @@ const CustomerPayments = () => {
               </select>
             )}
           </div>
+</div>
           <div className="d-flex align-items-center paymentcustomermargin">
             <input
               type="checkbox"

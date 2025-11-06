@@ -1770,6 +1770,7 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etaHours"
+                        style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etaHours"
                         placeholder="00"
@@ -1779,6 +1780,7 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etaMinutes"
+                         style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etaMinutes"
                         placeholder="00"
@@ -1838,6 +1840,7 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etdHours"
+                           style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etdHours"
                         placeholder="00"
@@ -1847,6 +1850,7 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etdMinutes"
+                           style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etdMinutes"
                         placeholder="00"
