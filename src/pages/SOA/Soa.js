@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+
 //import jsPDF from 'jspdf';
 //import 'jspdf-autotable';
 import { saveAs } from "file-saver";
@@ -112,7 +113,9 @@ const Soa = ({}) => {
         "Paid OMR": item.paidAmount ? item.paidAmount.toFixed(3) : "N/A",
 
         Discount:
-          item.discountAmount !== undefined ? item.discountAmount : "N/A",
+          item.discountAmount !== undefined
+            ? item.discountAmount.toString()
+            : "N/A",
         ["Balance Overview In OMR"]: balance.toFixed(3) || "N/A",
         "Total USD": (item.totalAmountOMR * 2.62)?.toFixed(3) || "N/A",
         "Balance Overview In USD": balanceusd || "N/A",
@@ -180,7 +183,7 @@ const Soa = ({}) => {
       "Port Name": "",
       "Total OMR": totalOMR,
       "Paid OMR": paidOMR,
-      Discount: discountTotal,
+      Discount: discountTotal.toString(),
 
       ["Balance Overview In OMR"]: balanceOMR,
       "Total USD": totalUSD,
@@ -192,28 +195,28 @@ const Soa = ({}) => {
 
     // Set the columns order and widths with proper sizing for all columns
     const columns = [
-      { key: "Quotation Number", wch: 20 },
-      { key: "Invoice NO", wch: 18 },
-      { key: "FDA Date", wch: 12 },
-      { key: "Customer Name", wch: 25 },
-      { key: "Vessel Name", wch: 25 },
-      { key: "Port Name", wch: 25 },
-      { key: "Total OMR", wch: 15 },
-      { key: "Paid OMR", wch: 15 },
-      { key: "Discount", wch: 12 },
+      { key: "Quotation Number", wch: 25 },
+      { key: "Invoice NO", wch: 22 },
+      { key: "FDA Date", wch: 15 },
+      { key: "Customer Name", wch: 35 },
+      { key: "Vessel Name", wch: 35 },
+      { key: "Port Name", wch: 35 },
+      { key: "Total OMR", wch: 20 },
+      { key: "Paid OMR", wch: 20 },
+      { key: "Discount", wch: 20 },
       {
         key: "Balance Overview In OMR",
-        wch: 30,
+        wch: 20,
       },
-      { key: "Total USD", wch: 15 },
-      { key: "Balance Overview In USD", wch: 30 },
+      { key: "Total USD", wch: 20 },
+      { key: "Balance Overview In USD", wch: 20 },
     ];
 
     if (showAED) {
-      columns.push({ key: "Balance Overview In AED", wch: 30 });
+      columns.push({ key: "Balance Overview In AED", wch: 35 });
     }
     // Always add Days Overdue at the end
-    columns.push({ key: "Days Overdue", wch: 18 });
+    columns.push({ key: "Days Overdue", wch: 22 });
 
     // Convert the data to a worksheet
     const worksheet = XLSX.utils.json_to_sheet(worksheetData, {
@@ -222,24 +225,20 @@ const Soa = ({}) => {
 
     // Set column widths
     worksheet["!cols"] = columns.map((col) => ({ wch: col.wch }));
-
-    // Add styling to headers - make them bold and add background color
-    const headerRow = 1; // First row is headers
-    columns.forEach((col, index) => {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: index });
-      if (worksheet[cellAddress]) {
-        worksheet[cellAddress].s = {
-          font: { bold: true },
-          fill: { fgColor: { rgb: "EEEEEE" } },
-          border: {
-            top: { style: "thin" },
-            bottom: { style: "thin" },
-            left: { style: "thin" },
-            right: { style: "thin" },
-          },
-        };
+    // Center align all cells
+    const range = XLSX.utils.decode_range(worksheet["!ref"]);
+    for (let row = 0; row <= range.e.r; row++) {
+      for (let col = 0; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+        if (worksheet[cellAddress]) {
+          if (!worksheet[cellAddress].s) worksheet[cellAddress].s = {};
+          worksheet[cellAddress].s.alignment = {
+            horizontal: "center",
+            vertical: "center",
+          };
+        }
       }
-    });
+    }
 
     // Style the totals row (last row)
     const totalRowIndex = worksheetData.length - 1;
@@ -263,7 +262,7 @@ const Soa = ({}) => {
     });
 
     // Append the worksheet to the workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, "DataGrid");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "SOA");
 
     // Generate Excel file and trigger download
     XLSX.writeFile(workbook, "SOA_Report.xlsx");

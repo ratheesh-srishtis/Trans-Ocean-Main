@@ -110,7 +110,7 @@ const InvoicePage = ({
       const response = await changeInvoiceStatus(pdaPayload);
       console.log(response, "login_response");
       if (response?.status == true) {
-        setMessage("Invoice has been Rejected by FM");
+        setMessage("Invoice has been Rejected");
         setOpenPopUp(true);
         setRemarksOpen(false);
         onSubmit(pdaResponse?._id);

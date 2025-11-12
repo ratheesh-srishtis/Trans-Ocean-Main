@@ -292,8 +292,6 @@ const ViewOperations = ({
         </div>
 
         <div className="row viewquocontent">
-          
-
           <div className=" col-4 viewhead">
             <span> Ops By:</span>{" "}
             <span className="viewans">{opsValue ? opsValue : "N/A"}</span>
@@ -313,7 +311,9 @@ const ViewOperations = ({
             {(loginResponse?.data?.userRole?.roleType?.toLowerCase() ==
               "finance" ||
               loginResponse?.data?.userRole?.roleType?.toLowerCase() ==
-                "admin") && (
+                "admin" ||
+              loginResponse?.data?.userRole?.roleType?.toLowerCase() ==
+                "superadmin") && (
               <>
                 <ViewOpsChargesTable
                   chargesArray={finalChargesArray}

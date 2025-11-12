@@ -453,7 +453,7 @@ const CreatePDA = ({
         setPdaResponse(response?.pda);
         if (response?.pda?.pdaStatus == 4) {
           setIsApproved(true);
-          setMessage("PDA has been Rejected by FM");
+          setMessage("PDA has been Rejected");
           setOpenPopUp(true);
           setRemarksOpen(false);
         }
@@ -474,23 +474,22 @@ const CreatePDA = ({
     console.log("chargesArray_Submitted: ", chargesArray);
     console.log("handleSubmit_from:", from);
     setFinalChargesArray(chargesArray);
-    updateBadgeStatus()
+    updateBadgeStatus();
     handleClose();
   };
 
-  const updateBadgeStatus =async () => { 
+  const updateBadgeStatus = async () => {
     let data = {
       pdaId: pdaResponse?._id,
     };
     try {
-      const pdaDetails = await getPdaDetails(data); 
+      const pdaDetails = await getPdaDetails(data);
       console.log(pdaDetails, "pdaDetails_after_adding_charges");
-            setPdaResponse(pdaDetails?.pda);     
+      setPdaResponse(pdaDetails?.pda);
     } catch (error) {
       console.error("Failed to fetch quotations:", error);
     }
   };
-  
 
   const handleEdit = (charges, index) => {
     console.log("edit_charges: ", charges);
@@ -1770,7 +1769,11 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etaHours"
-                        style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
+                        style={{
+                          paddingBottom: "5px",
+                          paddingTop: "5px",
+                          textAlign: "center",
+                        }}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etaHours"
                         placeholder="00"
@@ -1780,7 +1783,11 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etaMinutes"
-                         style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
+                        style={{
+                          paddingBottom: "5px",
+                          paddingTop: "5px",
+                          textAlign: "center",
+                        }}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etaMinutes"
                         placeholder="00"
@@ -1840,7 +1847,11 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etdHours"
-                           style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
+                        style={{
+                          paddingBottom: "5px",
+                          paddingTop: "5px",
+                          textAlign: "center",
+                        }}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etdHours"
                         placeholder="00"
@@ -1850,7 +1861,11 @@ const CreatePDA = ({
                       <input
                         type="text"
                         name="etdMinutes"
-                           style={{paddingBottom:"5px",paddingTop:"5px", textAlign:"center"}}
+                        style={{
+                          paddingBottom: "5px",
+                          paddingTop: "5px",
+                          textAlign: "center",
+                        }}
                         className="form-control vessel-voyage voyageblock timespace"
                         id="etdMinutes"
                         placeholder="00"
