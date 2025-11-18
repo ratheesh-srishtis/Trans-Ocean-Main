@@ -25,57 +25,147 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
   const [customerVoucher, setCustomerVoucher] = useState("");
   const { logoPreview, headerPreview, footerPreview } = useMedia() || {};
 
+  // const getWordRepresentation = (value, currency) => {
+  //   if (
+  //     value === undefined ||
+  //     value === null ||
+  //     isNaN(Number(value)) ||
+  //     value === "N/A" ||
+  //     value === ""
+  //   ) {
+  //     return "Zero";
+  //   }
+
+  //   const amount = Number(value);
+  //   const integerPart = Math.floor(amount);
+  //   const fractionPart = Math.round((amount - integerPart) * 100); // 2 decimal places
+
+  //   const amountInWords = toWords.convert(integerPart);
+
+  //   let currencyFullName = "";
+  //   let currencyUnit = "";
+  //   let subUnit = "";
+
+  //   switch (currency?.toUpperCase()) {
+  //     case "USD":
+  //       currencyFullName = "United States Dollar";
+  //       currencyUnit = "Dollars";
+  //       subUnit = "Cents";
+  //       break;
+  //     case "OMR":
+  //       currencyFullName = "Omani Riyal";
+  //       currencyUnit = "Riyal";
+  //       subUnit = "Baisa";
+  //       break;
+  //     case "AED":
+  //       currencyFullName = "Dirham";
+  //       currencyUnit = "Dirhams";
+  //       subUnit = "Fils";
+  //       break;
+  //     default:
+  //       currencyFullName = currency;
+  //       currencyUnit = "";
+  //       subUnit = "";
+  //   }
+
+  //   let result = `${currencyFullName} ${amountInWords}`;
+
+  //   if (fractionPart > 0) {
+  //     const fractionInWords = toWords.convert(fractionPart);
+  //     result += ` and ${fractionInWords} ${subUnit}`;
+  //   }
+
+  //   return `${result} Only`;
+  // };
   const getWordRepresentation = (value, currency) => {
+    // Guard clauses
     if (
       value === undefined ||
       value === null ||
-      isNaN(Number(value)) ||
       value === "N/A" ||
-      value === ""
+      value === "" ||
+      isNaN(Number(value))
     ) {
-      return "Zero";
+      return "Zero Only";
     }
 
-    const amount = Number(value);
-    const integerPart = Math.floor(amount);
-    const fractionPart = Math.round((amount - integerPart) * 100); // 2 decimal places
+    let amount = Number(value);
 
-    const amountInWords = toWords.convert(integerPart);
+    // handle negative by treating absolute (remove if you want to keep negative sign)
+    const isNegative = amount < 0;
+    amount = Math.abs(amount);
 
-    let currencyFullName = "";
-    let currencyUnit = "";
-    let subUnit = "";
+    // split integer & fraction (2 decimal places)
+    let integerPart = Math.floor(amount);
+    let fractionPart = Math.round((amount - integerPart) * 100);
 
-    switch (currency?.toUpperCase()) {
-      case "USD":
-        currencyFullName = "United States Dollar";
-        currencyUnit = "Dollars";
-        subUnit = "Cents";
-        break;
-      case "OMR":
-        currencyFullName = "Omani Riyal";
-        currencyUnit = "Riyal";
-        subUnit = "Baisa";
-        break;
-      case "AED":
-        currencyFullName = "Dirham";
-        currencyUnit = "Dirhams";
-        subUnit = "Fils";
-        break;
-      default:
-        currencyFullName = currency;
-        currencyUnit = "";
-        subUnit = "";
+    // handle rounding edge (e.g. 1.999 -> 2.00)
+    if (fractionPart === 100) {
+      integerPart += 1;
+      fractionPart = 0;
     }
 
-    let result = `${currencyFullName} ${amountInWords}`;
+    // convert numbers to words (expects toWords.convert to exist)
+    const intWords = integerPart === 0 ? "zero" : toWords.convert(integerPart);
+    const fracWords = fractionPart > 0 ? toWords.convert(fractionPart) : "";
 
-    if (fractionPart > 0) {
-      const fractionInWords = toWords.convert(fractionPart);
-      result += ` and ${fractionInWords} ${subUnit}`;
+    // currency map: singular base forms (we'll add 's' for plural where applicable)
+    const map = {
+      USD: { fullName: null, unit: "Dollar", subUnit: "Cent" },
+      OMR: { fullName: "Omani Riyal", unit: "Riyal", subUnit: "Baisa" },
+      AED: { fullName: null, unit: "Dirham", subUnit: "Fils" },
+      // add more currencies here if needed
+    };
+
+    const key = (currency || "").toUpperCase();
+    const cfg = map[key] || {
+      fullName: currency || "",
+      unit: currency || "",
+      subUnit: "",
+    };
+
+    // Decide output format:
+    // - For currencies with a fullName in the map (like OMR) we prefix with it and do NOT append unit after integer words,
+    //   matching your OMR example: "Omani Riyal One Hundred Fifty And Fifty Baisa Only"
+    // - Otherwise we show "<AmountWords> <Unit(s)> [And <FracWords> <SubUnit(s)>] Only"
+    const capitalizeWords = (str) =>
+      String(str || "")
+        .split(" ")
+        .filter(Boolean)
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+
+    let result = "";
+
+    if (cfg.fullName) {
+      // Prefix with the full currency name (e.g., "Omani Riyal")
+      result = `${cfg.fullName} ${intWords}`;
+      if (fractionPart > 0) {
+        const sub = fractionPart === 1 ? cfg.subUnit : cfg.subUnit; // subUnit usually doesn't add 's' (e.g., "Baisa")
+        result += ` And ${fracWords} ${sub}`;
+      }
+    } else {
+      // Standard: number words + unit (pluralize if needed)
+      const unit =
+        integerPart === 1
+          ? cfg.unit
+          : `${cfg.unit}${cfg.unit.endsWith("s") ? "" : "s"}`; // Dollar -> Dollars
+      result = `${intWords} ${unit}`;
+      if (fractionPart > 0) {
+        const subUnit =
+          fractionPart === 1
+            ? cfg.subUnit
+            : `${cfg.subUnit}${cfg.subUnit.endsWith("s") ? "" : "s"}`; // Cent -> Cents
+        result += ` And ${fracWords} ${subUnit}`;
+      }
     }
 
-    return `${result} Only`;
+    // add negative marker if needed
+    if (isNegative) result = `Minus ${result}`;
+
+    // Final "Only", and capitalize words as in your examples
+    result = `${result} Only`;
+    return capitalizeWords(result);
   };
 
   const downloadVoucher = async () => {
@@ -278,17 +368,17 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                   <tr>
                     <td className="voucherprinting">
                       {getWordRepresentation(
-                        getvoucher?.recvamount,
-                        getvoucher?.currency
+                        customerVoucher?.totalOMR,
+                        customerVoucher?.currency
                       )}{" "}
                     </td>
                     <td className="voucheramountrate text-center">
-                      {getvoucher?.currency}{" "}
-                      {getvoucher?.currency === "OMR"
-                        ? Number(getvoucher?.recvamount).toFixed(3)
-                        : getvoucher?.currency === "USD"
-                        ? Number(getvoucher?.recvamount).toFixed(2)
-                        : getvoucher?.recvamount}
+                      {customerVoucher?.currency?.toUpperCase()}{" "}
+                      {customerVoucher?.currency === "OMR"
+                        ? Number(customerVoucher?.totalOMR).toFixed(3)
+                        : customerVoucher?.currency === "USD"
+                        ? Number(customerVoucher?.totalOMR).toFixed(2)
+                        : customerVoucher?.totalOMR}
                     </td>
                   </tr>
                 </tbody>

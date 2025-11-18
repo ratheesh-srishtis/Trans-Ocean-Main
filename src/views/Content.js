@@ -67,6 +67,10 @@ import EmployeeModification from "../pages/Hr/EmployeeModification";
 import ViewEmployeeDetails from "../pages/Hr/ViewEmployeeDetails";
 import LeaveRequests from "../pages/Hr/LeaveRequests";
 import Leave from "../pages/Hr/Leave";
+import Tax from "../pages/Payments/Tax";
+import Assets from "../pages/Payments/Assets";
+import AppreciationDepreciation from "../pages/Payments/AppreciationDepreciation";
+import Sales from "../pages/Payments/Sales";
 const Content = ({ onNotFound }) => {
   const { loginResponse } = useAuth();
 
@@ -212,6 +216,10 @@ const Content = ({ onNotFound }) => {
     "/view-employee-details",
     "/leave-requests",
     "/leave",
+    "/tax",
+    "/asset",
+    "/appreciation-depreciation",
+    "/sales",
   ];
 
   useEffect(() => {
@@ -366,7 +374,10 @@ const Content = ({ onNotFound }) => {
       <Route path="/QQform-settings" element={<QQFormSettings />} />
       <Route path="/Bank-settings" element={<BankSettings />} />
       <Route path="/password-requests" element={<PasswordRequests />} />
-      <Route path="/reports" element={<Reports loginResponse={loginResponse} />} />
+      <Route
+        path="/reports"
+        element={<Reports loginResponse={loginResponse} />}
+      />
       <Route path="/cost-centre-breakup" element={<CostCenterBreakup />} />
       <Route
         path="/cost-centre-summary"
@@ -397,6 +408,14 @@ const Content = ({ onNotFound }) => {
         path="/leave-requests"
         element={<LeaveRequests loginResponse={loginResponse} />}
       />
+      <Route path="/tax" element={<Tax />} />
+      <Route
+        path="/appreciation-depreciation"
+        element={<AppreciationDepreciation />}
+      />
+      <Route path="/asset" element={<Assets />} />
+      <Route path="/sales" element={<Sales />} />
+
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );

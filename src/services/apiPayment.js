@@ -53,6 +53,15 @@ export const getVendorPayments = async (getpayment) => {
   }
 };
 
+export const getVendorVoucherDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post("/getVendorVoucherDetails", data);
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment", error);
+  }
+};
+
 // list quotationIds
 
 export const getAllQuotationIds = async () => {

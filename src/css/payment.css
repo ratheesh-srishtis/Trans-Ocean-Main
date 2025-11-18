@@ -128,7 +128,7 @@
   justify-content: center;
   align-items: center;
 }
-.necus{
+.necus {
   display: flex;
   justify-content: center;
 }
@@ -147,9 +147,9 @@
 }
 .monthcustomerpay {
   width: 135px;
-  font-size: .7rem !important;
+  font-size: 0.7rem !important;
 }
-.neevocu{
+.neevocu {
   margin-top: 8px;
 }
 .statussbycustomer {
@@ -311,7 +311,7 @@
   user-select: none;
 }
 
-.cccsut{
+.cccsut {
   display: flex;
   align-items: center;
 }
@@ -426,24 +426,25 @@
   .leave-card-title {
     font-size: 13px;
   }
-  .neevocu{
+  .neevocu {
     margin-top: 0px;
   }
-  .datebycustomerpayment{
-width:222px
+  .datebycustomerpayment {
+    width: 222px;
   }
-  .necus{
+  .necus {
     display: flex;
     justify-content: flex-start;
   }
-  .paymentcustomermargin{
+  .paymentcustomermargin {
     margin-left: 11px;
     margin-top: 5px;
   }
   .paymentbycus {
-  margin-left: 9px;}
-  .voucherbypayment{
-    width:308px;
+    margin-left: 9px;
+  }
+  .voucherbypayment {
+    width: 308px;
   }
 }
 
@@ -463,6 +464,11 @@ width:222px
 }
 
 .custom-picker-styles {
+  height: 32px;
+  font-size: 13px;
+}
+
+.custom-input-styles {
   height: 32px;
   font-size: 13px;
 }

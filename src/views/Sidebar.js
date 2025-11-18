@@ -49,20 +49,33 @@ const Sidebar = () => {
   ];
   const handleNavigation = (menuItem) => {
     console.log(menuItem, "menuItem");
-  if (menuArr.includes(menuItem)) {
-    setShowSubmenu(false);
-    setActiveSubMenu("");
-  } else {
-    setShowSubmenu((prev) => !prev);
-    if (menuItem != "settings") setActiveSubMenu(menuItem);
-  }
-  
-  // Only set active menu for settings submenu items, let useEffect handle route-based activation
-  if (!menuArr.includes(menuItem)) {
-    setActiveMenu(menuItem);
-  }
-  
-  console.log(menuItem, "handleNavigation");
+
+    // If top-level menu that has its own submenu, toggle it and set activeMenu
+    if (menuItem === "settings" || menuItem === "payments") {
+      if (activeMenu === menuItem && showSubmenu) {
+        // close if already open
+        setShowSubmenu(false);
+        setActiveMenu("");
+        setActiveSubMenu("");
+      } else {
+        // open this submenu and mark it active
+        setShowSubmenu(true);
+        setActiveMenu(menuItem);
+        setActiveSubMenu("");
+      }
+    } else if (menuArr.includes(menuItem)) {
+      // regular top-level menu (no submenu) -> close any open submenu and set active menu
+      setShowSubmenu(false);
+      setActiveSubMenu("");
+      setActiveMenu(menuItem);
+    } else {
+      // a submenu item was clicked -> ensure submenu is open and set active submenu
+      setShowSubmenu(true);
+      setActiveSubMenu(menuItem);
+      // don't change activeMenu here (it should already be parent)
+    }
+
+    console.log(menuItem, "handleNavigation");
 
     switch (menuItem) {
       case "dashboard":
@@ -88,6 +101,34 @@ const Sidebar = () => {
       case "payments":
         navigate("/payments");
         break;
+
+      // payments sub-items
+      case "payments-tax":
+        setActiveMenu("payments");
+        setActiveSubMenu("payments-tax");
+        setShowSubmenu(true);
+        navigate("/tax");
+        break;
+      case "payments-asset":
+        setActiveMenu("payments");
+        setActiveSubMenu("payments-asset");
+        setShowSubmenu(true);
+        navigate("/asset");
+        break;
+      case "payments-appreciation-asset":
+        setActiveMenu("payments");
+        setActiveSubMenu("payments-appreciation-asset");
+        setShowSubmenu(true);
+        navigate("/appreciation-depreciation");
+        break;
+      case "payments-sales":
+        setActiveMenu("payments");
+        setActiveSubMenu("payments-sales");
+        setShowSubmenu(true);
+        navigate("/sales");
+        break;
+      // <-- END ADDITIONS -->
+
       case "soa":
         navigate("/soa");
         break;
@@ -183,44 +224,64 @@ const Sidebar = () => {
     setCurrentPath(formattedPath);
     console.log(formattedPath, "formatted_path"); // Output: /jobs
 
-      // Map route paths to menu keys
-  const routeToMenuMap = {
-    '/dashboard': 'dashboard',
-    '/quotations': 'quotations', 
-    '/jobs': 'jobs',
-    '/payments': 'payments',
-    '/soa': 'soa',
-    '/profile': 'profile',
-    '/leave': 'leave',
-    '/employee': 'employee',
-    '/leavereports': 'leave reports',
-    '/reports': 'report',
-    '/general-documents': 'General Documents',
-    '/update-employee-info': 'Update Employee Info',
-    '/leave-requests': 'Leave Requests'
-  };
+    // Map route paths to menu keys
+    const routeToMenuMap = {
+      "/dashboard": "dashboard",
+      "/quotations": "quotations",
+      "/jobs": "jobs",
+      "/payments": "payments",
+      "/soa": "soa",
+      "/profile": "profile",
+      "/leave": "leave",
+      "/employee": "employee",
+      "/leavereports": "leave reports",
+      "/reports": "report",
+      "/general-documents": "General Documents",
+      "/update-employee-info": "Update Employee Info",
+      "/leave-requests": "Leave Requests",
+    };
 
+    // Set active menu based on current route
+    const currentRoute = formattedPath;
+    const menuKey = routeToMenuMap[currentRoute];
 
-     // Set active menu based on current route
-  const currentRoute = formattedPath;
-  const menuKey = routeToMenuMap[currentRoute];
-  
-  if (menuKey) {
-    setActiveMenu(menuKey);
-    // If it's a settings route, also handle submenu
-    if (currentRoute.includes('-settings') || currentRoute.includes('anchorage-locations') || 
-        currentRoute.includes('password-requests') || currentRoute.includes('anchorage-stay-charges') || 
-        currentRoute.includes('aed-conversion-rate') || currentRoute.includes('company-bank-info') || 
-        currentRoute.includes('media-settings')) {
-      setActiveMenu('settings');
-      setActiveSubMenu(finalPart);
+    if (menuKey) {
+      setActiveMenu(menuKey);
+      // If it's a settings route, also handle submenu
+      if (
+        currentRoute.includes("-settings") ||
+        currentRoute.includes("anchorage-locations") ||
+        currentRoute.includes("password-requests") ||
+        currentRoute.includes("anchorage-stay-charges") ||
+        currentRoute.includes("aed-conversion-rate") ||
+        currentRoute.includes("company-bank-info") ||
+        currentRoute.includes("media-settings")
+      ) {
+        setActiveMenu("settings");
+        setActiveSubMenu(finalPart);
+        setShowSubmenu(true);
+      }
+    }
+
+    // <-- NEW: detect payments subroutes using full path -->
+    if (path.startsWith("/payments")) {
+      // finalPart will be 'tax', 'asset', or 'appreciation-depreciation-asset' for subroutes
+      let submenuKey = "";
+      if (finalPart === "tax") submenuKey = "payments-tax";
+      else if (finalPart === "asset") submenuKey = "payments-asset";
+      else if (finalPart === "appreciation-depreciation-asset")
+        submenuKey = "payments-appreciation-asset";
+      else if (finalPart === "sales") submenuKey = "payments-sales";
+
+      setActiveMenu("payments");
+      setActiveSubMenu(submenuKey);
       setShowSubmenu(true);
     }
-  }
+    // <-- END NEW -->
 
-  if (formattedPath === "/chats") {
-    setActiveMenu("");
-  }
+    if (formattedPath === "/chats") {
+      setActiveMenu("");
+    }
   }, [location.pathname]); // Run effect whenever path changes
 
   // useEffect(() => {
@@ -313,55 +374,108 @@ const Sidebar = () => {
                           {menuItems[perm].label}
                         </span>
                       </a>
-                      {perm === "settings" && showSubmenu && (
-                        <>
-                          <div className="submenu">
-                            <ul className="settingsmenu">
-                              {userSettingsPermissions.map((item) => {
-                                const submenuMap = {
-                                  User: "user-settings",
-                                  Vessels: "vessels-settings",
-                                  "Vessel Types": "vessel-type-settings",
-                                  Ports: "ports-settings",
-                                  Roles: "roles-settings",
-                                  Customers: "customer-settings",
-                                  Services: "service-settings",
-                                  Charges: "charges-settings",
-                                  "Sub Charges": "sub-charges-settings",
-                                  Cargoes: "cargo-settings",
-                                  "Anchorage Locations": "anchorage-locations",
-                                  Vendors: "vendor-settings",
-                                  "QQ Form": "QQform-settings",
-                                  Banks: "Bank-settings",
-                                  "Password Reset Request": "password-requests",
-                                  "Anchorage Stay Charges":
-                                    "anchorage-stay-charges",
-                                  "AED Conversion Rate": "aed-conversion-rate",
-                                  "Company Bank Info": "company-bank-info",
-                                  "Company Media": "media-settings",
-                                };
-                                const submenuKey = submenuMap[item.submenu];
-                                // Skip if it's not a known submenu
-                                if (!submenuKey) return null;
+                      {perm === "settings" &&
+                        showSubmenu &&
+                        activeMenu === "settings" && (
+                          <>
+                            <div className="submenu">
+                              <ul className="settingsmenu">
+                                {userSettingsPermissions.map((item) => {
+                                  const submenuMap = {
+                                    User: "user-settings",
+                                    Vessels: "vessels-settings",
+                                    "Vessel Types": "vessel-type-settings",
+                                    Ports: "ports-settings",
+                                    Roles: "roles-settings",
+                                    Customers: "customer-settings",
+                                    Services: "service-settings",
+                                    Charges: "charges-settings",
+                                    "Sub Charges": "sub-charges-settings",
+                                    Cargoes: "cargo-settings",
+                                    "Anchorage Locations":
+                                      "anchorage-locations",
+                                    Vendors: "vendor-settings",
+                                    "QQ Form": "QQform-settings",
+                                    Banks: "Bank-settings",
+                                    "Password Reset Request":
+                                      "password-requests",
+                                    "Anchorage Stay Charges":
+                                      "anchorage-stay-charges",
+                                    "AED Conversion Rate":
+                                      "aed-conversion-rate",
+                                    "Company Bank Info": "company-bank-info",
+                                    "Company Media": "media-settings",
+                                  };
+                                  const submenuKey = submenuMap[item.submenu];
+                                  // Skip if it's not a known submenu
+                                  if (!submenuKey) return null;
 
-                                return (
+                                  return (
+                                    <li
+                                      key={item.submenuId}
+                                      className={
+                                        activeSubMenu === submenuKey
+                                          ? "menusubactive"
+                                          : "menusub"
+                                      }
+                                      onClick={(e) => {
+                                        e.stopPropagation(); // <-- ADDED: prevent parent click
+                                        handleNavigation(submenuKey);
+                                      }}
+                                    >
+                                      {item.submenu}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                          </>
+                        )}
+
+                      {/* <-- NEW: Payments submenu (static list) */}
+                      {/* {perm === "payments" &&
+                        showSubmenu &&
+                        activeMenu === "payments" && (
+                          <>
+                            <div className="submenu">
+                              <ul className="settingsmenu">
+                                {[
+                                  { label: "Tax", key: "payments-tax" },
+                                  { label: "Asset", key: "payments-asset" },
+                                  {
+                                    label: (
+                                      <>
+                                        Appreciation/
+                                        <br />
+                                        Depreciation
+                                      </>
+                                    ),
+                                    key: "payments-appreciation-asset",
+                                  },
+                                  {
+                                    label: <>Sales</>,
+                                    key: "payments-sales",
+                                  },
+                                ].map((p) => (
                                   <li
-                                    key={item.submenuId}
+                                    key={p.key}
                                     className={
-                                      activeSubMenu === submenuKey
+                                      activeSubMenu === p.key
                                         ? "menusubactive"
                                         : "menusub"
                                     }
-                                    onClick={() => handleNavigation(submenuKey)}
+                                    onClick={(e) => {
+                                      e.stopPropagation(); // <-- ADDED: prevent parent click
+                                      handleNavigation(p.key);
+                                    }}
                                   >
-                                    {item.submenu}
+                                    {p.label}
                                   </li>
-                                );
-                              })}
-                            </ul>
-                          </div>
-                        </>
-                      )}
+                                ))}
+                              </ul>
+                            </div>
+                          </>
+                        )} */}
                     </li>
                   )
               )}
