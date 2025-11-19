@@ -78,8 +78,10 @@ const NewJobReport = ({ ports, loginResponse }) => {
   // API call stub
   const fetchJobReport = async (payload) => {
     console.log(payload, "payload_getReport");
+    setIsLoading(true);
     // TODO: Replace with actual API call
     const response = await getJobReport(payload);
+    setIsLoading(false);
     setReportList(response);
     setSelectedJobs(response?.jobs);
     setReportTableList(response?.pda);

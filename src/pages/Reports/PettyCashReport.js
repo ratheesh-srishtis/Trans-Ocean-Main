@@ -19,14 +19,23 @@ import {
   getAllBanks,
   getAllFinanceEmployees,
 } from "../../services/apiPayment";
+import { get } from "jquery";
+import Loader from "../Loader";
 
 const PettyCashReport = () => {
+  const [isLoading, setIsLoading] = useState(false); // Loader state
+
   const Group = require("../../assets/images/reporttttt.png");
   const [eta, setEta] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
   const [reportList, setReportList] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [filterType, setFilterType] = useState("month"); // Default to "monthly"
+  const [selectedMonth, setSelectedMonth] = useState(
+    (new Date().getMonth() + 1).toString()
+  ); // Default to current month
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
 
   const handleEtaChange = (date) => {
     console.log(date, "datehandleEtaChange");
@@ -36,6 +45,10 @@ const PettyCashReport = () => {
       let formatDate = date ? moment(date).format("YYYY-MM-DD ") : null;
       console.log(formatDate, "formatDate");
       setPaymentDate(formatDate);
+      setSelectedEmployee("");
+      setSelectedMonth("");
+      setSelectedYear("");
+      setFilterType("");
     }
   };
 
@@ -82,21 +95,12 @@ const PettyCashReport = () => {
 
   useEffect(() => {
     console.log(filteredReports, "filteredReports");
-    filteredReports?.map((item, index) =>
-      console.log(item?.employee[0]["name"], "item")
-    );
   }, [filteredReports]);
 
   useEffect(() => {
     getReport();
     getEmployeesList();
   }, []);
-
-  const [filterType, setFilterType] = useState("month"); // Default to "monthly"
-  const [selectedMonth, setSelectedMonth] = useState(
-    (new Date().getMonth() + 1).toString()
-  ); // Default to current month
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
 
   // Array of months
   const months = [
@@ -147,12 +151,17 @@ const PettyCashReport = () => {
       paymentDate: paymentDate,
     };
     console.log(payload, "payload_getReport");
+    setIsLoading(true); // Show loader
+
     try {
       const response = await getPettyCashReport(payload);
-      setReportList(response?.pettyData);
+      setIsLoading(false); // Hide loader
+
+      setReportList(response?.result);
       console.log("getPettyCashReport", response);
     } catch (error) {
       console.error("Failed to fetch quotations:", error);
+      setIsLoading(false); // Hide loader
     }
   };
 
@@ -241,17 +250,11 @@ const PettyCashReport = () => {
 
     // Prepare rows
     const rowsData = filteredReports.map((item) => {
-      const usedPetties = item.employeepetties.reduce(
-        (sum, petty) => sum + (petty.amount || 0),
-        0
-      );
-      const balancePetties = usedPetties - item.totalPetty;
-
       return {
-        "Employee Name": item?.employee?.[0]?.name || "N/A",
-        "Total Petty": usedPetties ?? "N/A",
-        "Used Petties": item.totalPetty,
-        "Balance Petties": balancePetties,
+        "Employee Name": item?.employee?.name || "N/A",
+        "Total Petty": Number(item.totalPetty).toFixed(3),
+        "Used Petties": Number(item.usedPetty).toFixed(3),
+        "Balance Petties": Number(item.balancePetty).toFixed(3),
       };
     });
 
@@ -339,8 +342,10 @@ const PettyCashReport = () => {
   useEffect(() => {
     console.log(paymentDate, "paymentDate");
     console.log(selectedEmployee, "selectedEmployee");
+    console.log(selectedMonth, "selectedMonth");
+    console.log(selectedYear, "selectedYear");
     getReport();
-  }, [paymentDate, selectedEmployee, selectedMonth, selectedYear]);
+  }, [selectedEmployee, selectedMonth, selectedYear, paymentDate, filterType]);
 
   return (
     <>
@@ -482,17 +487,12 @@ const PettyCashReport = () => {
         rows={
           filteredReports?.length > 0
             ? filteredReports.map((item, index) => {
-                const usedPetties = item.employeepetties.reduce(
-                  (sum, petty) => sum + (petty.amount || 0),
-                  0
-                );
-                const balancePetties = usedPetties - item.totalPetty;
                 return {
                   id: index,
-                  employee: item?.employee?.[0]?.name || "N/A",
-                  totalPetty: usedPetties.toFixed(3) ?? "N/A",
-                  usedPetties: item.totalPetty.toFixed(3),
-                  balancePetties: balancePetties.toFixed(3),
+                  employee: item?.employee?.name || "N/A",
+                  totalPetty: Number(item.totalPetty).toFixed(3),
+                  usedPetties: Number(item.usedPetty).toFixed(3),
+                  balancePetties: Number(item.balancePetty).toFixed(3),
                 };
               })
             : []
@@ -564,6 +564,7 @@ const PettyCashReport = () => {
           </div>
         </>
       )}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

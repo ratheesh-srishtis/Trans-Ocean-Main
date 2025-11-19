@@ -9,11 +9,14 @@ import {
 } from "../../services/apiService";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
+import Loader from "../Loader";
+
 const CostCenterSummary = ({ ports, customers }) => {
   const [reportList, setReportList] = useState([]);
   const [selectedPort, setSelectedPort] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const Group = require("../../assets/images/reporttttt.png");
+  const [isLoading, setIsLoading] = useState(false); // Loader state
 
   useEffect(() => {
     getReport();
@@ -128,16 +131,21 @@ const CostCenterSummary = ({ ports, customers }) => {
       month: selectedMonth,
       year: selectedYear,
     };
+    setIsLoading(true); // Show loader
     try {
       const response = await getCostCentreSummaryReport(payload);
       if (response?.status == true) {
         setReportList(response?.report);
+        setIsLoading(false);
       } else if (response?.status == false) {
         setReportList([]);
+        setIsLoading(false);
       }
       console.log("getPettyCashReport", response);
     } catch (error) {
       console.error("Failed to fetch quotations:", error);
+    } finally {
+      setIsLoading(false); // Hide loader
     }
   };
 
@@ -335,7 +343,10 @@ const CostCenterSummary = ({ ports, customers }) => {
             </div>
           </div>
           <div className="d-flex">
-            <div className="col-3 filtermainpetty ">
+            <div
+              className="col-3 filtermainpetty "
+              style={{ marginLeft: "10px" }}
+            >
               <i className="bi bi-funnel-fill filtericon"></i>
               <select
                 className="form-select form-select-sm filtercostcenter"
@@ -575,6 +586,7 @@ const CostCenterSummary = ({ ports, customers }) => {
           </div>
         </div>
       </div>
+      <Loader isLoading={isLoading} />
     </>
   );
 };

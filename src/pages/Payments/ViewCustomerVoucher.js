@@ -374,9 +374,9 @@ const ViewCustomerVoucher = ({ open, onClose, getvoucher }) => {
                     </td>
                     <td className="voucheramountrate text-center">
                       {customerVoucher?.currency?.toUpperCase()}{" "}
-                      {customerVoucher?.currency === "OMR"
+                      {customerVoucher?.currency === "omr"
                         ? Number(customerVoucher?.totalOMR).toFixed(3)
-                        : customerVoucher?.currency === "USD"
+                        : customerVoucher?.currency === "usd"
                         ? Number(customerVoucher?.totalOMR).toFixed(2)
                         : customerVoucher?.totalOMR}
                     </td>
