@@ -703,7 +703,8 @@ const NewJobReport = ({ ports, loginResponse }) => {
             </label>
             <input
               type="text"
-              className="form-control totalnoinputb"
+              // totalnoinputb
+              className="form-control "
               id="inputPassword"
               value={reportList?.totalVessels}
               readOnly
@@ -716,7 +717,8 @@ const NewJobReport = ({ ports, loginResponse }) => {
             </label>
             <input
               type="text"
-              className="form-control totalnoinputa"
+              // totalnoinputa
+              className="form-control "
               id="inputPassword"
               value={reportList?.totalServices}
               readOnly
@@ -730,7 +732,8 @@ const NewJobReport = ({ ports, loginResponse }) => {
             </label>
             <input
               type="text"
-              className="form-control totalnoinput"
+              // totalnoinput
+              className="form-control "
               id="inputPassword"
               value={reportList?.totalTankerVessels}
               readOnly
@@ -744,7 +747,8 @@ const NewJobReport = ({ ports, loginResponse }) => {
             </label>
             <input
               type="text"
-              className="form-control totalnoinput"
+              // totalnoinput
+              className="form-control "
               id="inputPassword"
               value={reportList?.totalBulkVessels}
               readOnly
@@ -756,7 +760,8 @@ const NewJobReport = ({ ports, loginResponse }) => {
             </label>
             <input
               type="text"
-              className="form-control totalnoinput"
+              // totalnoinput
+              className="form-control "
               id="inputPassword"
               value={
                 reportList?.totalVessels -

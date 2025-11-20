@@ -17,10 +17,7 @@ const CostCenterSummary = ({ ports, customers }) => {
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const Group = require("../../assets/images/reporttttt.png");
   const [isLoading, setIsLoading] = useState(false); // Loader state
-
-  useEffect(() => {
-    getReport();
-  }, []);
+  const [isInitialMount, setIsInitialMount] = useState(true);
 
   // const filteredReports = reportList?.filter((item) => {
   //   const matchedPort = !selectedPort || item.employee[0]?._id === selectedPort;
@@ -111,15 +108,13 @@ const CostCenterSummary = ({ ports, customers }) => {
   const handleFilterTypeChange = (event) => {
     const newFilterType = event.target.value;
     setFilterType(newFilterType);
-    // If switching to yearly, fetch report immediately
+    // No need to call getReport() here as the useEffect will handle it
+    // when the filter type changes
     if (newFilterType === "year") {
       setSelectedMonth(""); // Optionally clear month
-      getReport();
     }
-    // If switching to monthly, fetch report immediately
     if (newFilterType === "month") {
       setSelectedYear(new Date().getFullYear()); // Optionally reset year
-      getReport();
     }
   };
 
@@ -150,8 +145,13 @@ const CostCenterSummary = ({ ports, customers }) => {
   };
 
   useEffect(() => {
-    getReport();
-  }, [selectedCustomer, selectedMonth, selectedYear, selectedPort]);
+    if (isInitialMount) {
+      setIsInitialMount(false);
+      getReport();
+    } else {
+      getReport();
+    }
+  }, [selectedCustomer, selectedMonth, selectedYear, selectedPort, filterType]);
 
   const getPDF = async () => {
     let payload = {

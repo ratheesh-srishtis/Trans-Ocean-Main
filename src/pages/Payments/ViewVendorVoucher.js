@@ -354,7 +354,7 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
                     </>
                   )}
 
-                  <tr>
+                  {/* <tr>
                     <td className="voucherpartthree">
                       <div className="voucheraccount">
                         Mode Of Payment :
@@ -377,7 +377,7 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
                       {" "}
                       {getvoucher?.recvamount}
                     </td>
-                  </tr>
+                  </tr> */}
 
                   <tr>
                     <td className="voucheraccount">Amount(in words):</td>

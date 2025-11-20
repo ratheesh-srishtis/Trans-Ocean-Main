@@ -54,10 +54,10 @@ const PettyCashReport = () => {
 
   const filteredReports = reportList?.filter((item) => {
     const matchedEmployee =
-      !selectedEmployee || item.employee[0]?._id === selectedEmployee;
-
+      !selectedEmployee || item.employee?._id === selectedEmployee;
     return matchedEmployee;
   });
+  console.log(filteredReports, "filteredReports_main");
 
   const columns = [
     { field: "employee", headerName: "Employee Name", flex: 1 },
@@ -152,11 +152,9 @@ const PettyCashReport = () => {
     };
     console.log(payload, "payload_getReport");
     setIsLoading(true); // Show loader
-
     try {
       const response = await getPettyCashReport(payload);
       setIsLoading(false); // Hide loader
-
       setReportList(response?.result);
       console.log("getPettyCashReport", response);
     } catch (error) {
@@ -164,6 +162,10 @@ const PettyCashReport = () => {
       setIsLoading(false); // Hide loader
     }
   };
+
+  useEffect(() => {
+    console.log(reportList, "reportList");
+  }, [reportList]);
 
   const getPDF = async () => {
     let payload = {
