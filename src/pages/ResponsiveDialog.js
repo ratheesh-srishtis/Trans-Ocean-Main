@@ -229,7 +229,7 @@ const ResponsiveDialog = ({
       setCreditNote(value);
       setIsUserInput(false);
       console.log(originalCustomerAmount, "originalCustomerAmount");
-      setCustomerAmount((originalCustomerAmount - value)?.toFixed(3)); // adjust from original
+      // setCustomerAmount((originalCustomerAmount - value)?.toFixed(3)); // adjust from original
     }
   };
 
@@ -1117,30 +1117,28 @@ const ResponsiveDialog = ({
 
                 <div className="row">
                   <div className="col-lg-4 col-md-6 col-sm-12 mb-3">
-                    
-                      <div className="">
-                        <label
-                          htmlFor="exampleFormControlInput1"
-                          className="form-label"
-                        >
-                          Quantity:
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control vessel-voyage"
-                          id="exampleFormControlInput1"
-                          placeholder=""
-                          name="quantity"
-                          value={selectedQuantity}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      {selectedQuantityError && (
-                        <>
-                          <div className="invalid">Please enter quantity</div>
-                        </>
-                      )}
-                    
+                    <div className="">
+                      <label
+                        htmlFor="exampleFormControlInput1"
+                        className="form-label"
+                      >
+                        Quantity:
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control vessel-voyage"
+                        id="exampleFormControlInput1"
+                        placeholder=""
+                        name="quantity"
+                        value={selectedQuantity}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    {selectedQuantityError && (
+                      <>
+                        <div className="invalid">Please enter quantity</div>
+                      </>
+                    )}
                   </div>
                 </div>
 

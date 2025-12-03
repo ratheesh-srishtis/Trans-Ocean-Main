@@ -1,99 +1,119 @@
-.customercostcenter{
-    margin-left: 21px;
+.customercostcenter {
+  margin-left: 21px;
 }
 .form-labelecostcenter {
-    font-size: 12px;
-     margin-right: 5px;
-   
-    margin-bottom: 0rem;
+  font-size: 12px;
+  margin-right: 5px;
+
+  margin-bottom: 0rem;
 }
 .filtercostcenter {
-    padding: 0px 10px;
-    align-items: center;
-    height: 33px;
-    border: 0px;
-    font-size: 12px;
-    border: 0 !important;
-    box-shadow: inherit !important;
-    outline: 0 !important;
+  padding: 0px 10px;
+  align-items: center;
+  height: 33px;
+  border: 0px;
+  font-size: 12px;
+  border: 0 !important;
+  box-shadow: inherit !important;
+  outline: 0 !important;
 }
 .mmonthcost {
-    font-size: 12px;
-    height: 34px;
-    margin-right: 32px;
-    margin-left: 10px;
+  font-size: 12px;
+  height: 34px;
+  margin-right: 32px;
+  margin-left: 10px;
 }
 .monthccsmry {
-    font-size: 12px;
-    height: 35px;
-    width: 100%;
-    min-width: 225px;
+  font-size: 12px;
+  height: 35px;
+  width: 100%;
+  min-width: 225px;
 }
 .filbtnjobccsummary {
-     color: white;
-     width: 136px !important;
-     display: flex;
-     font-size: 13px;
-     justify-content: center;
-     margin-left: 10px;
- }
-     .form-label-custom-ccsummarry {
-      font-size: 12px;
-      margin-bottom: 0;
-      margin-right: 5px;
-    }
-
-    .form-select,
-    .mmonthcost-ccsummary {
-      font-size: 13px;
-    }
-
-    .filbtnjobccsummary {
-      color: white;
-      font-size: 13px;
-      width: 100%;
-    }
-
-    .filtermainccsummary {
-      border: 1px solid #80808041;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-    }
-.portccsummry {
-    font-size: 12px;
-    height: 35px;
-    width: 100%;
-    min-width: 354px;
-}
-.cstmrccsmry{
+  color: white;
+  width: 136px !important;
+  display: flex;
   font-size: 13px;
-  height:35px;
-  width:100%;
+  justify-content: center;
+  margin-left: 10px;
 }
-.mnthccsmry{
-    /* position: relative; */
-    border: 1px solid #80808041;
-     width: 148px;
-    height: 35px;
-    max-width: 100%;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
+.form-label-custom-ccsummarry {
+  font-size: 12px;
+  margin-bottom: 0;
+  margin-right: 5px;
 }
-    .ccsmrymonth{
-      height:35px;
-    }
-.ccportfont{
+
+.form-select,
+.mmonthcost-ccsummary {
+  font-size: 13px;
+}
+
+.filbtnjobccsummary {
+  color: white;
+  font-size: 13px;
+  width: 100%;
+}
+
+.filtermainccsummary {
+  border: 1px solid #80808041;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+.portccsummry {
+  font-size: 12px;
+  height: 35px;
+  width: 100%;
+  min-width: 354px;
+}
+.cstmrccsmry {
+  font-size: 13px;
+  height: 35px;
+  width: 100%;
+}
+.mnthccsmry {
+  /* position: relative; */
+  border: 1px solid #80808041;
+  width: 148px;
+  height: 35px;
+  max-width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.ccsmrymonth {
+  height: 35px;
+}
+.ccportfont {
   font-size: 12px;
 }
-    .filtericon-mdccsummary {
-      padding-right: 5px;
-    }
+.filtericon-mdccsummary {
+  padding-right: 5px;
+}
 
-    @media (max-width: 767.98px) {
-      .filbtnjobccsummary {
-        margin-top: 10px;
-      }
-    }
+@media (max-width: 767.98px) {
+  .filbtnjobccsummary {
+    margin-top: 10px;
+  }
+}
+
+.row-download-icons {
+  margin-left: 12px;
+}
+.row-download-icons:hover {
+  border: none !important;
+}
+
+.excel-individual-button {
+  background-color: green !important;
+  border: none !important;
+}
+.excel-individual-icon {
+  color: #ffffff !important;
+}
+
+.pdf-individual-button {
+  background-color: red !important;
+  border: none !important;
+}

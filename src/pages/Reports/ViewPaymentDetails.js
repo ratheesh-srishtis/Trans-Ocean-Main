@@ -281,27 +281,55 @@ const ViewPaymentDetails = ({ open, onClose, selectedRow }) => {
                   voucherNumber: p.voucherNumber || "-",
                   amount: p.amount,
                   currency: p.currency ? p.currency.toUpperCase() : "-",
+                  exchangeLoss: p.exchangeLoss
+                    ? p.exchangeLoss.toFixed(3)
+                    : "0.000",
                   modeofPayment: p.modeofPayment,
                   paymentDate: p.paymentDate
                     ? new Date(p.paymentDate).toLocaleDateString()
                     : "-",
                   customer: p.customerId?.customerName || "-",
+                  vendor: p.vendorId?.vendorName || "-",
+                  employee: p.pettyEmployeeId?.name || "-",
                   paymentType: p.paymentType,
                   pdaNumber: p.pdaIds?.pdaNumber || "-",
                   invoiceId: p.pdaIds?.invoiceId || "-",
                   jobId: p.pdaIds?.jobId || "-",
                 }))}
                 columns={[
+                  {
+                    field: "payee",
+                    headerName: "Customer/Vendor/Employee",
+                    flex: 1,
+                    renderCell: (params) => {
+                      const names = [
+                        params.row.customer !== "-"
+                          ? params.row.customer
+                          : null,
+                        params.row.vendor !== "-" ? params.row.vendor : null,
+                        params.row.employee !== "-"
+                          ? params.row.employee
+                          : null,
+                      ].filter(Boolean);
+                      return (
+                        <div>{names.length > 0 ? names.join(" / ") : "-"}</div>
+                      );
+                    },
+                  },
                   { field: "voucherNumber", headerName: "Voucher No", flex: 1 },
                   { field: "amount", headerName: "Amount", flex: 1 },
                   { field: "currency", headerName: "Currency", flex: 1 },
+                  {
+                    field: "exchangeLoss",
+                    headerName: "Exchange Loss",
+                    flex: 1,
+                  },
                   {
                     field: "modeofPayment",
                     headerName: "Mode of Payment",
                     flex: 1,
                   },
                   { field: "paymentDate", headerName: "Payment Date", flex: 1 },
-                  { field: "customer", headerName: "Customer", flex: 1 },
                   { field: "paymentType", headerName: "Payment Type", flex: 1 },
                   { field: "pdaNumber", headerName: "PDA Number", flex: 1 },
                   { field: "invoiceId", headerName: "Invoice ID", flex: 1 },

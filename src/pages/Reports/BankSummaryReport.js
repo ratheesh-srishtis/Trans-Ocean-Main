@@ -11,6 +11,8 @@ import { saveAs } from "file-saver";
 import {
   getBankSummaryReport,
   bankSummaryReportPDF,
+  getBankPaymentDetails,
+  getBankPaymentDetailsPDF,
 } from "../../services/apiService";
 import {
   saveVoucher,
@@ -57,30 +59,245 @@ const BankSummaryReport = ({ employees }) => {
   const columns = [
     { field: "bank", headerName: "Bank Name", flex: 1 },
     { field: "openingBalance", headerName: "Opening Balance", flex: 1 },
-    { field: "pettySum", headerName: "Petty Amount", flex: 1 },
-    { field: "customerReceived", headerName: "Received Amount", flex: 1 },
-    { field: "customerPaid", headerName: "Paid Amount", flex: 1 },
-    { field: "bankBalanceAmount", headerName: "Balance Amount", flex: 1 },
+    { field: "pettySum", headerName: "Petty Amount (OMR)", flex: 1 },
+    { field: "customerReceived", headerName: "Received Amount (OMR)", flex: 1 },
+    { field: "customerPaid", headerName: "Paid Amount (OMR)", flex: 1 },
+    { field: "bankBalanceAmount", headerName: "Balance Amount (OMR)", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
-      flex: 1,
+      flex: 2,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
-        <button
-          className="btn btn-info filbtnjob"
-          onClick={() => {
-            setSelectedRow(params.row);
-            setDialogOpen(true);
-          }}
-        >
-          View Payment Details
-        </button>
+        <>
+          <button
+            className="btn btn-info filbtnjob"
+            onClick={() => {
+              setSelectedRow(params.row);
+              setDialogOpen(true);
+            }}
+          >
+            Payment Details
+          </button>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons excel-individual-button"
+            onClick={() => downloadRowExcel(params.row)}
+            title="Download Excel"
+          >
+            <i class="bi bi-file-earmark-spreadsheet-fill excel-individual-icon "></i>
+          </button>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons pdf-individual-button"
+            onClick={() => getRowPDF(params.row)}
+            title="Download PDF"
+          >
+            <i class="bi bi-file-earmark-pdf pdf-individual-icon"></i>
+          </button>
+        </>
       ),
     },
   ];
 
+  const getRowPDF = async (rowData) => {
+    console.log(rowData, "rowData_getRowPDF");
+    let payload = {
+      bankId: rowData?.bankId,
+      bankName: rowData?.bank,
+      customerId: selectedCustomer,
+      vendorId: selectedvendor,
+      paymentDateFrom: formattedStart,
+      paymentDateTo: formattedEnd,
+      employee: selectedEmployee,
+    };
+    console.log(payload, "payload_getReport");
+    setIsLoading(true);
+    try {
+      const response = await getBankPaymentDetailsPDF(payload);
+      console.log("getBankPaymentDetailsPDF", response);
+      setIsLoading(false);
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute("download", "Bank Summary Detailed Report.pdf"); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Failed to fetch quotations:", error);
+    }
+  };
+
+  const downloadRowExcel = async (rowData) => {
+    console.log(rowData, "rowData_downloadRowExcel");
+
+    let payload = {
+      bankId: rowData?.bankId,
+      bankName: rowData?.bank,
+      customerId: selectedCustomer,
+      vendorId: selectedvendor,
+      paymentDateFrom: formattedStart,
+      paymentDateTo: formattedEnd,
+      employee: selectedEmployee,
+    };
+    console.log(payload, "payload_downloadRowExcel");
+    setIsLoading(true);
+
+    try {
+      const response = await getBankPaymentDetails(payload);
+      console.log("getBankPaymentDetails", response);
+
+      // Check if response has data
+      if (
+        (!response?.payments || response.payments.length === 0) &&
+        (!response?.petty || response.petty.length === 0)
+      ) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Prepare Excel data from payments
+      const paymentsData = (response.payments || []).map((item) => {
+        const payee =
+          [
+            item.customerId?.customerName,
+            item.vendorId?.vendorName,
+            item.pettyEmployeeId?.name,
+          ]
+            .filter(Boolean)
+            .join(" / ") || "-";
+
+        return {
+          "Customer/Vendor/Employee Name": payee,
+          Amount: Number(item.amount || 0).toFixed(3),
+          Currency: item.currency ? item.currency.toUpperCase() : "-",
+          "Exchange Loss": item?.exchangeLoss?.toFixed(3) || "-",
+          "Payment Date": item.paymentDate
+            ? new Date(item.paymentDate).toLocaleDateString("en-GB")
+            : "-",
+          "Payment Type": item.paymentType || "-",
+          "Quotation Number": item.pdaIds?.pdaNumber || "-",
+          "Invoice No": item.pdaIds?.invoiceId || "-",
+          "Job No": item.pdaIds?.jobId || "-",
+        };
+      });
+
+      // Prepare Excel data from petty
+      const pettyData = (response.petty || []).map((item) => {
+        const payee =
+          [
+            item.employeeId?.name,
+            item.vendorId?.vendorName,
+            item.pettyEmployeeId?.name,
+          ]
+            .filter(Boolean)
+            .join(" / ") || "-";
+
+        return {
+          "Customer/Vendor/Employee Name": payee,
+          Amount: Number(item.amount || 0).toFixed(3),
+          Currency: item.currency ? item.currency.toUpperCase() : "OMR",
+          "Exchange Loss": item?.exchangeLoss?.toFixed(3) || "0.000",
+          "Payment Date": item.paymentDate
+            ? new Date(item.paymentDate).toLocaleDateString("en-GB")
+            : "-",
+          "Payment Type": "petty",
+          "Quotation Number": item.pdaIds?.pdaNumber || "-",
+          "Invoice No": item.pdaIds?.invoiceId || "-",
+          "Job No": item.pdaIds?.jobId || "-",
+        };
+      });
+
+      // Combine both datasets
+      const excelData = [...paymentsData, ...pettyData];
+
+      // Create Excel workbook
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Bank Summary Report", {
+        properties: { defaultRowHeight: 18 },
+        pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+      });
+
+      const headers = Object.keys(excelData[0] || {});
+
+      // Add header row
+      const headerRow = worksheet.addRow(headers);
+      headerRow.eachCell((cell) => {
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFEFEFEF" },
+        };
+      });
+
+      // Add data rows
+      excelData.forEach((row) => {
+        const r = worksheet.addRow(headers.map((h) => row[h]));
+        r.eachCell((cell) => {
+          cell.alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          cell.border = {
+            top: { style: "thin" },
+            left: { style: "thin" },
+            bottom: { style: "thin" },
+            right: { style: "thin" },
+          };
+        });
+      });
+
+      // Auto-size columns
+      headers.forEach((h, i) => {
+        let maxLen = h.length;
+        excelData.forEach((row) => {
+          const val = row[h];
+          if (val != null) {
+            const len = val.toString().length;
+            if (len > maxLen) maxLen = len;
+          }
+        });
+        worksheet.getColumn(i + 1).width = Math.max(
+          15,
+          Math.min(maxLen + 5, 50)
+        );
+      });
+
+      // Download Excel file
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const fileName = "Bank Summary Detailed Report.xlsx";
+      saveAs(blob, fileName);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to download payment details:", error);
+      setIsLoading(false);
+    }
+  };
   const NoRowsOverlay = () => (
     <Box
       sx={{
@@ -577,29 +794,31 @@ const BankSummaryReport = ({ employees }) => {
           </div>
         </div>
       </div>
-      <div className="mt-1 container-fluid ">
-        <div className=" d-flex align-items-center">
-          <label
-            htmlFor="exampleFormControlInput1"
-            className="form-labele filterbypayment "
-          >
-            Filter By:
-          </label>
-          <div className="vessel-select">
-            <select
-              className="form-select vesselbox statusscustomerbybank  "
-              aria-label="Small select example"
-              name="employee"
-              onChange={handleSelectChange}
-              value={selectedEmployee}
+      <div className="row">
+        <div className="mt-1 container-fluid ">
+          <div className=" d-flex align-items-center">
+            <label
+              htmlFor="exampleFormControlInput1"
+              className="form-labele filterbypayment "
             >
-              <option value="">Choose Employee</option>
-              {EmployeeList.map((emp) => (
-                <option key={emp._id} value={emp._id}>
-                  {`${emp.name}`}
-                </option>
-              ))}
-            </select>
+              Filter By:
+            </label>
+            <div className="vessel-select">
+              <select
+                className="form-select vesselbox statusscustomerbybank  "
+                aria-label="Small select example"
+                name="employee"
+                onChange={handleSelectChange}
+                value={selectedEmployee}
+              >
+                <option value="">Choose Employee</option>
+                {EmployeeList.map((emp) => (
+                  <option key={emp._id} value={emp._id}>
+                    {`${emp.name}`}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>

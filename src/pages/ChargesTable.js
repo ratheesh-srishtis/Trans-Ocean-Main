@@ -620,7 +620,7 @@ const ChargesTable = ({
                                   ? charge.subchargeId?.subchargeName
                                   : charge?.subchargeName}
                               </td>
-                              <td>
+                              {/* <td>
                                 {(() => {
                                   const vendorIds = [
                                     "vendorId",
@@ -645,6 +645,45 @@ const ChargesTable = ({
                                         {vendorName && vendorName.trim()
                                           ? vendorName
                                           : ""}
+                                      </div>
+                                    );
+                                  });
+                                })()}
+                              </td> */}
+                              <td>
+                                {(() => {
+                                  const vendorIds = [
+                                    "vendorId",
+                                    "vendor2Id",
+                                    "vendor3Id",
+                                    "vendor4Id",
+                                  ]
+                                    .map((key) => charge[key])
+                                    .filter((id) => id);
+
+                                  if (vendorIds.length === 0) {
+                                    return <div>N/A</div>;
+                                  }
+
+                                  const hasMultipleVendors =
+                                    vendorIds.length > 1;
+
+                                  return vendorIds.map((id, idx) => {
+                                    const vendorName = vendors?.find(
+                                      (v) => v._id === id
+                                    )?.vendorName;
+
+                                    const displayName =
+                                      vendorName && vendorName.trim()
+                                        ? vendorName
+                                        : "N/A";
+
+                                    return (
+                                      <div key={id}>
+                                        {hasMultipleVendors
+                                          ? `${idx + 1}: `
+                                          : ""}
+                                        {displayName}
                                       </div>
                                     );
                                   });

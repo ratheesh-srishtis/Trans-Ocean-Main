@@ -283,20 +283,135 @@ const NewJobReport = ({ ports, loginResponse }) => {
     {
       field: "actions",
       headerName: "Action",
-      flex: 0,
+      flex: 1,
       renderCell: (params) => (
         <>
           <button
             type="button"
-            className="btn btn-info jobviewbtnn mt-3"
+            className="btn btn-sm btn-info text-white"
             onClick={() => handleJobClick(params.row)}
           >
             View
           </button>
+          {/* <button
+            style={{ marginLeft: "10px" }}
+            className="btn btn-sm btn-info text-white"
+            onClick={() => downloadRowExcel(params.row)}
+            title="Download Excel"
+          >
+            <i className="bi bi-download"></i>
+          </button> */}
         </>
       ),
     },
   ];
+
+  const downloadRowExcel = async (rowData) => {
+    // Prepare single row data
+    const excelData = [
+      {
+        "Job ID": rowData.JobId,
+        "Vessel Name": rowData.vessel,
+        Job: rowData.job,
+        "Port Name": rowData.port,
+        "Ops By": rowData.AssignedTo,
+        Status: rowData.status,
+      },
+    ];
+
+    const headers = Object.keys(excelData[0]);
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Job Report", {
+      properties: { defaultRowHeight: 30 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header
+    const headerRow = worksheet.addRow(headers);
+    headerRow.height = 25;
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data row
+    const dataRow = worksheet.addRow(headers.map((h) => excelData[0][h]));
+
+    // Calculate height for Job column content
+    const jobContent = excelData[0]["Job"] || "";
+    const jobContentLength = jobContent.toString().length;
+
+    // Estimate lines needed for Job column (50 characters per line for width 50)
+    const estimatedLines = Math.max(1, Math.ceil(jobContentLength / 50));
+
+    // Set row height based on content (minimum 25, add 18 points per additional line)
+    const calculatedHeight = Math.max(25, 18 + (estimatedLines - 1) * 18);
+    dataRow.height = Math.min(calculatedHeight, 200); // Cap at 200 points for very long content
+
+    dataRow.eachCell((cell) => {
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "top",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+
+    // Set column widths with special handling for Job column
+    headers.forEach((h, i) => {
+      if (h === "Job") {
+        // Set a fixed width for Job column to ensure wrapping works properly
+        worksheet.getColumn(i + 1).width = 50; // Fixed width of 50 characters
+      } else {
+        // Auto-size other columns
+        let maxLen = (h || "").toString().length;
+        const val = excelData[0][h];
+        const len = val == null ? 0 : val.toString().length;
+        if (len > maxLen) maxLen = len;
+
+        const minWidth = 15;
+        const maxWidth = 30;
+        const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+        worksheet.getColumn(i + 1).width = width;
+      }
+    });
+
+    // Set view options to ensure proper display when opened
+    worksheet.views = [
+      {
+        state: "normal",
+        showGridLines: true,
+        showRowColHeaders: true,
+        rightToLeft: false,
+      },
+    ];
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, `Job_Report_${rowData.JobId.replace(/\s+/g, "_")}.xlsx`);
+  };
 
   const handleJobClick = (row) => {
     // Save all filter states before navigation

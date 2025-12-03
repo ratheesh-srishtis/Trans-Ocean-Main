@@ -15,6 +15,8 @@ import ViewVoucher from "./ViewVoucher";
 import "../../css/payment.css";
 import Swal from "sweetalert2";
 import PopUp from "../PopUp";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 const VendorVouchers = () => {
   const Group = require("../../assets/images/payments.png");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -299,6 +301,136 @@ const VendorVouchers = () => {
     fetchFinaceEmployees();
   }, []);
 
+  const getPDF = () => {};
+
+  const createExcel = async () => {
+    if (!voucherlist || voucherlist.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Data",
+        text: "No vouchers available to export",
+      });
+      return;
+    }
+
+    // Prepare data for Excel
+    const excelData = voucherlist.map((item) => {
+      const dateOnly = item.paymentDate
+        ? item.paymentDate.split("T")[0]
+        : "N/A";
+      const [year, month, day] = dateOnly.split("-");
+      const formattedDate = `${day}-${month}-${year}`;
+
+      return {
+        "Petty Number": item.voucherNumber || "N/A",
+        Through: item.through && item.through.name ? item.through.name : "N/A",
+        Particulars: item.voucherParticulers || "N/A",
+        "On Account of": item.voucherAccount || "N/A",
+        "Vendor Name": item.vendorId?.vendorName || "N/A",
+        "Payment Date": formattedDate || "N/A",
+        Amount: item.amount || "N/A",
+        Remark: item.remark || "N/A",
+      };
+    });
+
+    const headers = Object.keys(excelData[0]);
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Vendor Vouchers", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Header
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    excelData.forEach((data) => {
+      const dataRow = worksheet.addRow(headers.map((h) => data[h]));
+
+      // Calculate height for "On Account of" column content
+      const accountOfContent = data["On Account of"] || "";
+      const accountOfLength = accountOfContent.toString().length;
+
+      // Estimate lines needed for "On Account of" column (50 characters per line)
+      const estimatedLines = Math.max(1, Math.ceil(accountOfLength / 50));
+
+      // Set row height based on content (minimum 18, add 18 points per additional line)
+      const calculatedHeight = Math.max(18, 18 * estimatedLines);
+      dataRow.height = Math.min(calculatedHeight, 200); // Cap at 200 points
+
+      dataRow.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "top",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // Auto-size columns with special handling for "On Account of"
+    const minWidth = 15;
+    const maxWidth = 60;
+    headers.forEach((h, i) => {
+      if (h === "On Account of" || h === "Particulars") {
+        // Set fixed width for columns that need wrapping
+        worksheet.getColumn(i + 1).width = 50;
+      } else {
+        let maxLen = (h || "").toString().length;
+        excelData.forEach((data) => {
+          const val = data[h];
+          const len = val == null ? 0 : val.toString().length;
+          if (len > maxLen) maxLen = len;
+        });
+        const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+        worksheet.getColumn(i + 1).width = width;
+      }
+    });
+
+    // Set view options to ensure proper display when opened
+    worksheet.views = [
+      {
+        state: "normal",
+        showGridLines: true,
+        showRowColHeaders: true,
+        rightToLeft: false,
+      },
+    ];
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const fileName = "Petty Payments.xlsx";
+
+    saveAs(blob, fileName);
+  };
+
   return (
     <>
       <div>
@@ -477,15 +609,30 @@ const VendorVouchers = () => {
        View Voucher
       </button>
     </div>*/}
-          <div className="">
+          <div className="d-flex ">
             <button
               onClick={() => {
                 OpenDialog();
               }}
-              className="btn btn-info infobtn"
+              className="btn btn-info filbtnjob"
             >
               Add Petty
             </button>
+
+            {/* <button
+              className="btn btn-info filbtnjob"
+              onClick={() => {
+                getPDF();
+              }}
+            >
+              Download PDF
+            </button>
+            <button
+              className="btn btn-info filbtnjob ms-2"
+              onClick={createExcel}
+            >
+              Download Excel
+            </button> */}
           </div>
         </div>
 

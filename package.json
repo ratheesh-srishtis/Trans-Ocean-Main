@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://staging.transoceanonline.com/",
+  "homepage": "https://hybrid.sicsglobal.com/project/transocean/",
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.13.3",
@@ -38,7 +38,7 @@
     "react-multi-select-component": "^4.3.4",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
-    "react-select": "^5.9.0",
+    "react-select": "^5.10.2",
     "react-toastify": "^10.0.6",
     "sweetalert2": "^11.14.4",
     "to-words": "^4.2.0",

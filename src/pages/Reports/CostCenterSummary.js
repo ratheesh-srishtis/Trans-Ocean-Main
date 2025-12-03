@@ -6,6 +6,8 @@ import { saveAs } from "file-saver";
 import {
   getCostCentreSummaryReport,
   costCentreSummaryReportPDF,
+  costCentreBreakupReportPDF,
+  getCostCentreBreakupReport,
 } from "../../services/apiService";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
@@ -18,6 +20,7 @@ const CostCenterSummary = ({ ports, customers }) => {
   const Group = require("../../assets/images/reporttttt.png");
   const [isLoading, setIsLoading] = useState(false); // Loader state
   const [isInitialMount, setIsInitialMount] = useState(true);
+  const [services, setServices] = useState([]);
 
   // const filteredReports = reportList?.filter((item) => {
   //   const matchedPort = !selectedPort || item.employee[0]?._id === selectedPort;
@@ -29,8 +32,322 @@ const CostCenterSummary = ({ ports, customers }) => {
     { field: "sales", headerName: "Sales", flex: 1 },
     { field: "purchase", headerName: "Purchase", flex: 1 },
     { field: "profitOrLoss", headerName: "Profit (or Loss)", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 0.5,
+      sortable: false,
+      renderCell: (params) => (
+        <>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons excel-individual-button"
+            onClick={() => downloadRowExcel(params.row)}
+            title="Download Excel"
+          >
+            <i class="bi bi-file-earmark-spreadsheet-fill excel-individual-icon "></i>
+          </button>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons pdf-individual-button"
+            onClick={() => getRowPDF(params.row)}
+            title="Download PDF"
+          >
+            <i class="bi bi-file-earmark-pdf pdf-individual-icon"></i>
+          </button>
+        </>
+      ),
+    },
   ];
 
+  const getRowPDF = async (rowData) => {
+    console.log(rowData, "rowData_getRowPDF");
+    let payload = {
+      pdaId: rowData?.pdaId,
+    };
+    setIsLoading(true);
+    console.log(payload, "payload_getReport");
+    try {
+      const response = await costCentreBreakupReportPDF(payload);
+      console.log("getPettyCashReport", response);
+      setIsLoading(false);
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute(
+          "download",
+          "Cost Centre Summary Detailed Report.pdf"
+        ); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
+    }
+  };
+
+  const downloadRowExcel = async (rowData) => {
+    // Prepare single row data
+    let payload = {
+      pdaId: rowData?.pdaId,
+    };
+    console.log(payload, "payload_getReport");
+    setIsLoading(true);
+    try {
+      const response = await getCostCentreBreakupReport(payload);
+      console.log("costCentreBreakupReport", response);
+      setIsLoading(false);
+      setServices(response?.pdaServices);
+      const totalCustomerAmount = response?.pdaServices.reduce(
+        (sum, s) => sum + s.customerOMR + s.customerVAT,
+        0
+      );
+      const totalVendorAmount = response?.pdaServices.reduce((sum, s) => {
+        // Sum all vendorOMR and vendorVAT for each vendor slot
+        const omrKeys = ["vendorOMR", "vendor2OMR", "vendor3OMR", "vendor4OMR"];
+        const vatKeys = ["vendorVAT", "vendor2VAT", "vendor3VAT", "vendor4VAT"];
+        let vendorTotal = 0;
+        for (let i = 0; i < omrKeys.length; i++) {
+          const omr =
+            typeof s[omrKeys[i]] === "number"
+              ? s[omrKeys[i]]
+              : parseFloat(s[omrKeys[i]]) || 0;
+          const vat =
+            typeof s[vatKeys[i]] === "number"
+              ? s[vatKeys[i]]
+              : parseFloat(s[vatKeys[i]]) || 0;
+          vendorTotal += omr + vat;
+        }
+        return sum + vendorTotal;
+      }, 0);
+      const profitOrLoss = (totalCustomerAmount - totalVendorAmount).toFixed(3);
+      createNewExcel(
+        response?.pdaServices,
+        response?.pda?.invoiceId,
+        totalCustomerAmount,
+        totalVendorAmount,
+        profitOrLoss
+      );
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
+    }
+  };
+
+  const createNewExcel = async (
+    services,
+    invoiceId,
+    totalCustomerAmount,
+    totalVendorAmount,
+    profitOrLoss
+  ) => {
+    if (!services || services.length === 0) return;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Cost Center Summary Report", {
+      properties: { defaultRowHeight: 18 },
+      pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+    });
+
+    // Define columns
+    worksheet.columns = [
+      { header: "Sales", key: "sales", width: 25 },
+      { header: "Amount", key: "customerAmount", width: 15 },
+      { header: "Purchase", key: "purchase", width: 40 },
+      { header: "Amount", key: "vendorAmount", width: 15 },
+    ];
+
+    // Style header row
+    const headerRow = worksheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFEFEFEF" },
+      };
+    });
+
+    // Data rows
+    services.forEach((service, index) => {
+      const vendorNames = [
+        service?.vendorId?.vendorName,
+        service?.vendor2Id?.vendorName,
+        service?.vendor3Id?.vendorName,
+        service?.vendor4Id?.vendorName,
+      ].filter(Boolean);
+
+      const omrKeys = ["vendorOMR", "vendor2OMR", "vendor3OMR", "vendor4OMR"];
+      const vatKeys = ["vendorVAT", "vendor2VAT", "vendor3VAT", "vendor4VAT"];
+
+      const vendorAmounts = omrKeys
+        .map((omrKey, idx) => {
+          const omr =
+            typeof service[omrKey] === "number"
+              ? service[omrKey]
+              : parseFloat(service[omrKey]) || 0;
+          const vat =
+            typeof service[vatKeys[idx]] === "number"
+              ? service[vatKeys[idx]]
+              : parseFloat(service[vatKeys[idx]]) || 0;
+          if (vendorNames[idx]) {
+            return `OMR ${(omr + vat).toFixed(3)}`;
+          }
+          return null;
+        })
+        .filter((v, idx) => vendorNames[idx]);
+
+      const vendorNamesDisplay =
+        vendorNames.length > 1
+          ? vendorNames.map((name, idx) => `${idx + 1}. ${name}`).join("\n")
+          : vendorNames[0] || "";
+
+      const vendorAmountsDisplay =
+        vendorAmounts.length > 1
+          ? vendorAmounts.map((amt, idx) => `${idx + 1}. ${amt}`).join("\n")
+          : vendorAmounts[0] || "";
+
+      const row = worksheet.addRow({
+        sales: index === 0 ? `Invoice No : ${invoiceId}` : "",
+        customerAmount: `OMR ${(
+          service.customerOMR + service.customerVAT
+        ).toFixed(3)}`,
+        purchase: vendorNamesDisplay,
+        vendorAmount: vendorAmountsDisplay,
+      });
+
+      // Center align + wrap for all cells
+      row.eachCell((cell) => {
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+
+      // Adjust row height based on multi-line content in Purchase / Vendor Amount
+      const purchaseLines = (vendorNamesDisplay || "")
+        .toString()
+        .split("\n").length;
+      const vendorAmountLines = (vendorAmountsDisplay || "")
+        .toString()
+        .split("\n").length;
+      const maxLines = Math.max(purchaseLines, vendorAmountLines);
+      if (maxLines > 1) {
+        row.height = Math.max(18, maxLines * 15);
+      }
+    });
+
+    // Totals row
+    const totalRow = worksheet.addRow({
+      sales: "Total Amount",
+      customerAmount: `OMR ${totalCustomerAmount.toFixed(3)}`,
+      purchase: "Total Amount",
+      vendorAmount: `OMR ${totalVendorAmount.toFixed(3)}`,
+    });
+    totalRow.eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+
+    // Profit/Loss row
+    const profitLossRow = worksheet.addRow({
+      sales: "",
+      customerAmount: "",
+      purchase: profitOrLoss >= 0 ? "Profit" : "Loss",
+      vendorAmount: `OMR ${Number(profitOrLoss).toFixed(3)}`,
+    });
+    profitLossRow.eachCell((cell, colNumber) => {
+      const isValueCell = colNumber === 3 || colNumber === 4;
+      cell.font = isValueCell ? { bold: true } : {};
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+
+    // Auto-size columns based on content (clamped)
+    const headers = worksheet.getRow(1).values.slice(1); // ExcelJS row.values is 1-based
+    const minWidth = 15;
+    const maxWidth = 60;
+
+    headers.forEach((h, i) => {
+      let maxLen = (h || "").toString().length;
+
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber === 1) return; // skip header counted
+        const val = row.getCell(i + 1).value;
+        const text =
+          val == null
+            ? ""
+            : typeof val === "object" && val.richText
+            ? val.richText.map((r) => r.text).join("")
+            : String(val);
+        if (text.length > maxLen) maxLen = text.length;
+      });
+
+      const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+      worksheet.getColumn(i + 1).width = width;
+    });
+
+    // Nudge Sales and Purchase wider for readability
+    worksheet.getColumn(1).width = Math.max(
+      worksheet.getColumn(1).width || 0,
+      22
+    );
+    worksheet.getColumn(3).width = Math.max(
+      worksheet.getColumn(3).width || 0,
+      30
+    );
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, "Cost Centre Summary Detailed Report.xlsx");
+  };
   const NoRowsOverlay = () => (
     <Box
       sx={{
@@ -130,6 +447,7 @@ const CostCenterSummary = ({ ports, customers }) => {
     try {
       const response = await getCostCentreSummaryReport(payload);
       if (response?.status == true) {
+        console.log(response?.report, "response_report");
         setReportList(response?.report);
         setIsLoading(false);
       } else if (response?.status == false) {
@@ -504,7 +822,7 @@ const CostCenterSummary = ({ ports, customers }) => {
                   rows={
                     reportList?.length > 0
                       ? reportList?.map((item, index) => ({
-                          id: index,
+                          id: index, // Ensure each row has a unique id
                           jobId: item?.jobId,
                           sales: item?.sales.toFixed(3) || "N/A", // Ensure employee is a string
                           purchase: item.purchase.toFixed(3) ?? "N/A",
@@ -512,6 +830,7 @@ const CostCenterSummary = ({ ports, customers }) => {
                             item?.sales && item?.purchase
                               ? (item.sales - item.purchase).toFixed(3)
                               : "N/A",
+                          pdaId: item?._id,
                         }))
                       : []
                   }
@@ -592,3 +911,83 @@ const CostCenterSummary = ({ ports, customers }) => {
 };
 
 export default CostCenterSummary;
+
+// individual excel data download code
+// const excelData = [
+//   {
+//     "Job No": rowData.jobId,
+//     Sales: rowData.sales,
+//     Purchase: rowData.purchase,
+//     "Profit (or Loss)": rowData.profitOrLoss,
+//   },
+// ];
+
+// const headers = Object.keys(excelData[0]);
+// const workbook = new ExcelJS.Workbook();
+// const worksheet = workbook.addWorksheet("Cost Center Summary", {
+//   properties: { defaultRowHeight: 18 },
+//   pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+// });
+
+// // Header
+// const headerRow = worksheet.addRow(headers);
+// headerRow.eachCell((cell) => {
+//   cell.font = { bold: true };
+//   cell.alignment = {
+//     horizontal: "center",
+//     vertical: "middle",
+//     wrapText: true,
+//   };
+//   cell.border = {
+//     top: { style: "thin" },
+//     left: { style: "thin" },
+//     bottom: { style: "thin" },
+//     right: { style: "thin" },
+//   };
+//   cell.fill = {
+//     type: "pattern",
+//     pattern: "solid",
+//     fgColor: { argb: "FFEFEFEF" },
+//   };
+// });
+
+// // Data row
+// const dataRow = worksheet.addRow(headers.map((h) => excelData[0][h]));
+// dataRow.eachCell((cell) => {
+//   cell.alignment = {
+//     horizontal: "center",
+//     vertical: "middle",
+//     wrapText: true,
+//   };
+//   cell.border = {
+//     top: { style: "thin" },
+//     left: { style: "thin" },
+//     bottom: { style: "thin" },
+//     right: { style: "thin" },
+//   };
+// });
+
+// // Auto-size columns
+// const minWidth = 15;
+// const maxWidth = 60;
+// headers.forEach((h, i) => {
+//   let maxLen = (h || "").toString().length;
+//   const val = excelData[0][h];
+//   const len = val == null ? 0 : val.toString().length;
+//   if (len > maxLen) maxLen = len;
+//   const width = Math.max(minWidth, Math.min(maxWidth, maxLen + 2));
+//   worksheet.getColumn(i + 1).width = width;
+// });
+// worksheet.getColumn(1).width = Math.max(
+//   worksheet.getColumn(1).width || 0,
+//   24
+// );
+
+// const buffer = await workbook.xlsx.writeBuffer();
+// const blob = new Blob([buffer], {
+//   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+// });
+// saveAs(
+//   blob,
+//   `Cost Center Summary ${rowData.jobId.replace(/\s+/g, "_")}.xlsx`
+// );

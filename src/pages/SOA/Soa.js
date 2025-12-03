@@ -99,7 +99,7 @@ const Soa = ({}) => {
       balanceusd = (balance * 2.62).toFixed(2);
 
       let balanceAed;
-      balanceAed = (balanceusd * 3.6725).toFixed(4);
+      balanceAed = (balanceusd * 3.6725).toFixed(2);
       const baseRow = {
         "Quotation Number": item.pdaNumber || "N/A",
         "Invoice NO": item.invoiceId || "N/A",
@@ -168,7 +168,7 @@ const Soa = ({}) => {
             3.6725,
         0
       )
-      .toFixed(4);
+      .toFixed(2);
     const totalUSD = soaList
       .reduce((sum, item) => sum + (item.totalAmountOMR || 0) * 2.62, 0)
       .toFixed(2);
@@ -667,11 +667,11 @@ const Soa = ({}) => {
               //divided by login currency rate
               //transwave motham 2 digits decimal
               //charge ilum login va
-              // const balanceAed = (balanceusd * 3.6725).toFixed(4);
+              // const balanceAed = (balanceusd * 3.6725).toFixed(2);
 
               let balanceUsdNew;
               balanceUsdNew = (balance * 2.62).toFixed(2);
-              const balanceAed = (balanceUsdNew * 3.6725).toFixed(4);
+              const balanceAed = (balanceUsdNew * 3.6725).toFixed(2);
 
               return {
                 id: item._id,
@@ -756,7 +756,7 @@ const Soa = ({}) => {
                         3.6725,
                     0
                   )
-                  .toFixed(4),
+                  .toFixed(2),
                 days: "",
               },
             ])}

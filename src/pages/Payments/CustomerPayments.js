@@ -16,6 +16,9 @@ import Swal from "sweetalert2";
 import "../../css/payment.css";
 import PopUp from "../PopUp";
 import ViewCustomerVoucher from "./ViewCustomerVoucher";
+import Select from "react-select";
+import Loader from "../Loader";
+import { Padding } from "@mui/icons-material";
 const CustomerPayments = () => {
   const Group = require("../../assets/images/payments.png");
   const paymentIcon = require("../../assets/images/payment-icon.png");
@@ -30,6 +33,7 @@ const CustomerPayments = () => {
   const [open, setOpen] = useState(false);
   const [customerpayment, setCustomerpayment] = useState([]);
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const { customerId } = location.state || {};
   const [period, setPeriod] = useState("");
   const [inputFilterDate, setFilterDate] = useState("");
@@ -44,7 +48,57 @@ const CustomerPayments = () => {
   const [voucherNumber, setVoucherNumber] = useState(false);
   const [viewopen, setviewOpen] = useState(false);
   const [isDirectCustomerPayment, setIsDirectPayment] = useState(false);
-
+  const customSelectStyles = {
+    control: (provided) => ({
+      ...provided,
+      height: "30px !important",
+      marginTop: "14px",
+      borderRadius: "0.375rem",
+      borderColor: "#dee2e6",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "#dee2e6",
+      },
+      Padding: "0px !important",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999,
+      marginTop: "2px", // Reduced spacing between select and dropdown
+      Padding: "0px !important",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "#0d6efd"
+        : state.isFocused
+        ? "#e9ecef"
+        : "white",
+      color: state.isSelected ? "white" : "black",
+      cursor: "pointer",
+      fontSize: "0.7rem !important", // Option font size
+      Padding: "0px !important",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontSize: "0.7rem !important", // Option font size
+      color: "#000000", // Black color for placeholder
+      Padding: "0px !important",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      fontSize: "0.7rem !important", // Option font size
+      color: "#000000",
+      Padding: "0px !important",
+    }),
+    input: (provided) => ({
+      ...provided,
+      fontSize: "0.7rem !important", // Option font size
+      color: "#000000",
+      height: "30px !important",
+      Padding: "0px !important",
+    }),
+  };
   // Helper to get correct isDirectPayment value
   const getIsDirectPaymentValue = () => (isDirectCustomerPayment ? true : "");
 
@@ -87,6 +141,7 @@ const CustomerPayments = () => {
   }, [customerId]);
 
   const fetchCustomerpayments = async (payload) => {
+    setIsLoading(true);
     try {
       const Listpayments = await getPayments(payload);
       console.log(Listpayments, "Listpayments");
@@ -99,8 +154,10 @@ const CustomerPayments = () => {
       const discount = Listpayments?.discountAmountOMR || 0;
       const balance = totalAmount - amountpaid - discount;
       setBalanceAmount(parseFloat(balance.toFixed(3)));
+      setIsLoading(false);
     } catch (error) {
       console.log("Error in Api", error);
+      setIsLoading(false);
     }
   };
 
@@ -267,7 +324,9 @@ const CustomerPayments = () => {
       field: "quotation",
       headerName: (
         <span>
-          Quotation<br />Number
+          Quotation
+          <br />
+          Number
         </span>
       ),
       flex: 1,
@@ -278,18 +337,25 @@ const CustomerPayments = () => {
       field: "recvamount",
       headerName: (
         <span>
-          Received<br />Amount
+          Received
+          <br />
+          Amount
         </span>
       ),
       flex: 1,
       minWidth: 100,
     },
     {
-      field: "amount", headerName: (
+      field: "amount",
+      headerName: (
         <span>
-          Paid<br />Amount
+          Paid
+          <br />
+          Amount
         </span>
-      ), flex: 1, minWidth: 100
+      ),
+      flex: 1,
+      minWidth: 100,
     },
     { field: "currency", headerName: "Currency", flex: 1, minWidth: 100 },
     {
@@ -308,7 +374,9 @@ const CustomerPayments = () => {
       field: "modeofPayment",
       headerName: (
         <span>
-          Mode of<br />Payment
+          Mode of
+          <br />
+          Payment
         </span>
       ),
       flex: 1,
@@ -375,10 +443,35 @@ const CustomerPayments = () => {
     setSelectedRow(null);
   };
 
+  const handleCustomerSelectChange = (selectedOption) => {
+    console.log(selectedOption, "selectedOption");
+
+    const customerId = selectedOption ? selectedOption.value : "";
+    setSelectedCustomerid(customerId);
+
+    // If no customer selected, do NOT call API
+    if (!customerId) return;
+
+    let payload = {
+      customerId,
+      paymentDate: inputFilterDate,
+      pdaId: inputpdaId,
+      filter: FilterName,
+      [FilterName]: FilterValue,
+      isDirectPayment: getIsDirectPaymentValue(),
+    };
+
+    fetchCustomerpayments(payload);
+  };
+  // Prepare options for react-select
+  const customerOptions = customerList.map((customer) => ({
+    value: customer._id,
+    label: customer.customerName,
+  }));
   return (
     <>
       <div>
-        <div className=" mt-3 mb-3 d-flex">
+        <div className=" mt-3 mb-3 d-flex align-items-center ">
           <div className=" d-flex paymentbycus">
             <label
               htmlFor="exampleFormControlInput1"
@@ -388,7 +481,7 @@ const CustomerPayments = () => {
               Customer Name:
             </label>
             <div className="vessel-select">
-              <select
+              {/* <select
                 className="form-select vesselbox statusscustomerbypayment"
                 name="customers"
                 value={selectedCustomerid || ""}
@@ -399,21 +492,34 @@ const CustomerPayments = () => {
                     {customer.customerName} {""}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <Select
+                options={customerOptions}
+                onChange={handleCustomerSelectChange}
+                value={customerOptions.find(
+                  (opt) => opt.value === selectedCustomerid
+                )}
+                placeholder="Choose Customer Name"
+                isClearable
+                isSearchable
+                styles={customSelectStyles}
+                className="paymentcustomer"
+                classNamePrefix="react-select"
+              />
             </div>
           </div>
-          <div className="cccsut mt-2 mb-2">        
-              <div className="cusbydate">
-            <label
-              htmlFor="inputPassword"
-              className=" form-labele col-form-label text-nowrap"
-            >
-              Payment Date:
-            </label>
-            <div className="">
-              <div className="fw-bolder paymentpdafontweight"></div>
+          <div className="cccsut mt-2 mb-2">
+            <div className="cusbydate">
+              <label
+                htmlFor="inputPassword"
+                className=" form-labele col-form-label text-nowrap"
+              >
+                Payment Date:
+              </label>
+              <div className="">
+                <div className="fw-bolder paymentpdafontweight"></div>
+              </div>
             </div>
-          </div>
             <div className="">
               {/*<i className="bi bi-funnel-fill filtericon"></i>*/}
               <input
@@ -425,83 +531,83 @@ const CustomerPayments = () => {
                 value={inputFilterDate}
               ></input>
             </div>
-            </div>
-<div className="neevocu">
+          </div>
+          <div className="neevocu">
             <div className="voucherbypayment mb-2">
-            <i className="bi bi-funnel-fill filtericon"></i>
-            <select
-              name="pdaId"
-              className="form-select form-select-sm filteremployee cupaymentddfont"
-              aria-label="Small select example"
-              onChange={handleTimeperiod}
-            >
-              <option value="">Choose Quotation </option>
-              {QuotationList.map((invoice) => (
-                <option key={invoice._id} value={invoice._id}>
-                  {invoice.pdaNumber}
-                  {invoice.invoiceId ? ` - ${invoice.invoiceId}` : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-</div>
-<div className="necus">
-            <div className=" d-flex filterpayment">
-            <label
-              htmlFor="exampleFormControlInput1"
-              className="form-labele filterbycustpayment "
-            >
-              {" "}
-              Filter By:
-            </label>
-            <div className="vessel-select">
+              <i className="bi bi-funnel-fill filtericon"></i>
               <select
-                name="status"
-                className="form-select vesselbox statussbycustomer"
-                onChange={(e) => setPeriod(e.target.value)}
-                value={period}
+                name="pdaId"
+                className="form-select form-select-sm filteremployee cupaymentddfont"
+                aria-label="Small select example"
+                onChange={handleTimeperiod}
               >
-                <option value="">Select Period</option>
-                <option value="month">Monthly</option>
-                <option value="year">Yearly</option>
+                <option value="">Choose Quotation </option>
+                {QuotationList.map((invoice) => (
+                  <option key={invoice._id} value={invoice._id}>
+                    {invoice.pdaNumber}
+                    {invoice.invoiceId ? ` - ${invoice.invoiceId}` : ""}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
-
-          <div className="nonvalue">
-            {period === "month" && (
-              <select
-                name="month"
-                className="form-select jobporrte mmonthcus monthcustomerpay"
-                aria-label="Select Month"
-                onChange={handleTimeperiod}
+          <div className="necus">
+            <div className=" d-flex filterpayment">
+              <label
+                htmlFor="exampleFormControlInput1"
+                className="form-labele filterbycustpayment "
               >
-                <option value="">Select Month</option>
-                {months.map((month, index) => (
-                  <option key={index} value={month.value}>
-                    {month.label}
-                  </option>
-                ))}
-              </select>
-            )}
+                {" "}
+                Filter By:
+              </label>
+              <div className="vessel-select">
+                <select
+                  name="status"
+                  className="form-select vesselbox statussbycustomer"
+                  onChange={(e) => setPeriod(e.target.value)}
+                  value={period}
+                >
+                  <option value="">Select Period</option>
+                  <option value="month">Monthly</option>
+                  <option value="year">Yearly</option>
+                </select>
+              </div>
+            </div>
 
-            {period === "year" && (
-              <select
-                name="year"
-                className="form-select jobporrt mmonthcus monthcustomerpay"
-                aria-label="Select Year"
-                onChange={handleTimeperiod}
-              >
-                <option value="">Select Year</option>
-                {years.map((year, index) => (
-                  <option key={index} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            )}
+            <div className="nonvalue">
+              {period === "month" && (
+                <select
+                  name="month"
+                  className="form-select jobporrte mmonthcus monthcustomerpay"
+                  aria-label="Select Month"
+                  onChange={handleTimeperiod}
+                >
+                  <option value="">Select Month</option>
+                  {months.map((month, index) => (
+                    <option key={index} value={month.value}>
+                      {month.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {period === "year" && (
+                <select
+                  name="year"
+                  className="form-select jobporrt mmonthcus monthcustomerpay"
+                  aria-label="Select Year"
+                  onChange={handleTimeperiod}
+                >
+                  <option value="">Select Year</option>
+                  {years.map((year, index) => (
+                    <option key={index} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
           </div>
-</div>
           <div className="d-flex align-items-center paymentcustomermargin">
             <input
               type="checkbox"
@@ -687,6 +793,7 @@ const CustomerPayments = () => {
       {openPopUp && (
         <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
       )}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

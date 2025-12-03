@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import {
   getAllQuotationIds,
   getAllVendorQuotationIds,
+  getCustomerQuotationIds,
   savePayment,
   editPayment,
   getVendorBalanceDue,
@@ -234,9 +235,12 @@ const AddCustomerPayment = ({
     try {
       let listquotations = null;
       if (customerId) {
-        listquotations = await getAllQuotationIds();
+        // listquotations = await getAllQuotationIds();
+        listquotations = await getCustomerQuotationIds({
+          customerId: customerId,
+        });
       } else if (vendorId) {
-        listquotations = await getAllVendorQuotationIds();
+        listquotations = await getAllVendorQuotationIds({ vendorId: vendorId });
       } else {
         setQuotationList([]);
         return;

@@ -72,11 +72,22 @@ export const getAllQuotationIds = async () => {
     console.log("Error in quotations", error);
   }
 };
+export const getCustomerQuotationIds = async (data) => {
+  try {
+    const response = await axiosInstance.post("/getCustomerQuotationIds", data);
+    return response.data;
+  } catch (error) {
+    console.log("Error in quotations", error);
+  }
+};
 // list vendor quotationIds
 
-export const getAllVendorQuotationIds = async () => {
+export const getAllVendorQuotationIds = async (data) => {
   try {
-    const response = await axiosInstance.post("/getAllVendorQuotationIds");
+    const response = await axiosInstance.post(
+      "/getAllVendorQuotationIds",
+      data
+    );
     return response.data;
   } catch (error) {
     console.log("Error in quotations", error);

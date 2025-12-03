@@ -603,6 +603,42 @@ export const getBankPaymentDetails = async (userData) => {
     throw error;
   }
 };
+export const getBankPaymentDetailsPDF = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/getBankPaymentDetailsPDF",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const pettyCashReportEmployee = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/pettyCashReportEmployee",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const pettyCashReportEmployeePDF = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/pettyCashReportEmployeePDF",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 
 export const saveCustomerReportRemark = async (userData) => {
   try {
@@ -720,10 +756,58 @@ export const costCentreSummaryReportPDF = async (userData) => {
     throw error;
   }
 };
+export const payableSummaryReportVendorPDF = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/payableSummaryReportVendorPDF",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const payableSummaryReportVendor = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/payableSummaryReportVendor",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const receivableSummaryReportCustomer = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/receivableSummaryReportCustomer",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const receivableSummaryReportPDF = async (userData) => {
   try {
     const response = await axiosInstance.post(
       "/receivableSummaryReportPDF",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const receivableSummaryReportCustomerPDF = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/receivableSummaryReportCustomerPDF",
       userData
     );
     return response.data;

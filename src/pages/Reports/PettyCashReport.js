@@ -6,6 +6,8 @@ import { saveAs } from "file-saver";
 import {
   getPettyCashReport,
   pettyCashReportPDF,
+  pettyCashReportEmployee,
+  pettyCashReportEmployeePDF,
 } from "../../services/apiService";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
@@ -21,12 +23,12 @@ import {
 } from "../../services/apiPayment";
 import { get } from "jquery";
 import Loader from "../Loader";
-
+import PopUp from "../PopUp";
 const PettyCashReport = () => {
   const [isLoading, setIsLoading] = useState(false); // Loader state
-
+  const [openPopUp, setOpenPopUp] = useState(false);
+  const [message, setMessage] = useState("");
   const Group = require("../../assets/images/reporttttt.png");
-  const [eta, setEta] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
   const [reportList, setReportList] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -36,21 +38,6 @@ const PettyCashReport = () => {
     (new Date().getMonth() + 1).toString()
   ); // Default to current month
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
-
-  const handleEtaChange = (date) => {
-    console.log(date, "datehandleEtaChange");
-    if (date) {
-      setEta(date);
-      console.log(date, "datehandleEtaChange");
-      let formatDate = date ? moment(date).format("YYYY-MM-DD ") : null;
-      console.log(formatDate, "formatDate");
-      setPaymentDate(formatDate);
-      setSelectedEmployee("");
-      setSelectedMonth("");
-      setSelectedYear("");
-      setFilterType("");
-    }
-  };
 
   const filteredReports = reportList?.filter((item) => {
     const matchedEmployee =
@@ -64,7 +51,215 @@ const PettyCashReport = () => {
     { field: "totalPetty", headerName: "Total Petty", flex: 1 },
     { field: "usedPetties", headerName: "Used Petties", flex: 1 },
     { field: "balancePetties", headerName: "Balance Petties", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 0.5,
+      sortable: false,
+      renderCell: (params) => (
+        <>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons excel-individual-button"
+            onClick={() => downloadRowExcel(params.row)}
+            title="Download Excel"
+          >
+            <i class="bi bi-file-earmark-spreadsheet-fill excel-individual-icon "></i>
+          </button>
+          <button
+            className="btn btn-sm btn-info text-white row-download-icons pdf-individual-button"
+            onClick={() => getRowPDF(params.row)}
+            title="Download PDF"
+          >
+            <i class="bi bi-file-earmark-pdf pdf-individual-icon"></i>
+          </button>
+        </>
+      ),
+    },
   ];
+
+  const getRowPDF = async (rowData) => {
+    console.log(rowData, "rowData_getRowPDF");
+
+    let payload = {
+      employeeId: rowData?.employeeId,
+      employeeName: rowData?.employee,
+      filter: filterType,
+      paymentDateFrom: formattedStart,
+      paymentDateTo: formattedEnd,
+      ...(filterType === "year" && { year: selectedYear }),
+      ...(filterType === "month" && { month: selectedMonth }),
+    };
+
+    console.log(payload, "payload_getReport");
+    setIsLoading(true);
+    try {
+      const response = await pettyCashReportEmployeePDF(payload);
+      console.log("pettyCashReportEmployeePDF", response);
+      setIsLoading(false);
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute("download", "Petty Cash Detailed Report.pdf"); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Failed to fetch quotations:", error);
+    }
+  };
+
+  const downloadRowExcel = async (rowData) => {
+    console.log(rowData, "rowData_downloadRowExcel");
+
+    let payload = {
+      employeeId: rowData?.employeeId,
+      filter: filterType,
+      paymentDate: paymentDate,
+      ...(filterType === "year" && { year: selectedYear }),
+      ...(filterType === "month" && { month: selectedMonth }),
+    };
+    console.log(payload, "payload_downloadRowExcel");
+    setIsLoading(true);
+
+    try {
+      const response = await pettyCashReportEmployee(payload);
+      console.log("pettyCashReportEmployee", response?.pettyData);
+
+      // Check if response has data
+      if (!response?.pettyData || response.pettyData.length === 0) {
+        setMessage("No data available to download excel");
+        setOpenPopUp(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // Prepare Excel data
+      const excelData = response.pettyData.map((item) => ({
+        "Employee Name": item.through?.name || "-",
+        Particulars: item.voucherParticulers || "-",
+        "On Account Of": item.voucherAccount || "-",
+        "Vendor Name": item.vendorId?.vendorName || "-",
+        Amount: Number(item.amount || 0).toFixed(3),
+        "Payment Date": item.paymentDate
+          ? `${new Date(item.paymentDate).toLocaleDateString(
+              "en-GB"
+            )} ${new Date(item.paymentDate).toLocaleTimeString("en-GB", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}`
+          : "-",
+      }));
+
+      // Create Excel workbook
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Petty Cash Report", {
+        properties: { defaultRowHeight: 18 },
+        pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
+      });
+
+      const headers = Object.keys(excelData[0] || {});
+
+      // Add header row
+      const headerRow = worksheet.addRow(headers);
+      headerRow.eachCell((cell) => {
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: "center",
+          vertical: "middle",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFEFEFEF" },
+        };
+      });
+
+      // Add data rows with auto row height
+      excelData.forEach((row) => {
+        const r = worksheet.addRow(headers.map((h) => row[h]));
+        r.eachCell((cell) => {
+          cell.alignment = {
+            horizontal: "center",
+            vertical: "middle",
+            wrapText: true,
+          };
+          cell.border = {
+            top: { style: "thin" },
+            left: { style: "thin" },
+            bottom: { style: "thin" },
+            right: { style: "thin" },
+          };
+        });
+
+        // Calculate row height based on content
+        let maxLines = 1;
+        headers.forEach((h, colIndex) => {
+          const cellValue = row[h];
+          if (cellValue != null) {
+            const columnWidth = worksheet.getColumn(colIndex + 1).width || 15;
+            const textLength = cellValue.toString().length;
+            const estimatedLines = Math.ceil(textLength / columnWidth);
+            if (estimatedLines > maxLines) {
+              maxLines = estimatedLines;
+            }
+          }
+        });
+
+        // Set row height (18 is default, multiply by number of lines needed)
+        r.height = Math.max(18, maxLines * 15);
+      });
+
+      // Auto-size columns
+      headers.forEach((h, i) => {
+        let maxLen = h.length;
+        excelData.forEach((row) => {
+          const val = row[h];
+          if (val != null) {
+            const len = val.toString().length;
+            if (len > maxLen) maxLen = len;
+          }
+        });
+        // Set larger minimum width for "On Account Of" and "Particulars" columns
+        const minWidth = h === "On Account Of" || h === "Particulars" ? 30 : 15;
+        worksheet.getColumn(i + 1).width = Math.max(
+          minWidth,
+          Math.min(maxLen + 5, 60)
+        );
+      });
+
+      // Download Excel file
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const fileName = "Petty Cash Detailed Report.xlsx";
+      saveAs(blob, fileName);
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to download petty cash report:", error);
+      setIsLoading(false);
+    }
+  };
+
+  // ...existing code...
 
   const NoRowsOverlay = () => (
     <Box
@@ -129,17 +324,33 @@ const PettyCashReport = () => {
   const handleMonthChange = (event) => {
     const newMonth = event.target.value;
     setSelectedMonth(newMonth);
+    setPaymentDate("");
+    setFormattedStart("");
+    setFormattedEnd("");
+    setDateRange([null, null]);
   };
 
   const handleYearChange = (event) => {
     const newYear = parseInt(event.target.value, 10);
     console.log(newYear, "newYear_handleYearChange");
     setSelectedYear(newYear);
+    setPaymentDate("");
+    setFormattedStart("");
+    setFormattedEnd("");
+    setDateRange([null, null]);
   };
 
   const handleFilterTypeChange = (event) => {
     const newFilterType = event.target.value;
+    if (newFilterType == "year") {
+      setSelectedYear(new Date().getFullYear());
+    } else if (newFilterType == "month") {
+      setSelectedMonth((new Date().getMonth() + 1).toString());
+    }
     setFilterType(newFilterType);
+    setPaymentDate("");
+    setFormattedStart("");
+    setDateRange([null, null]);
   };
 
   const getReport = async () => {
@@ -148,7 +359,8 @@ const PettyCashReport = () => {
       filter: filterType,
       month: selectedMonth,
       year: selectedYear,
-      paymentDate: paymentDate,
+      paymentDateFrom: formattedStart,
+      paymentDateTo: formattedEnd,
     };
     console.log(payload, "payload_getReport");
     setIsLoading(true); // Show loader
@@ -201,52 +413,6 @@ const PettyCashReport = () => {
     }
   };
 
-  // Create Excel for filteredReports
-  // const createExcel = () => {
-  //   if (!filteredReports || filteredReports.length === 0) return;
-  //   // Prepare data for Excel
-  //   const excelData = filteredReports.map((item) => {
-  //     const usedPetties = item.employeepetties.reduce(
-  //       (sum, petty) => sum + (petty.amount || 0),
-  //       0
-  //     );
-  //     const balancePetties = usedPetties - item.totalPetty;
-  //     return {
-  //       "Employee Name": item?.employee?.[0]?.name || "N/A",
-  //       "Total Petty": usedPetties ?? "N/A",
-  //       "Used Petties": item.totalPetty,
-  //       "Balance Petties": balancePetties,
-  //     };
-  //   });
-  //   // Add totals row
-  //   /*
-  //   const totalPettySum = excelData.reduce(
-  //     (sum, row) => sum + (parseFloat(row["Total Petty"]) || 0),
-  //     0
-  //   );
-  //   const usedPettiesSum = excelData.reduce(
-  //     (sum, row) => sum + (parseFloat(row["Used Petties"]) || 0),
-  //     0
-  //   );
-  //   const balancePettiesSum = excelData.reduce(
-  //     (sum, row) => sum + (parseFloat(row["Balance Petties"]) || 0),
-  //     0
-  //   );
-  //   excelData.push({
-  //     "Employee Name": "Total",
-  //     "Total Petty": totalPettySum,
-  //     "Used Petties": usedPettiesSum,
-  //     "Balance Petties": balancePettiesSum,
-  //   });
-  //   */
-  //   // Create worksheet and workbook
-  //   const XLSX = require("xlsx");
-  //   const worksheet = XLSX.utils.json_to_sheet(excelData);
-  //   worksheet["!cols"] = [{ wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 15 }];
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, "PettyCashReport");
-  //   XLSX.writeFile(workbook, "Petty Cash Report.xlsx");
-  // };
   const createExcel = async () => {
     if (!filteredReports || filteredReports.length === 0) return;
 
@@ -349,28 +515,98 @@ const PettyCashReport = () => {
     getReport();
   }, [selectedEmployee, selectedMonth, selectedYear, paymentDate, filterType]);
 
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+
+  const [formattedStart, setFormattedStart] = useState("");
+  const [formattedEnd, setFormattedEnd] = useState("");
+
+  // Format to YYYY-MM-DD (in local time)
+  const formatDate = (date) => {
+    if (!date) return "";
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  useEffect(() => {
+    setFormattedStart(formatDate(startDate));
+    setFormattedEnd(formatDate(endDate));
+
+    console.log("Formatted Start:", formatDate(startDate));
+    console.log("Formatted End:", formatDate(endDate));
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    console.log(formattedStart, "formattedStart filter_dates");
+    console.log(formattedEnd, "formattedEnd filter_dates");
+  }, [formattedStart, formattedEnd]);
   return (
     <>
       <div>
         <div className="container-fluid">
           <div className=" d-flex  flex-md-row flex-wrap align-items-start gap-3 mb-3 mt-3">
             <div className="">
-              <div className=" d-flex">
+              <div className="jobfilter  mb-2 ">
                 <label
                   htmlFor="inputPassword"
-                  className=" form-label costcenterinput col-form-label text-nowrap"
+                  className=" form-labele col-form-label text-nowrap"
                 >
-                  Payment Date:
+                  Date Filter:
                 </label>
-                <div className="datepickerpetty">
+                <div className="custom-date-input-container">
                   <DatePicker
-                    dateFormat="dd/MM/yyyy"
-                    selected={eta ? new Date(eta) : null} // Inline date conversion for prefilled value
-                    onChange={handleEtaChange}
-                    className="form-control date-input  bansummary-datepicker"
-                    id="eta-picker"
-                    placeholderText="dd-mm-yyyy"
-                    autoComplete="off"
+                    selectsRange
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(update) => {
+                      // update is [from, to]
+                      if (update[0] && !update[1]) {
+                        setDateRange([update[0], null]);
+                      } else if (update[0] && update[1]) {
+                        setDateRange(update);
+                        // Call API immediately when both dates are picked
+                        const payload = {
+                          employeeId: selectedEmployee,
+                          filter: "",
+                          month: "",
+                          paymentDateFrom: update[0]
+                            ? formatDate(update[0])
+                            : "",
+                          paymentDateTo: update[1] ? formatDate(update[1]) : "",
+                        };
+                        console.log(payload, "payload_dateRange_onChange");
+                        getPettyCashReport(payload)
+                          .then((response) => setReportList(response?.result))
+                          .catch((error) => {
+                            setReportList([]);
+                            console.error("Failed to fetch quotations:", error);
+                          });
+                      } else {
+                        setDateRange([null, null]);
+                        // When cleared, call API with empty date filters
+                        const payload = {
+                          employeeId: selectedEmployee,
+                          filter: filterType,
+                          month: selectedMonth,
+                          year: selectedYear,
+                          paymentDateFrom: "",
+                          paymentDateTo: "",
+                        };
+                        getPettyCashReport(payload)
+                          .then((response) => setReportList(response?.report))
+                          .catch((error) => {
+                            setReportList([]);
+                            console.error("Failed to fetch quotations:", error);
+                          });
+                      }
+                    }}
+                    isClearable={true}
+                    placeholderText="Select from and to date"
+                    className="custom-date-input datefilterpaym form-control dateffont"
+                    calendarClassName="custom-calendar"
+                    dateFormat="dd-MM-yyyy"
+                    shouldCloseOnSelect={false}
                   />
                 </div>
               </div>
@@ -484,7 +720,6 @@ const PettyCashReport = () => {
           </div>
         </div>
       </div>
-
       <DataGrid
         rows={
           filteredReports?.length > 0
@@ -495,6 +730,7 @@ const PettyCashReport = () => {
                   totalPetty: Number(item.totalPetty).toFixed(3),
                   usedPetties: Number(item.usedPetty).toFixed(3),
                   balancePetties: Number(item.balancePetty).toFixed(3),
+                  employeeId: item?.employee?._id || "",
                 };
               })
             : []
@@ -558,7 +794,6 @@ const PettyCashReport = () => {
           },
         }}
       />
-
       {filteredReports?.length == 0 && (
         <>
           <div className="no-data">
@@ -567,6 +802,9 @@ const PettyCashReport = () => {
         </>
       )}
       <Loader isLoading={isLoading} />
+      {openPopUp && (
+        <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
+      )}{" "}
     </>
   );
 };
