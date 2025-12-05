@@ -190,7 +190,7 @@ const ViewPaymentDetails = ({ open, onClose, selectedRow }) => {
                     placeholderText="Select from and to date"
                     className="custom-date-input datefilterpaym form-control dateffont "
                     calendarClassName="custom-calendar"
-                    dateFormat="dd-mm-yyyy"
+                    dateFormat="dd-MM-yyyy"
                   />
                 </div>
               </div>
@@ -333,7 +333,7 @@ const ViewPaymentDetails = ({ open, onClose, selectedRow }) => {
                   { field: "paymentType", headerName: "Payment Type", flex: 1 },
                   { field: "pdaNumber", headerName: "PDA Number", flex: 1 },
                   { field: "invoiceId", headerName: "Invoice ID", flex: 1 },
-                  { field: "jobId", headerName: "Job ID", flex: 1 },
+                  { field: "jobId", headerName: "Job ID", flex: 1.5 },
                 ]}
                 sx={{
                   "& .MuiDataGrid-root": {

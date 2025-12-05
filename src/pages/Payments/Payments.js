@@ -26,6 +26,7 @@ const Payments = () => {
     control: (provided) => ({
       ...provided,
       height: "30px !important",
+      minWidth: "200px !important",
       borderRadius: "0.375rem",
       borderColor: "#dee2e6",
       boxShadow: "none",

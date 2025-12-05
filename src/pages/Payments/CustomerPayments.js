@@ -19,6 +19,8 @@ import ViewCustomerVoucher from "./ViewCustomerVoucher";
 import Select from "react-select";
 import Loader from "../Loader";
 import { Padding } from "@mui/icons-material";
+import DatePicker from "react-datepicker";
+
 const CustomerPayments = () => {
   const Group = require("../../assets/images/payments.png");
   const paymentIcon = require("../../assets/images/payment-icon.png");
@@ -52,6 +54,7 @@ const CustomerPayments = () => {
     control: (provided) => ({
       ...provided,
       height: "30px !important",
+      minWidth: "200px !important",
       marginTop: "14px",
       borderRadius: "0.375rem",
       borderColor: "#dee2e6",
@@ -221,6 +224,8 @@ const CustomerPayments = () => {
   ];
 
   const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
+  const [lastDateValue, setLastDateValue] = useState("");
+
   const handleTimeperiod = async (e) => {
     let payload = "";
     const SelectBxname = e.target.name;
@@ -228,7 +233,7 @@ const CustomerPayments = () => {
       setPeriod("");
       setFilterDate(e.target.value);
       payload = {
-        customerId: selectedCustomerid,
+        customerId: selectedCustomerid ? selectedCustomerid : customerId,
         paymentDate: e.target.value,
         pdaId: inputpdaId,
         isDirectPayment: getIsDirectPaymentValue(),
@@ -236,7 +241,7 @@ const CustomerPayments = () => {
     } else if (SelectBxname === "pdaId") {
       setPdaId(e.target.value);
       payload = {
-        customerId: selectedCustomerid,
+        customerId: selectedCustomerid ? selectedCustomerid : customerId,
         paymentDate: inputFilterDate,
         pdaId: e.target.value,
         filter: FilterName,
@@ -248,7 +253,7 @@ const CustomerPayments = () => {
       setFilterName(SelectBxname);
       setFilterValue(e.target.value);
       payload = {
-        customerId: selectedCustomerid,
+        customerId: selectedCustomerid ? selectedCustomerid : customerId,
         paymentDate: "",
         pdaId: inputpdaId,
         filter: SelectBxname,
@@ -259,7 +264,7 @@ const CustomerPayments = () => {
     fetchCustomerpayments(payload);
   };
   const payloadParams = {
-    customerId: selectedCustomerid,
+    customerId: selectedCustomerid ? selectedCustomerid : customerId,
     paymentDate: inputFilterDate,
     pdaId: inputpdaId,
     filter: FilterName,
@@ -468,6 +473,16 @@ const CustomerPayments = () => {
     value: customer._id,
     label: customer.customerName,
   }));
+
+  const [paymentDate, setPaymentDate] = useState(null);
+
+  const handlePaymentDateChange = (date) => {
+    if (date) {
+      setPaymentDate(date);
+      console.log(date, "paymentDate");
+    }
+  };
+
   return (
     <>
       <div>
@@ -527,9 +542,42 @@ const CustomerPayments = () => {
                 name="paymentDate"
                 className="datebycustomerpayment form-control vesselbox statusspayment"
                 placeholder="Select Date"
-                onChange={handleTimeperiod}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+
+                  if (newValue === lastDateValue) {
+                    // Means user clicked month arrows (month changed but value not selected)
+                    return;
+                  }
+
+                  setLastDateValue(newValue);
+
+                  if (newValue) {
+                    handleTimeperiod(e);
+                  } else {
+                    setFilterDate("");
+                    const payload = {
+                      customerId: selectedCustomerid || customerId,
+                      paymentDate: "",
+                      pdaId: inputpdaId,
+                      filter: FilterName,
+                      [FilterName]: FilterValue,
+                      isDirectPayment: getIsDirectPaymentValue(),
+                    };
+                    fetchCustomerpayments(payload);
+                  }
+                }}
                 value={inputFilterDate}
-              ></input>
+              />
+              {/* <DatePicker
+                dateFormat="dd/MM/yyyy"
+                selected={paymentDate ? new Date(paymentDate) : null} // Inline date conversion for prefilled value
+                onChange={handlePaymentDateChange}
+                className="form-control date-input-small"
+                id="payment-date-picker"
+                placeholderText="Select Payment Date"
+                autoComplete="off"
+              /> */}
             </div>
           </div>
           <div className="neevocu">
@@ -617,7 +665,9 @@ const CustomerPayments = () => {
                 setIsDirectPayment(e.target.checked);
                 // Refetch payments with updated isDirectCustomerPayment
                 let payload = {
-                  customerId: selectedCustomerid,
+                  customerId: selectedCustomerid
+                    ? selectedCustomerid
+                    : customerId,
                   paymentDate: inputFilterDate,
                   pdaId: inputpdaId,
                   filter: FilterName,

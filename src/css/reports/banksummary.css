@@ -30,9 +30,9 @@
   width: 251px;
 }
 .statusscustomerbybank {
-    height: 34px;
-    width: 100%;
-    min-width: 329px;
+  height: 34px;
+  width: 100%;
+  min-width: 329px;
 }
 
 .statusscustomername {
@@ -59,7 +59,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 100%;
-  min-width:312px;
+  min-width: 312px;
   font-size: 14px;
   font-family: "Segoe UI", sans-serif;
 }
@@ -116,8 +116,8 @@
   display: flex;
   justify-content: center;
 }
-.banksmrymar-right{
-  margin-right:20px;
+.banksmrymar-right {
+  margin-right: 20px;
 }
 @media (max-width: 576px) {
   .btn-group-responsive {
@@ -131,11 +131,10 @@
     display: flex;
     justify-content: center;
   }
-  .banksmrymar-right{
-  margin-right:20px;
-  margin-left: 20px;
-}
-
+  .banksmrymar-right {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -151,15 +150,26 @@
     justify-content: center;
   }
   .banksummarybank {
-  display: flex;
-  align-items: center;
-  margin-left: 0px;
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+  }
+  .filbtnjobbanksmry {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
 }
-.filbtnjobbanksmry {
-  color: white;
-  font-size: 13px;
+
+.vendor-select-stylle {
   display: flex;
-  width:100%;
-  justify-content: center;
+  align-items: center !important;
+  min-width: 315px;
+  width: 315px;
 }
+
+.vendor-select-label {
+  width: 60px;
 }

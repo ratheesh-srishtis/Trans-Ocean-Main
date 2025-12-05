@@ -370,7 +370,7 @@ const PayableSummary = () => {
         // Create a hidden anchor tag to trigger the download
         const link = document.createElement("a");
         link.href = pdfBlobUrl;
-        link.setAttribute("download", "Payable Summary Detailed Report.pdf"); // Set the file name
+        link.setAttribute("download", "Payable Summary Details.pdf"); // Set the file name
         document.body.appendChild(link);
         link.click();
         // Clean up
@@ -461,7 +461,7 @@ const PayableSummary = () => {
 
       const headers = Object.keys(excelData[0] || {});
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet("Payable Summary Report", {
+      const worksheet = workbook.addWorksheet("Payable Summary Details", {
         properties: { defaultRowHeight: 18 },
         pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
       });
@@ -538,7 +538,7 @@ const PayableSummary = () => {
       const blob = new Blob([buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      const fileName = `Payable Summary Detailed Report.xlsx`;
+      const fileName = `Payable Summary Details.xlsx`;
       saveAs(blob, fileName);
     } catch (error) {
       console.error("Failed to download vendor report:", error);

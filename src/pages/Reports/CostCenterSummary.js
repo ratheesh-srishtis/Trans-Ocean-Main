@@ -62,6 +62,7 @@ const CostCenterSummary = ({ ports, customers }) => {
     console.log(rowData, "rowData_getRowPDF");
     let payload = {
       pdaId: rowData?.pdaId,
+      page: "costsummary",
     };
     setIsLoading(true);
     console.log(payload, "payload_getReport");
@@ -78,10 +79,7 @@ const CostCenterSummary = ({ ports, customers }) => {
         // Create a hidden anchor tag to trigger the download
         const link = document.createElement("a");
         link.href = pdfBlobUrl;
-        link.setAttribute(
-          "download",
-          "Cost Centre Summary Detailed Report.pdf"
-        ); // Set the file name
+        link.setAttribute("download", "Cost Centre Summary Details.pdf"); // Set the file name
         document.body.appendChild(link);
         link.click();
         // Clean up
@@ -152,7 +150,7 @@ const CostCenterSummary = ({ ports, customers }) => {
     if (!services || services.length === 0) return;
 
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Cost Center Summary Report", {
+    const worksheet = workbook.addWorksheet("Cost Centre Summary Details", {
       properties: { defaultRowHeight: 18 },
       pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
@@ -346,7 +344,7 @@ const CostCenterSummary = ({ ports, customers }) => {
     const blob = new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    saveAs(blob, "Cost Centre Summary Detailed Report.xlsx");
+    saveAs(blob, "Cost Centre Summary Details.xlsx");
   };
   const NoRowsOverlay = () => (
     <Box

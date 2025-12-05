@@ -349,7 +349,7 @@ const ReceivableSummary = () => {
         // Create a hidden anchor tag to trigger the download
         const link = document.createElement("a");
         link.href = pdfBlobUrl;
-        link.setAttribute("download", "Receivable Summary Detailed Report.pdf"); // Set the file name
+        link.setAttribute("download", "Receivable Summary Details.pdf"); // Set the file name
         document.body.appendChild(link);
         link.click();
         // Clean up
@@ -430,7 +430,7 @@ const ReceivableSummary = () => {
 
       // Create Excel workbook
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet("Receivable Summary Report", {
+      const worksheet = workbook.addWorksheet("Receivable Summary Details", {
         properties: { defaultRowHeight: 18 },
         pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
       });
@@ -509,7 +509,7 @@ const ReceivableSummary = () => {
       const blob = new Blob([buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      const fileName = `Receivable Summary Detailed Report`;
+      const fileName = `Receivable Summary Details`;
       saveAs(blob, fileName);
 
       setIsLoading(false);

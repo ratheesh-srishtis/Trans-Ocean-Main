@@ -105,7 +105,7 @@ const PettyCashReport = () => {
         // Create a hidden anchor tag to trigger the download
         const link = document.createElement("a");
         link.href = pdfBlobUrl;
-        link.setAttribute("download", "Petty Cash Detailed Report.pdf"); // Set the file name
+        link.setAttribute("download", "Petty Cash Details.pdf"); // Set the file name
         document.body.appendChild(link);
         link.click();
         // Clean up
@@ -162,7 +162,7 @@ const PettyCashReport = () => {
 
       // Create Excel workbook
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet("Petty Cash Report", {
+      const worksheet = workbook.addWorksheet("Petty Cash Details", {
         properties: { defaultRowHeight: 18 },
         pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
       });
@@ -249,7 +249,7 @@ const PettyCashReport = () => {
       const blob = new Blob([buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      const fileName = "Petty Cash Detailed Report.xlsx";
+      const fileName = "Petty Cash Details.xlsx";
       saveAs(blob, fileName);
 
       setIsLoading(false);

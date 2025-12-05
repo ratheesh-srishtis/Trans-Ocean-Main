@@ -292,7 +292,7 @@ const CostCenterBreakup = () => {
 
     const headers = Object.keys(excelData[0]);
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Cost Center Breakup", {
+    const worksheet = workbook.addWorksheet("Cost Centre Breakup Details", {
       properties: { defaultRowHeight: 18 },
       pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
@@ -474,6 +474,7 @@ const CostCenterBreakup = () => {
   const getPDF = async () => {
     let payload = {
       pdaId: selectedJobNo,
+      page: "costbreakup",
     };
     console.log(payload, "payload_getReport");
     try {

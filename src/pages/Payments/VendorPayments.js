@@ -27,6 +27,7 @@ const VendorPayments = () => {
     control: (provided) => ({
       ...provided,
       height: "30px !important",
+      minWidth: "200px !important",
       marginTop: "12px",
       borderRadius: "0.375rem",
       borderColor: "#dee2e6",
@@ -176,25 +177,11 @@ const VendorPayments = () => {
     setOpen(false);
   };
 
-  const handleChange = (e) => {
-    setSelectedVendorid("");
-    setSelectedVendorid(e.target.value);
-    let paylaod = {
-      vendorId: e.target.value,
-      paymentDate: inputFilterDate,
-      filter: FilterName,
-      [FilterName]: FilterValue,
-      isDirectPayment: isDirectVendorPayment,
-      employee: selectedEmployteeId,
-    };
-    fetchVendorpayments(paylaod);
-  };
-
   // Handle employee filter change
   const handleEmployeeChange = (e) => {
     setSelectedEmployteeId(e.target.value);
     let payload = {
-      vendorId: selectedVendorid,
+      vendorId: selectedVendorid ? selectedVendorid : vendorId,
       paymentDate: inputFilterDate,
       filter: FilterName,
       [FilterName]: FilterValue,
@@ -244,7 +231,7 @@ const VendorPayments = () => {
       setPeriod("");
       setFilterDate(e.target.value);
       payload = {
-        vendorId: selectedVendorid,
+        vendorId: selectedVendorid ? selectedVendorid : vendorId,
         paymentDate: e.target.value,
         pdaId: inputpdaId,
         isDirectPayment: isDirectVendorPayment,
@@ -252,7 +239,7 @@ const VendorPayments = () => {
     } else if (SelectBxname === "pdaId") {
       setPdaId(e.target.value);
       payload = {
-        vendorId: selectedVendorid,
+        vendorId: selectedVendorid ? selectedVendorid : vendorId,
         paymentDate: inputFilterDate,
         pdaId: e.target.value,
         filter: FilterName,
@@ -264,7 +251,7 @@ const VendorPayments = () => {
       setFilterName(SelectBxname);
       setFilterValue(e.target.value);
       payload = {
-        vendorId: selectedVendorid,
+        vendorId: selectedVendorid ? selectedVendorid : vendorId,
         paymentDate: "",
         pdaId: inputpdaId,
         filter: SelectBxname,
@@ -278,7 +265,7 @@ const VendorPayments = () => {
   let payloadParams = "";
   if (FilterName === "")
     payloadParams = {
-      vendorId: selectedVendorid,
+      vendorId: selectedVendorid ? selectedVendorid : vendorId,
       paymentDate: inputFilterDate,
       pdaId: inputpdaId,
       filter: "",
@@ -286,7 +273,7 @@ const VendorPayments = () => {
     };
   else
     payloadParams = {
-      vendorId: selectedVendorid,
+      vendorId: selectedVendorid ? selectedVendorid : vendorId,
       paymentDate: inputFilterDate,
       pdaId: inputpdaId,
       filter: FilterName,
@@ -444,7 +431,7 @@ const VendorPayments = () => {
     if (!vendorId) return;
 
     let payload = {
-      vendorId,
+      vendorId: vendorId ? vendorId : selectedVendorid,
       paymentDate: inputFilterDate,
       filter: FilterName,
       [FilterName]: FilterValue,
