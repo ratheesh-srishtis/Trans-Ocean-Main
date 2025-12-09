@@ -425,7 +425,9 @@ const ReceivableSummary = () => {
         "Total OMR": totals.totalInvoice.toFixed(3),
         "Paid OMR": totals.totalPaid.toFixed(3),
         Discount: totals.totalDiscount.toFixed(3),
-        "Balance Overdue OMR": totals.totalBalance.toFixed(3),
+        "Balance Overdue OMR": Number(response?.totalBalanceDue || 0).toFixed(
+          3
+        ),
       });
 
       // Create Excel workbook

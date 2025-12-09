@@ -254,6 +254,7 @@ const Header = () => {
   }, [location.pathname]); // Runs whenever the path changes
 
   const formatUserType = (receiverType) => {
+    // console.log(receiverType, "receiverType");
     if (!receiverType) return "";
 
     // Special case for 'hr'
@@ -293,7 +294,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.009</div>
+            <div className="version">Version: 0.007</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">

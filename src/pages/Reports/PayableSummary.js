@@ -456,7 +456,9 @@ const PayableSummary = () => {
         "Total OMR": formatAmount(totalInvoice),
         "Paid OMR": formatAmount(totalPaid),
         Discount: formatAmount(totalDiscount),
-        "Balance OverDue OMR": formatAmount(totalBalance),
+        "Balance OverDue OMR": formatAmount(
+          parseFloat(response?.totalBalanceDue) || 0
+        ),
       });
 
       const headers = Object.keys(excelData[0] || {});
