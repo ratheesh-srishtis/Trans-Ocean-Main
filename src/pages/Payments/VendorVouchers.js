@@ -4,6 +4,7 @@ import {
   getVouchers,
   deleteVoucher,
   getAllFinanceEmployees,
+  generateVouchersPaymentListingPDF,
 } from "../../services/apiPayment";
 import { getAllVendors } from "../../services/apiSettings";
 import { Box, Typography, IconButton } from "@mui/material";
@@ -17,9 +18,57 @@ import Swal from "sweetalert2";
 import PopUp from "../PopUp";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import Select from "react-select";
+import Loader from "../Loader";
 const VendorVouchers = () => {
   const Group = require("../../assets/images/payments.png");
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const customSelectStyles = {
+    control: (provided) => ({
+      ...provided,
+      height: "30px !important",
+      minWidth: "200px !important",
+      marginTop: "12px",
+      borderRadius: "0.375rem",
+      borderColor: "#dee2e6",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "#dee2e6",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999,
+      marginTop: "2px", // Reduced spacing between select and dropdown
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "#0d6efd"
+        : state.isFocused
+        ? "#e9ecef"
+        : "white",
+      color: state.isSelected ? "white" : "black",
+      cursor: "pointer",
+      fontSize: "13px", // Option font size
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      color: "#000000", // Black color for placeholder
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      color: "#000000",
+    }),
+    input: (provided) => ({
+      ...provided,
+      fontSize: "13px",
+      color: "#000000",
+    }),
+  };
   const [vendorList, setVendorList] = useState([]);
   const [selectedVendorid, setSelectedVendorid] = useState("");
   const [open, setOpen] = useState(false);
@@ -49,17 +98,15 @@ const VendorVouchers = () => {
 
   useEffect(() => {
     fetchVendorList();
-
     if (vendorId) setSelectedVendorid(vendorId);
-    let payload = { vendorId: vendorId, employeeId: employeeId };
+    let payload = {
+      vendorId: vendorId,
+      paymentDate: "",
+      filter: "",
+      employeeId: "",
+    };
     fetchVouchers(payload);
-  }, [vendorId, employeeId]);
-  /*useEffect(() => { 
-    if (selectedVendorid) { 
-    let payload = {vendorId:selectedVendorid};
-    fetchVouchers(payload); 
-    } 
-   }, [selectedVendorid]);*/
+  }, [vendorId]);
 
   const fetchVouchers = async (payload) => {
     try {
@@ -76,20 +123,14 @@ const VendorVouchers = () => {
     setOpen(false);
   };
 
-  const handleChange = (e) => {
-    setSelectedVendorid(e.target.value);
-    let paylaod = {
-      vendorId: e.target.value,
-      paymentDate: inputFilterDate,
-      filter: FilterName,
-      [FilterName]: FilterValue,
-      employeeId: employeeId,
-    };
-    fetchVouchers(paylaod);
-  };
+  const [selectedMonth, setSelectedMonth] = useState();
+
   const handleTimeperiod = async (e) => {
     let payload = "";
     const SelectBxname = e.target.name;
+    if (e.target.name == "month") {
+      setSelectedMonth(e.target.value);
+    }
     if (SelectBxname === "search-voucher-date") {
       setPeriod("");
       setFilterDate(e.target.value);
@@ -106,9 +147,9 @@ const VendorVouchers = () => {
         employeeId: employeeId,
       };
     }
-
     fetchVouchers(payload);
   };
+
   const handleEmployeeChange = (e) => {
     setEmployeeId(e.target.value);
     let payload = {
@@ -118,8 +159,10 @@ const VendorVouchers = () => {
       [FilterName]: FilterValue,
       employeeId: e.target.value,
     };
+    console.log(payload, "payload_handleEmployeeChange");
     fetchVouchers(payload);
   };
+
   const OpenDialog = () => {
     handClickOpen();
   };
@@ -301,7 +344,43 @@ const VendorVouchers = () => {
     fetchFinaceEmployees();
   }, []);
 
-  const getPDF = () => {};
+  const getPDF = async () => {
+    let payload = {
+      vendorId: selectedVendorid,
+      paymentDate: inputFilterDate,
+      employeeId: employeeId,
+      filter: FilterName,
+      month: selectedMonth ? selectedMonth : "",
+    };
+    setIsLoading(true);
+
+    console.log(payload, "payload_getReport");
+    try {
+      const response = await generateVouchersPaymentListingPDF(payload);
+      console.log("getPettyCashReport", response);
+
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute("download", "Petty Cash Payments.pdf"); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
+    }
+  };
 
   const createExcel = async () => {
     if (!voucherlist || voucherlist.length === 0) {
@@ -335,7 +414,7 @@ const VendorVouchers = () => {
 
     const headers = Object.keys(excelData[0]);
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Vendor Vouchers", {
+    const worksheet = workbook.addWorksheet("Petty Cash Payments", {
       properties: { defaultRowHeight: 18 },
       pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
@@ -426,15 +505,38 @@ const VendorVouchers = () => {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
-    const fileName = "Petty Payments.xlsx";
+    const fileName = "Petty Cash Payments.xlsx";
 
     saveAs(blob, fileName);
+  };
+
+  const vendorOptions = vendorList.map((vendor) => ({
+    value: vendor._id,
+    label: vendor.vendorName,
+  }));
+
+  const handleVendorSelectChange = (selectedOption) => {
+    const vendorId = selectedOption ? selectedOption.value : "";
+    setSelectedVendorid(vendorId);
+
+    // If no vendor selected, do NOT call API
+    if (!vendorId) return;
+
+    let payload = {
+      vendorId: vendorId ? vendorId : selectedVendorid,
+      paymentDate: inputFilterDate,
+      filter: FilterName,
+      [FilterName]: FilterValue,
+      employeeId: employeeId,
+    };
+
+    fetchVouchers(payload);
   };
 
   return (
     <>
       <div>
-        <div className=" mt-3 d-flex">
+        <div className=" mt-3 d-flex align-items-center">
           <div className=" d-flex paymentbycus">
             <label
               htmlFor="exampleFormControlInput1"
@@ -444,19 +546,19 @@ const VendorVouchers = () => {
               Vendor:
             </label>
             <div className="vessel-select">
-              <select
-                className="form-select vesselbox statusscustomer"
-                name="vendors"
-                value={selectedVendorid || ""}
-                onChange={handleChange}
-              >
-                <option value="">Choose Vendor</option>
-                {vendorList.map((vendor) => (
-                  <option key={vendor._id} value={vendor._id}>
-                    {vendor.vendorName} {""}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={vendorOptions}
+                onChange={handleVendorSelectChange}
+                value={vendorOptions.find(
+                  (opt) => opt.value === selectedVendorid
+                )}
+                placeholder="Choose Vendor Name"
+                isClearable
+                isSearchable
+                styles={customSelectStyles}
+                className="paymentcustomer"
+                classNamePrefix="react-select"
+              />
             </div>
           </div>
           <div className=" d-flex paymentbycus">
@@ -474,6 +576,7 @@ const VendorVouchers = () => {
                 aria-label="Default select example"
                 onChange={handleEmployeeChange}
                 value={employeeId}
+                style={{ height: "38px" }}
               >
                 <option value="">Choose Employee</option>
                 {EmployeeList.map((emp) => (
@@ -518,6 +621,7 @@ const VendorVouchers = () => {
               <select
                 name="status"
                 className="form-select vesselbox statussbycustomer"
+                style={{ height: "38px" }}
                 onChange={(e) => setPeriod(e.target.value)}
                 value={period}
               >
@@ -534,6 +638,7 @@ const VendorVouchers = () => {
                 name="month"
                 className="form-select jobporrt mmonthpayment monthcustomerpay"
                 onChange={handleTimeperiod}
+                style={{ height: "38px" }}
               >
                 <option value="">Select Month</option>
                 {months.map((month, index) => (
@@ -549,6 +654,7 @@ const VendorVouchers = () => {
                 name="year"
                 className="form-select vesselbox yearlist mmonth monthcustomerpay"
                 onChange={handleTimeperiod}
+                style={{ height: "38px" }}
               >
                 <option value="">Select Year</option>
                 {years.map((year, index) => (
@@ -559,7 +665,22 @@ const VendorVouchers = () => {
               </select>
             )}
           </div>
+          <button
+            className="btn btn-info filbtnjob align-items-center"
+            onClick={() => {
+              getPDF();
+            }}
+          >
+            Download PDF
+          </button>
+          <button
+            className="btn btn-info filbtnjob ms-2 align-items-center"
+            onClick={createExcel}
+          >
+            Download Excel
+          </button>
         </div>
+
         <div className="charge">
           <div className="rectangle"></div>
           <div>
@@ -618,21 +739,6 @@ const VendorVouchers = () => {
             >
               Add Petty
             </button>
-
-            {/* <button
-              className="btn btn-info filbtnjob"
-              onClick={() => {
-                getPDF();
-              }}
-            >
-              Download PDF
-            </button>
-            <button
-              className="btn btn-info filbtnjob ms-2"
-              onClick={createExcel}
-            >
-              Download Excel
-            </button> */}
           </div>
         </div>
 
@@ -720,6 +826,7 @@ const VendorVouchers = () => {
       {openPopUp && (
         <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
       )}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

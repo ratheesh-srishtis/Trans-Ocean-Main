@@ -778,7 +778,7 @@ const ResponsiveDialog = ({
       setCustomerVatAmount(editCharge?.customerVAT);
       setVendorAmount(editCharge?.vendorOMR);
       setVendorVatAmount(editCharge?.vendorVAT);
-      setCustomerTotalUSD(editCharge?.customerTotalUSD);
+      setCustomerTotalUSD(editCharge?.customerTotalUSD?.toFixed(2));
       setRemarks(editCharge?.remark);
       setCreditNote(editCharge?.creditNote);
       setSelectedNewCustomer(editCharge);

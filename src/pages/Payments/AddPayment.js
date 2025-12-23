@@ -626,6 +626,7 @@ const AddCustomerPayment = ({
                     <option value="">Choose Currency </option>
                     <option value={"omr"}>OMR </option>
                     <option value="usd">USD </option>
+                    <option value="aed">AED </option>
                   </select>
                   {errors.currency && (
                     <span className="invalid">{errors.currency}</span>

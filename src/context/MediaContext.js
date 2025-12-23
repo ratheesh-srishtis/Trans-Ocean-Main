@@ -57,6 +57,7 @@ export const MediaProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // alert("✅ MediaProvider mounted");
     getMediaFiles();
   }, []);
 

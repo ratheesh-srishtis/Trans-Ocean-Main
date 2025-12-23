@@ -396,6 +396,7 @@ const ReceivableSummary = () => {
           ? new Date(item.etd).toLocaleDateString("en-GB")
           : "N/A",
         "Total OMR": Number(item.totalInvoiceAmount || 0).toFixed(3),
+        "Credit Note": Number(item.creditNoteSum || 0).toFixed(3),
         "Paid OMR": Number(item.paidAmount || 0).toFixed(3),
         Discount: Number(item.discoutAmount || 0).toFixed(3),
         "Balance Overdue OMR": Number(item.balanceDue || 0).toFixed(3),
@@ -406,11 +407,18 @@ const ReceivableSummary = () => {
         (acc, item) => {
           acc.totalInvoice += Number(item.totalInvoiceAmount || 0);
           acc.totalPaid += Number(item.paidAmount || 0);
+          acc.totalCreditNote += Number(item.creditNoteSum || 0);
           acc.totalDiscount += Number(item.discoutAmount || 0);
           acc.totalBalance += Number(item.balanceDue || 0);
           return acc;
         },
-        { totalInvoice: 0, totalPaid: 0, totalDiscount: 0, totalBalance: 0 }
+        {
+          totalInvoice: 0,
+          totalPaid: 0,
+          totalCreditNote: 0,
+          totalDiscount: 0,
+          totalBalance: 0,
+        }
       );
 
       // Add totals row
@@ -423,6 +431,7 @@ const ReceivableSummary = () => {
         Arrived: "",
         Departed: "Total:",
         "Total OMR": totals.totalInvoice.toFixed(3),
+        "Credit Note": totals.totalCreditNote.toFixed(3),
         "Paid OMR": totals.totalPaid.toFixed(3),
         Discount: totals.totalDiscount.toFixed(3),
         "Balance Overdue OMR": Number(response?.totalBalanceDue || 0).toFixed(

@@ -86,7 +86,7 @@ const ViewVoucher = ({ open, onClose, getvoucher }) => {
       let payload = { pettyId: getvoucher._id };
       const voucherPdf = await generateVoucherPDF(payload);
       const fileUrl = process.env.REACT_APP_ASSET_URL + voucherPdf.pdfPath;
-      const fileName = "PettyCash.pdf";
+      const fileName = "Petty Cash.pdf";
       // Fetch the file and save it
       fetch(fileUrl)
         .then((response) => {

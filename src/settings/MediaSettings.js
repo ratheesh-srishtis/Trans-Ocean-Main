@@ -9,7 +9,6 @@ const MediaSettings = () => {
   const currentLogo = require("../assets/images/LOGO.png");
   const pdfHeaderImage = require("../assets/images/transocean_new_header.jpg");
   const pdfFooterImage = require("../assets/images/transoceanfooter-1.jpg");
-  const [isLoading, setIsLoading] = useState(false); // Loader state
   const [openPopUp, setOpenPopUp] = useState(false);
   const [message, setMessage] = useState("");
   const {
@@ -22,7 +21,34 @@ const MediaSettings = () => {
     financeDepartmentLogo,
     operationsDepartmentLogo,
     hrDepartmentLogo,
+    isLoading,
   } = useMedia();
+
+  if (isLoading) {
+    return <div>Loading media...</div>;
+  }
+
+  // useEffect(() => {
+  //   console.log("Media Context Values:", {
+  //     logoPreview,
+  //     headerPreview,
+  //     footerPreview,
+  //     mediaId,
+  //     adminDepartmentLogo,
+  //     financeDepartmentLogo,
+  //     operationsDepartmentLogo,
+  //     hrDepartmentLogo,
+  //   });
+  // }, [
+  //   logoPreview,
+  //   headerPreview,
+  //   footerPreview,
+  //   mediaId,
+  //   adminDepartmentLogo,
+  //   financeDepartmentLogo,
+  //   operationsDepartmentLogo,
+  //   hrDepartmentLogo,
+  // ]);
 
   // Handlers for each image
   const handleFileChange = async (event, type) => {
@@ -61,11 +87,16 @@ const MediaSettings = () => {
           <div className="col-md-4 col-lg-4 col-xl-3 col-12 ">
             <h6 className="subheadmediafont">Logo</h6>
             <div className="media-logo-preview">
-              <img
-                src={logoPreview}
-                alt="Current Logo"
-                className="media-logo-img mediathumbnail"
-              />
+              {logoPreview && (
+                <>
+                  <img
+                    src={logoPreview}
+                    alt="Current Logo"
+                    className="media-logo-img mediathumbnail"
+                  />
+                </>
+              )}
+
               <label htmlFor="logo-upload" className="media-logo-edit">
                 <i className="bi bi-pencil-square"></i>
               </label>

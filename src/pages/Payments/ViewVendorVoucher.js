@@ -347,7 +347,9 @@ const ViewVendorVoucher = ({ open, onClose, getvoucher }) => {
                               ? Number(payment?.amount).toFixed(3)
                               : payment?.currency?.toUpperCase() === "USD"
                               ? Number(payment?.amount).toFixed(2)
-                              : payment?.amount}
+                              : payment?.currency?.toUpperCase() == "AED"
+                              ? Number(payment?.amount).toFixed(2)
+                              : Number(payment?.amount)}
                           </td>
                         </tr>
                       ))}

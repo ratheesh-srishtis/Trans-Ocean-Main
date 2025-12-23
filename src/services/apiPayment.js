@@ -243,6 +243,28 @@ export const getAllFinanceEmployees = async (emp) => {
     console.log("Error in getAllFinanceEmployees", error);
   }
 };
+export const generateVouchersPaymentListingPDF = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      "/generateVouchersPaymentListingPDF",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error in generateVouchersPaymentListingPDF", error);
+  }
+};
+export const generateEmployeePettyPDF = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      "/generateEmployeePettyPDF",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error in generateEmployeePettyPDF", error);
+  }
+};
 // Save Refund
 export const saveRefund = async (refund) => {
   try {

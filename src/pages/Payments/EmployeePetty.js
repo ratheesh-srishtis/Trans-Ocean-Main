@@ -13,14 +13,16 @@ import {
   getEmployeePetty,
   deleteEmployeePetty,
   getAllFinanceEmployees,
+  generateEmployeePettyPDF,
 } from "../../services/apiPayment";
 import "../../css/payment.css";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import Select from "react-select";
-
+import Loader from "../Loader";
 const EmployeePetty = () => {
   const Group = require("../../assets/images/payments.png");
+  const [isLoading, setIsLoading] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
   const [message, setMessage] = useState("");
   const [selectedRow, setSelectedRow] = useState(null);
@@ -152,9 +154,17 @@ const EmployeePetty = () => {
     setEditMode(true);
     OpenDialog();
   };
+  const [selectedMonth, setSelectedMonth] = useState();
+  const [selectedYear, setSelectedYear] = useState();
+
   const handleTimeperiod = async (e) => {
     let payload = "";
     const SelectBxname = e.target.name;
+    if (e.target.name == "month") {
+      setSelectedMonth(e.target.value);
+    } else if (e.target.name == "year") {
+      setSelectedYear(e.target.value);
+    }
     if (SelectBxname === "search-voucher-date") {
       setPeriod("");
       setFilterDate(e.target.value);
@@ -271,7 +281,42 @@ const EmployeePetty = () => {
     },
   ];
 
-  const getPDF = () => {};
+  const getPDF = async () => {
+    let payload = {
+      employeeId: selectedEmppettyid,
+      paymentDate: inputFilterDate,
+      filter: FilterName,
+      month: selectedMonth,
+      year: selectedYear,
+    };
+    setIsLoading(true);
+    console.log(payload, "payload_getReport");
+    try {
+      const response = await generateEmployeePettyPDF(payload);
+      console.log("getPettyCashReport", response);
+
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute("download", "Employee Petty Payments.pdf"); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+      setIsLoading(false);
+    }
+  };
 
   const createExcel = async () => {
     if (!financeempList || financeempList.length === 0) {
@@ -309,7 +354,7 @@ const EmployeePetty = () => {
 
     const headers = Object.keys(excelData[0]);
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Employee Petty", {
+    const worksheet = workbook.addWorksheet("Employee Petty Payments", {
       properties: { defaultRowHeight: 18 },
       pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0 },
     });
@@ -482,6 +527,7 @@ const EmployeePetty = () => {
                   className="form-select vesselbox statussbycustomer"
                   onChange={(e) => setPeriod(e.target.value)}
                   value={period}
+                  style={{ height: "38px" }}
                 >
                   <option value="">Select Period</option>
                   <option value="month">Monthly</option>
@@ -496,6 +542,7 @@ const EmployeePetty = () => {
                   name="month"
                   className="form-select jobporrt mmonthpayment monthcustomerpay"
                   onChange={handleTimeperiod}
+                  style={{ height: "38px" }}
                 >
                   <option value="">Select Month</option>
                   {months.map((month, index) => (
@@ -511,6 +558,7 @@ const EmployeePetty = () => {
                   name="year"
                   className="form-select vesselbox yearlist mmonthpayment monthcustomerpay"
                   onChange={handleTimeperiod}
+                  style={{ height: "38px" }}
                 >
                   <option value="">Select Year</option>
                   {years.map((year, index) => (
@@ -520,6 +568,23 @@ const EmployeePetty = () => {
                   ))}
                 </select>
               )}
+
+              <button
+                className="btn btn-info filbtnjob align-items-center"
+                style={{ height: "38px" }}
+                onClick={() => {
+                  getPDF();
+                }}
+              >
+                Download PDF
+              </button>
+              <button
+                className="btn btn-info filbtnjob ms-2 align-items-center"
+                style={{ height: "38px" }}
+                onClick={createExcel}
+              >
+                Download Excel
+              </button>
             </div>
           </div>
         }
@@ -554,21 +619,6 @@ const EmployeePetty = () => {
             >
               Add Employee Petty
             </button>
-
-            {/* <button
-              className="btn btn-info filbtnjob"
-              onClick={() => {
-                getPDF();
-              }}
-            >
-              Download PDF
-            </button>
-            <button
-              className="btn btn-info filbtnjob ms-2"
-              onClick={createExcel}
-            >
-              Download Excel
-            </button> */}
           </div>
         </div>
 
@@ -649,6 +699,7 @@ const EmployeePetty = () => {
       {openPopUp && (
         <PopUp message={message} closePopup={() => setOpenPopUp(false)} />
       )}
+      <Loader isLoading={isLoading} />
     </>
   );
 };

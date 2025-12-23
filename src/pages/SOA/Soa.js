@@ -110,6 +110,7 @@ const Soa = ({}) => {
         "Total OMR": item.totalAmountOMR
           ? item.totalAmountOMR.toFixed(3)
           : "N/A",
+        CN: item.creditNoteAmount ? item.creditNoteAmount.toFixed(3) : "N/A",
         "Paid OMR": item.paidAmount ? item.paidAmount.toFixed(3) : "N/A",
 
         Discount:
@@ -129,22 +130,28 @@ const Soa = ({}) => {
     const totalOMR = soaList
       .reduce((sum, item) => sum + (item.totalAmountOMR || 0), 0)
       .toFixed(3);
+
     const paidOMR = soaList
       .reduce((sum, item) => sum + (item.paidAmount || 0), 0)
       .toFixed(3);
     const discountTotal = soaList
       .reduce((sum, item) => sum + (item.discountAmount || 0), 0)
       .toFixed(3);
-    const balanceOMR = soaList
-      .reduce(
-        (sum, item) =>
-          sum +
-          ((item.totalAmountOMR || 0) -
-            (item.paidAmount || 0) -
-            (item.discountAmount || 0)),
-        0
-      )
-      .toFixed(3);
+    const balanceOMR = soaList.reduce(
+      (sum, item) =>
+        sum +
+        ((item.totalAmountOMR || 0) -
+          (item.paidAmount || 0) -
+          (item.discountAmount || 0)),
+      0
+    );
+
+    const totalCreditNote = soaList.reduce(
+      (sum, item) => sum + (item.creditNoteAmount || 0),
+      0
+    );
+
+    const finalBalanceOMR = (balanceOMR - totalCreditNote).toFixed(3);
 
     const balanceUSD = soaList
       .reduce(
@@ -182,10 +189,11 @@ const Soa = ({}) => {
       "Vessel Name": "",
       "Port Name": "",
       "Total OMR": totalOMR,
+      CN: totalCreditNote,
       "Paid OMR": paidOMR,
       Discount: discountTotal.toString(),
 
-      ["Balance Overview In OMR"]: balanceOMR,
+      ["Balance Overview In OMR"]: finalBalanceOMR,
       "Total USD": totalUSD,
       "Balance Overview In USD": balanceUSD,
       "Days Overdue": "",
@@ -203,6 +211,7 @@ const Soa = ({}) => {
       { key: "Port Name", wch: 35 },
       { key: "Total OMR", wch: 20 },
       { key: "Paid OMR", wch: 20 },
+      { key: "CN", wch: 20 },
       { key: "Discount", wch: 20 },
       {
         key: "Balance Overview In OMR",
@@ -413,6 +422,12 @@ const Soa = ({}) => {
           OMR
         </span>
       ),
+    },
+    {
+      field: "creditNote",
+      headerName: `CN`,
+      flex: 2,
+      renderHeader: () => <span className="header-class">CN</span>,
     },
     {
       field: "paidomr",
@@ -686,6 +701,12 @@ const Soa = ({}) => {
                 totalomr: item.totalAmountOMR
                   ? item.totalAmountOMR.toFixed(3)
                   : "N/A",
+                creditNote:
+                  item.creditNoteAmount !== null &&
+                  item.creditNoteAmount !== undefined &&
+                  !isNaN(item.creditNoteAmount)
+                    ? Number(item.creditNoteAmount).toFixed(3)
+                    : "N/A",
                 paidomr: item.paidAmount ? item.paidAmount.toFixed(3) : "N/A",
                 discount:
                   item.discountAmount !== undefined
@@ -717,19 +738,26 @@ const Soa = ({}) => {
                 paidomr: soaList
                   .reduce((sum, item) => sum + (item.paidAmount || 0), 0)
                   .toFixed(3),
+                creditNote: soaList
+                  .reduce((sum, item) => sum + (item.creditNoteAmount || 0), 0)
+                  .toFixed(3),
                 discount: soaList
                   .reduce((sum, item) => sum + (item.discountAmount || 0), 0)
                   .toFixed(3),
-                balanceOMR: soaList
-                  .reduce(
+                balanceOMR: (
+                  soaList.reduce(
                     (sum, item) =>
                       sum +
                       ((item.totalAmountOMR || 0) -
                         (item.paidAmount || 0) -
                         (item.discountAmount || 0)),
                     0
+                  ) -
+                  soaList.reduce(
+                    (sum, item) => sum + (item.creditNoteAmount || 0),
+                    0
                   )
-                  .toFixed(3),
+                ).toFixed(3),
                 totalUSD: soaList
                   .reduce((sum, item) => sum + item.totalAmountOMR * 2.62, 0)
                   .toFixed(2),
@@ -752,8 +780,7 @@ const Soa = ({}) => {
                       ((item.totalAmountOMR || 0) -
                         (item.paidAmount || 0) -
                         (item.discountAmount || 0)) *
-                        2.62 *
-                        3.6725,
+                        9.6219,
                     0
                   )
                   .toFixed(2),

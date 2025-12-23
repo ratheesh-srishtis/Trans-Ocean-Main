@@ -394,6 +394,7 @@ const EditOperation = ({
         `The data for ${pdaResponse?.jobId} regarding the ${selectedVessel?.vesselName} at the ${selectedPort?.portName} has been updated and resubmitted`
       );
       setOpenPopUp(true);
+      fetchPdaDetails(editData?._id);
     } else {
       setMessage(`Please try again`);
       setOpenPopUp(true);
@@ -1025,18 +1026,20 @@ const EditOperation = ({
               </>
             )}
 
-            {pdaResponse?.invoiceStatus == 2 && pdaResponse?.pdaStatus == 7 && (
-              <>
-                <button
-                  className="btn btna submit-button btnfsize"
-                  onClick={() => {
-                    resubmitApi();
-                  }}
-                >
-                  Resubmit for FM Approval
-                </button>
-              </>
-            )}
+            {pdaResponse?.invoiceStatus == 2 &&
+              pdaResponse?.isResubmitRequestExist == true &&
+              pdaResponse?.pdaStatus == 7 && (
+                <>
+                  <button
+                    className="btn btna submit-button btnfsize"
+                    onClick={() => {
+                      resubmitApi();
+                    }}
+                  >
+                    Resubmit for Approval
+                  </button>
+                </>
+              )}
 
             {pdaResponse?.pdaStatus != 7 && (
               <>

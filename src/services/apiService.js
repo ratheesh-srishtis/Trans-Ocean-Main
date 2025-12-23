@@ -987,6 +987,15 @@ export const financeDashboardDetails = async (data) => {
     throw error;
   }
 };
+export const getInvoiceTotal = async (data) => {
+  try {
+    const response = await axiosInstance.post("/getInvoiceTotal", data);
+    return response.data;
+  } catch (error) {
+    console.error("Get financeDashboardDetails API Error:", error);
+    throw error;
+  }
+};
 
 export const getDashbordDetails = async (data) => {
   try {

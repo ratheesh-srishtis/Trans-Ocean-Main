@@ -455,18 +455,6 @@ const VendorPayments = () => {
               Vendor Name:
             </label>
             <div className="vessel-select">
-              {/* <select
-                className="form-select vesselbox statusscustomervendor"
-                name="vendors"
-                value={selectedVendorid || ""}
-                onChange={handleChange}
-              >
-                {vendorList.map((vendor) => (
-                  <option key={vendor._id} value={vendor._id}>
-                    {vendor.vendorName} {""}
-                  </option>
-                ))}
-              </select> */}
               <Select
                 options={vendorOptions}
                 onChange={handleVendorSelectChange}
