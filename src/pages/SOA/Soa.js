@@ -153,29 +153,34 @@ const Soa = ({}) => {
 
     const finalBalanceOMR = (balanceOMR - totalCreditNote).toFixed(3);
 
-    const balanceUSD = soaList
-      .reduce(
+    const balanceUSD = (finalBalanceOMR * 2.62).toFixed(2);
+    // const balanceAED = soaList
+    //   .reduce(
+    //     (sum, item) =>
+    //       sum +
+    //       ((item.totalAmountOMR || 0) -
+    //         (item.paidAmount || 0) -
+    //         (item.discountAmount || 0)) *
+    //         2.62 *
+    //         3.6725,
+    //     0
+    //   )
+    //   .toFixed(2);
+
+    const balanceAED = (
+      (soaList.reduce(
         (sum, item) =>
           sum +
           ((item.totalAmountOMR || 0) -
             (item.paidAmount || 0) -
-            (item.discountAmount || 0)) *
-            2.62,
+            (item.discountAmount || 0)),
         0
-      )
-      .toFixed(2);
-    const balanceAED = soaList
-      .reduce(
-        (sum, item) =>
-          sum +
-          ((item.totalAmountOMR || 0) -
-            (item.paidAmount || 0) -
-            (item.discountAmount || 0)) *
-            2.62 *
-            3.6725,
-        0
-      )
-      .toFixed(2);
+      ) -
+        soaList.reduce((sum, item) => sum + (item.creditNoteAmount || 0), 0)) *
+      2.62 *
+      3.6725
+    ).toFixed(2);
+
     const totalUSD = soaList
       .reduce((sum, item) => sum + (item.totalAmountOMR || 0) * 2.62, 0)
       .toFixed(2);
@@ -192,7 +197,6 @@ const Soa = ({}) => {
       CN: totalCreditNote,
       "Paid OMR": paidOMR,
       Discount: discountTotal.toString(),
-
       ["Balance Overview In OMR"]: finalBalanceOMR,
       "Total USD": totalUSD,
       "Balance Overview In USD": balanceUSD,
@@ -761,29 +765,38 @@ const Soa = ({}) => {
                 totalUSD: soaList
                   .reduce((sum, item) => sum + item.totalAmountOMR * 2.62, 0)
                   .toFixed(2),
-                balanceUSD: soaList
-                  .reduce(
+                balanceUSD: (
+                  (soaList.reduce(
                     (sum, item) =>
                       sum +
                       ((item.totalAmountOMR || 0) -
                         (item.paidAmount || 0) -
-                        (item.discountAmount || 0)) *
-                        2.62,
+                        (item.discountAmount || 0)),
                     0
-                  )
-                  .toFixed(2),
+                  ) -
+                    soaList.reduce(
+                      (sum, item) => sum + (item.creditNoteAmount || 0),
+                      0
+                    )) *
+                  2.62
+                ).toFixed(2),
 
-                balanceAED: soaList
-                  .reduce(
+                balanceAED: (
+                  (soaList.reduce(
                     (sum, item) =>
                       sum +
                       ((item.totalAmountOMR || 0) -
                         (item.paidAmount || 0) -
-                        (item.discountAmount || 0)) *
-                        9.6219,
+                        (item.discountAmount || 0)),
                     0
-                  )
-                  .toFixed(2),
+                  ) -
+                    soaList.reduce(
+                      (sum, item) => sum + (item.creditNoteAmount || 0),
+                      0
+                    )) *
+                  2.62 *
+                  3.6725
+                ).toFixed(2),
                 days: "",
               },
             ])}
