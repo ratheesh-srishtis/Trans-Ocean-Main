@@ -80,14 +80,18 @@ const Soa = ({}) => {
         formatted_Date = `${day}-${month}-${year}`;
       }
 
-      let daysDue;
+      let daysDue = 0;
+
       if (item.invoiceSentAt) {
-        const givenDate = new Date(item.invoiceSentAt);
-        const currentDate = new Date();
-        const differenceInMs = currentDate - givenDate;
-        daysDue = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
-      } else {
-        daysDue = 0;
+        const startDate = new Date(item.invoiceSentAt);
+        const endDate = new Date();
+
+        // Normalize both to UTC midnight
+        startDate.setUTCHours(0, 0, 0, 0);
+        endDate.setUTCHours(0, 0, 0, 0);
+
+        const diffInMs = endDate - startDate;
+        daysDue = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
       }
 
       let balance =
@@ -112,13 +116,12 @@ const Soa = ({}) => {
           : "N/A",
         CN: item.creditNoteAmount ? item.creditNoteAmount.toFixed(3) : "N/A",
         "Paid OMR": item.paidAmount ? item.paidAmount.toFixed(3) : "N/A",
-
         Discount:
-          item.discountAmount !== undefined
-            ? item.discountAmount.toString()
+          item.discountAmount != null
+            ? Number(item.discountAmount).toFixed(3) // returns string
             : "N/A",
         ["Balance Overview In OMR"]: balance.toFixed(3) || "N/A",
-        "Total USD": (item.totalAmountOMR * 2.62)?.toFixed(3) || "N/A",
+        "Total USD": (item.totalAmountOMR * 2.62)?.toFixed(2) || "N/A",
         "Balance Overview In USD": balanceusd || "N/A",
         "Days Overdue": daysDue.toString() || "N/A",
       };
@@ -194,7 +197,7 @@ const Soa = ({}) => {
       "Vessel Name": "",
       "Port Name": "",
       "Total OMR": totalOMR,
-      CN: totalCreditNote,
+      CN: totalCreditNote?.toFixed(3),
       "Paid OMR": paidOMR,
       Discount: discountTotal.toString(),
       ["Balance Overview In OMR"]: finalBalanceOMR,
@@ -214,15 +217,16 @@ const Soa = ({}) => {
       { key: "Vessel Name", wch: 35 },
       { key: "Port Name", wch: 35 },
       { key: "Total OMR", wch: 20 },
-      { key: "Paid OMR", wch: 20 },
       { key: "CN", wch: 20 },
+
+      { key: "Paid OMR", wch: 20 },
       { key: "Discount", wch: 20 },
       {
         key: "Balance Overview In OMR",
-        wch: 20,
+        wch: 22,
       },
       { key: "Total USD", wch: 20 },
-      { key: "Balance Overview In USD", wch: 20 },
+      { key: "Balance Overview In USD", wch: 22 },
     ];
 
     if (showAED) {
@@ -239,19 +243,71 @@ const Soa = ({}) => {
     // Set column widths
     worksheet["!cols"] = columns.map((col) => ({ wch: col.wch }));
     // Center align all cells
+    // const range = XLSX.utils.decode_range(worksheet["!ref"]);
+    // for (let row = 0; row <= range.e.r; row++) {
+    //   for (let col = 0; col <= range.e.c; col++) {
+    //     const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+    //     if (worksheet[cellAddress]) {
+    //       if (!worksheet[cellAddress].s) worksheet[cellAddress].s = {};
+    //       worksheet[cellAddress].s.alignment = {
+    //         horizontal: "center",
+    //         vertical: "center",
+    //       };
+    //     }
+    //   }
+    // }
+
     const range = XLSX.utils.decode_range(worksheet["!ref"]);
-    for (let row = 0; row <= range.e.r; row++) {
-      for (let col = 0; col <= range.e.c; col++) {
+
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
         const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-        if (worksheet[cellAddress]) {
-          if (!worksheet[cellAddress].s) worksheet[cellAddress].s = {};
-          worksheet[cellAddress].s.alignment = {
-            horizontal: "center",
-            vertical: "center",
-          };
-        }
+        const cell = worksheet[cellAddress];
+
+        if (!cell) continue;
+
+        if (!cell.s) cell.s = {};
+
+        cell.s.alignment = {
+          horizontal: "center",
+          vertical: "center",
+          wrapText: true, // ✅ VERY IMPORTANT for long headers
+        };
+
+        cell.s.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
       }
     }
+
+    const headerRowIndex = 0;
+
+    columns.forEach((_, colIndex) => {
+      const cellAddress = XLSX.utils.encode_cell({
+        r: headerRowIndex,
+        c: colIndex,
+      });
+
+      if (worksheet[cellAddress]) {
+        worksheet[cellAddress].s = {
+          font: { bold: true },
+          alignment: {
+            horizontal: "center",
+            vertical: "center",
+            wrapText: true,
+          },
+          border: {
+            top: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+            right: { style: "thin" },
+          },
+        };
+      }
+    });
 
     // Style the totals row (last row)
     const totalRowIndex = worksheetData.length - 1;
@@ -665,13 +721,19 @@ const Soa = ({}) => {
                 formattedDate = `${day}-${month}-${year}`;
               }
 
-              let daysDue;
+              let daysDue = 0;
+
               if (item.invoiceSentAt) {
-                const givenDate = new Date(item.invoiceSentAt);
-                const currentDate = new Date();
-                const differenceInMs = currentDate - givenDate;
-                daysDue = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
-              } else daysDue = 0;
+                const startDate = new Date(item.invoiceSentAt);
+                const endDate = new Date();
+
+                // Normalize both to UTC midnight
+                startDate.setUTCHours(0, 0, 0, 0);
+                endDate.setUTCHours(0, 0, 0, 0);
+
+                const diffInMs = endDate - startDate;
+                daysDue = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+              }
               let balance;
               if (item.totalAmountOMR) {
                 // Subtract discount from balance calculation
@@ -714,7 +776,7 @@ const Soa = ({}) => {
                 paidomr: item.paidAmount ? item.paidAmount.toFixed(3) : "N/A",
                 discount:
                   item.discountAmount !== undefined
-                    ? item.discountAmount
+                    ? item.discountAmount?.toFixed(3)
                     : "N/A",
                 balanceOMR: balance || "N/A",
                 balanceUSD: balanceUsdNew || "N/A",

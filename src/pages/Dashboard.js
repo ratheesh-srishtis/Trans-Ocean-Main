@@ -119,7 +119,7 @@ const Dashboard = () => {
             },
           });
         } else if (cardNumberValue == "8" || cardNumberValue == "9") {
-          navigate("/jobs", {
+          navigate("/quotations", {
             state: {
               quotationsFromDashboard: res?.invoiceSubmitted || [],
               cardNumber: cardNumberValue,

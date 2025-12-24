@@ -71,7 +71,6 @@
 
 // export default Reports;
 
-
 import React, { useEffect } from "react";
 import "../css/reports.css";
 import { useNavigate } from "react-router-dom";
@@ -83,11 +82,31 @@ const Reports = ({ loginResponse }) => {
   // Define all available reports (master list)
   const allReports = [
     { name: "Job Report", key: "job report", path: "/job-report" },
-    { name: "Petty Cash Report", key: "petty cash report", path: "/petty-cash-report" },
-    { name: "Cost Centre Breakup", key: "cost centre breakup", path: "/cost-centre-breakup" },
-    { name: "Cost Centre Summary", key: "cost centre summary", path: "/cost-centre-summary" },
-    { name: "Receivable Summary", key: "receivable summary", path: "/recievable-summary" },
-    { name: "Payable Summary", key: "payable summary", path: "/payable-summary" },
+    {
+      name: "Petty Cash Report",
+      key: "petty cash report",
+      path: "/petty-cash-report",
+    },
+    {
+      name: "Cost Centre Breakup",
+      key: "cost centre breakup",
+      path: "/cost-centre-breakup",
+    },
+    {
+      name: "Cost Centre Summary",
+      key: "cost centre summary",
+      path: "/cost-centre-summary",
+    },
+    {
+      name: "Receivable Summary",
+      key: "receivable summary",
+      path: "/recievable-summary",
+    },
+    {
+      name: "Payable Summary",
+      key: "payable summary",
+      path: "/payable-summary",
+    },
     { name: "Bank Summary", key: "bank summary", path: "/bank-summary" },
   ];
 
@@ -126,7 +145,9 @@ const Reports = ({ loginResponse }) => {
           </div>
         ))
       ) : (
-        <p className="text-center mt-4">No reports available for your access.</p>
+        <p className="text-center mt-4">
+          No reports available for your access.
+        </p>
       )}
     </div>
   );

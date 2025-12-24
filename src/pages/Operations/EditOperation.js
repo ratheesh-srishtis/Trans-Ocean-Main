@@ -1027,8 +1027,7 @@ const EditOperation = ({
             )}
 
             {pdaResponse?.invoiceStatus == 2 &&
-              pdaResponse?.isResubmitRequestExist == true &&
-              pdaResponse?.pdaStatus == 7 && (
+              pdaResponse?.isResubmitRequestExist == true && (
                 <>
                   <button
                     className="btn btna submit-button btnfsize"

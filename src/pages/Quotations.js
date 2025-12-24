@@ -218,6 +218,7 @@ const Quotations = ({
       field: "select",
       headerName: "",
       width: 50,
+      flex: 0.4,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => (
@@ -253,7 +254,7 @@ const Quotations = ({
     {
       field: "pdaNumber",
       headerName: "Job ID",
-      flex: 1.2,
+      flex: 0.6,
       renderCell: (params) => (
         <div
           style={{
@@ -272,7 +273,7 @@ const Quotations = ({
     {
       field: "typeOfCall",
       headerName: "Type Of Call",
-      flex: 1.2,
+      flex: 1,
       renderCell: (params) => {
         const { isVessels, isServices } = params.row || {};
         let label = "N/A";
@@ -284,14 +285,14 @@ const Quotations = ({
       },
     },
     { field: "vessel", headerName: "Vessel Name", flex: 1.2 },
-    { field: "date", headerName: "Date", flex: 1.2 },
+    { field: "date", headerName: "Date", flex: 0.6 },
     { field: "port", headerName: "Port Name", flex: 1.2 },
-    { field: "customer", headerName: "Customer Name", flex: 1.8 },
-    { field: "preparedBy", headerName: "Prepared By", flex: 1.2 },
+    { field: "customer", headerName: "Customer Name", flex: 2 },
+    { field: "preparedBy", headerName: "Prepared By", flex: 1 },
     {
       field: "status",
       headerName: "Status",
-      flex: 1.8,
+      flex: 2,
       renderCell: (params) => (
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>{params.value}</span>
@@ -325,7 +326,7 @@ const Quotations = ({
     {
       field: "actions",
       headerName: "Action",
-      flex: 1.2,
+      flex: 0.6,
       renderCell: (params) => (
         <>
           <IconButton color="primary" onClick={() => handleEdit(params.row)}>
@@ -758,7 +759,7 @@ const Quotations = ({
 
       <div className=" tablequo">
         <div className="quotation-outer-div">
-          <div>
+          <div style={{ marginLeft: "10px" }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -766,10 +767,14 @@ const Quotations = ({
               components={{
                 NoRowsOverlay,
               }}
+              getRowHeight={() => "auto"}
               onCellClick={handleCellClick}
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
+                },
+                "& .MuiDataGrid-scrollbarFiller": {
+                  backgroundColor: "#eee !important",
                 },
                 "& .MuiDataGrid-columnHeader": {
                   backgroundColor: "#eee !important", // Set gray background color
@@ -798,6 +803,7 @@ const Quotations = ({
                   alignItems: "center", // Center vertically
                   justifyContent: "left", // Center horizontally
                   textOverflow: "ellipsis",
+                  padding: "6px",
                 },
               }}
               pagination // Enables pagination

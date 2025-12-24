@@ -508,6 +508,9 @@ const OpsList = () => {
                 "& .MuiDataGrid-root": {
                   border: "none",
                 },
+                "& .MuiDataGrid-scrollbarFiller": {
+                  backgroundColor: "#eee !important",
+                },
                 "& .MuiDataGrid-columnHeader": {
                   backgroundColor: "#eee !important", // Set gray background color
                   color: "#000000", // Set white text color for contrast
