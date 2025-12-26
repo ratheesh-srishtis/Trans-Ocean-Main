@@ -110,7 +110,7 @@ const App = () => {
   return (
     <>
       <ErrorBoundary>
-        <Router basename="/">
+        <Router basename="">
           <MediaProvider>
             <AuthProvider>
               <Routes>

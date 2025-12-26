@@ -491,7 +491,12 @@ const QuotationDialog = ({
             </div>
 
             <div className="row align-items-center mb-3">
-              <div className="form-check">
+              <div
+                className="form-check"
+                style={{
+                  marginLeft: "12px",
+                }}
+              >
                 <input
                   className="form-check-input"
                   type="checkbox"

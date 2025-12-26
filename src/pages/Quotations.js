@@ -292,7 +292,7 @@ const Quotations = ({
     {
       field: "status",
       headerName: "Status",
-      flex: 2,
+      flex: 1.6,
       renderCell: (params) => (
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span>{params.value}</span>
@@ -326,7 +326,7 @@ const Quotations = ({
     {
       field: "actions",
       headerName: "Action",
-      flex: 0.6,
+      flex: 1,
       renderCell: (params) => (
         <>
           <IconButton color="primary" onClick={() => handleEdit(params.row)}>
