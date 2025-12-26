@@ -30,6 +30,9 @@ const Dashboard = () => {
   const img_4 = require("../assets/images/4.png");
   const img_5 = require("../assets/images/job completed.png");
   const img_6 = require("../assets/images/finalinvoicenew.png");
+  const dashboardicon_1 = require("../assets/images/dashboardicon_1.png");
+  const dashboardicon_2 = require("../assets/images/dashboardicon_2.png");
+  const dashboardicon_3 = require("../assets/images/dashboardicon_3.png");
   const [counts, setCounts] = useState(null);
   const [invoiceTotal, setInvoiceTotal] = useState(null);
   const [userType, setUserType] = useState(null);
@@ -310,7 +313,7 @@ const Dashboard = () => {
                     fetchFinanceDashboardDetails(selectedTab, "7");
                   }}
                 >
-                  <img className="img-size" src={img_6} />
+                  <img className="img-size" src={dashboardicon_1} />
                   <h3 className="card_count">{counts?.completedQuotation}</h3>
                   <h5 className="card_title">Jobs Completed</h5>
                 </div>
@@ -323,7 +326,7 @@ const Dashboard = () => {
                     fetchFinanceDashboardDetails(selectedTab, "8");
                   }}
                 >
-                  <img className="img-size" src={img_6} />
+                  <img className="img-size" src={dashboardicon_2} />
                   <h3 className="card_count">{counts?.invoiceSubmitted}</h3>
                   <h5 className="card_title">Invoice Submitted</h5>
                 </div>
@@ -336,7 +339,7 @@ const Dashboard = () => {
                     fetchFinanceDashboardDetails(selectedTab, "8");
                   }}
                 >
-                  <img className="img-size" src={img_6} />
+                  <img className="img-size" src={dashboardicon_3} />
                   <h3 className="card_count">
                     {invoiceTotal ? invoiceTotal : "N/A"}
                   </h3>
