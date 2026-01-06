@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getDashbordDetails,
   financeDashboardDetails,
-  getInvoiceTotal,
+  // getInvoiceTotal,
 } from "../services/apiService";
 import { Oval } from "react-loader-spinner"; // Import a loader type from react-loader-spinner
 import { useAuth } from "../context/AuthContext";
@@ -46,9 +46,9 @@ const Dashboard = () => {
     };
     try {
       const dashboardDetails = await getDashbordDetails(data);
-      const response = await getInvoiceTotal(data);
-      console.log("invoiceTotal:", response?.total);
-      setInvoiceTotal(response?.total);
+      // const response = await getInvoiceTotal(data);
+      // console.log("invoiceTotal:", response?.total);
+      // setInvoiceTotal(response?.total);
       console.log("dashboardDetails:", dashboardDetails);
       setCounts(dashboardDetails);
       setIsLoading(false);
@@ -121,7 +121,8 @@ const Dashboard = () => {
               cardNumber: cardNumberValue,
             },
           });
-        } else if (cardNumberValue == "8" || cardNumberValue == "9") {
+          // || cardNumberValue == "9"
+        } else if (cardNumberValue == "8") {
           navigate("/quotations", {
             state: {
               quotationsFromDashboard: res?.invoiceSubmitted || [],
@@ -331,7 +332,7 @@ const Dashboard = () => {
                   <h5 className="card_title">Invoice Submitted</h5>
                 </div>
               </div>
-              <div className="col-md-4 mb-2 mb-md-4">
+              {/* <div className="col-md-4 mb-2 mb-md-4">
                 <div
                   className="dashboard_cards finalinvoicestatus"
                   onClick={() => {
@@ -345,7 +346,7 @@ const Dashboard = () => {
                   </h3>
                   <h5 className="card_title">Worth of Invoice Submitted</h5>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

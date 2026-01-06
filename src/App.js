@@ -110,7 +110,7 @@ const App = () => {
   return (
     <>
       <ErrorBoundary>
-        <Router basename="/project/transocean/">
+        <Router basename="/">
           <MediaProvider>
             <AuthProvider>
               <Routes>

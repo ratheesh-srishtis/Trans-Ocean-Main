@@ -4,27 +4,30 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import Loader from "../Loader";
-import PopUp from "../PopUp";
-import AddUser from "../../settings/AddUser";
-import { getAllUsers, deleteUser } from "../../services/apiSettings";
-import { AddTask } from "@mui/icons-material";
-import AddSales from "./AddSales";
-const Sales = () => {
+import Loader from "../../Loader";
+import PopUp from "../../PopUp";
+import {
+  getOtherIncomes,
+  deleteOtherIncome,
+} from "../../../services/apiSubPayments";
+import moment from "moment";
+import AddIncome from "./AddIncome";
+
+const OtherIncome = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
-  const [UsersList, setUsersList] = useState([]);
+  const [otherIncomeList, setOtherIncomeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
-  const fetchusersList = async () => {
+  const fetchOtherIncomes = async () => {
     try {
       setIsLoading(true);
-      const listallusers = await getAllUsers();
-      //console.log("users:", listallusers);
-      setUsersList(listallusers?.users || []);
+      const response = await getOtherIncomes();
+      console.log("getOtherIncomes:", response?.otherIncome);
+      setOtherIncomeList(response?.otherIncome);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -33,7 +36,7 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    fetchusersList();
+    fetchOtherIncomes();
   }, []);
 
   const openDialog = () => {
@@ -49,9 +52,10 @@ const Sales = () => {
     setEditMode(false);
     setSelectedRow(null);
     setErrors({});
+    fetchOtherIncomes();
   };
   const handleAddUser = (newUsers) => {
-    fetchusersList();
+    fetchOtherIncomes();
     setOpen(false);
   };
   const handleEdit = (row) => {
@@ -73,15 +77,15 @@ const Sales = () => {
         if (item?._id) {
           try {
             let payload = {
-              userId: item?._id,
+              otherIncomeId: item?._id,
             };
-            const response = await deleteUser(payload);
-            setMessage(response.message);
+            const response = await deleteOtherIncome(payload);
+            setMessage("Other Income deleted successfully");
             setOpenPopUp(true);
-            fetchusersList();
+            fetchOtherIncomes();
           } catch (error) {
             Swal.fire("Error deleting Role");
-            fetchusersList();
+            fetchOtherIncomes();
           }
         }
       }
@@ -103,10 +107,11 @@ const Sales = () => {
   );
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 2 },
-    { field: "username", headerName: "Username", flex: 2 },
-    { field: "email", headerName: "Email", flex: 2 },
-    { field: "role", headerName: "Role", flex: 2 },
+    { field: "particulers", headerName: "Particulers", flex: 2 },
+    { field: "bank", headerName: "Bank", flex: 2 },
+    { field: "modeofPayment", headerName: "Mode Of Payment", flex: 2 },
+    { field: "amount", headerName: "Amount", flex: 2 },
+    { field: "paymentDate", headerName: "Payment Date", flex: 2 },
 
     {
       field: "actions",
@@ -137,10 +142,10 @@ const Sales = () => {
           }}
           className="btn btna submit-button btnfsize"
         >
-          Add Sales
+          Add Other Income
         </button>
       </div>
-      <AddSales
+      <AddIncome
         open={open}
         onAddUser={handleAddUser}
         onClose={handleClose}
@@ -151,16 +156,16 @@ const Sales = () => {
       />
       <div>
         <DataGrid
-          rows={UsersList.map((item) => ({
-            id: item._id,
-            name: item.name || "N/A",
-            username: item.username || "N/A",
-            email: item.email || "N/A",
-            role:
-              (item.userRole?.role && item.userRole.role?.designationName) ||
-              "N/A",
-
+          rows={otherIncomeList.map((item) => ({
             ...item,
+            id: item._id,
+            particulers: item.particulers || "N/A",
+            bank: item.bank?.bankName ?? "N/A",
+            modeofPayment: item.modeofPayment || "N/A",
+            amount: item.amount ?? "N/A",
+            paymentDate: item.paymentDate
+              ? moment(item.paymentDate).format("DD-MM-YYYY")
+              : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification
@@ -203,7 +208,7 @@ const Sales = () => {
           }}
         />
       </div>
-      {UsersList?.length === 0 && (
+      {otherIncomeList?.length === 0 && (
         <div className="no-data">
           <p>No Data Found</p>
         </div>
@@ -218,4 +223,4 @@ const Sales = () => {
   );
 };
 
-export default Sales;
+export default OtherIncome;

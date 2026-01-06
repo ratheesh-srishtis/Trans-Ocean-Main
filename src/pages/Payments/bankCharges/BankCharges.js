@@ -4,27 +4,30 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import Loader from "../Loader";
-import PopUp from "../PopUp";
-import AddUser from "../../settings/AddUser";
-import { getAllUsers, deleteUser } from "../../services/apiSettings";
-import { AddTask } from "@mui/icons-material";
-import AddTax from "./AddTax";
-const Tax = () => {
+import Loader from "../../Loader";
+import PopUp from "../../PopUp";
+import {
+  getBankCharges,
+  deleteBankCharge,
+} from "../../../services/apiSubPayments";
+import moment from "moment";
+import AddBankCharges from "./AddBankCharges";
+
+const BankCharges = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
-  const [UsersList, setUsersList] = useState([]);
+  const [otherIncomeList, setOtherIncomeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
-  const fetchusersList = async () => {
+  const fetchBankCharges = async () => {
     try {
       setIsLoading(true);
-      const listallusers = await getAllUsers();
-      //console.log("users:", listallusers);
-      setUsersList(listallusers?.users || []);
+      const response = await getBankCharges();
+      console.log("getBankCharges:", response?.bankChanges);
+      setOtherIncomeList(response?.bankChanges);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -33,7 +36,7 @@ const Tax = () => {
   };
 
   useEffect(() => {
-    fetchusersList();
+    fetchBankCharges();
   }, []);
 
   const openDialog = () => {
@@ -49,9 +52,10 @@ const Tax = () => {
     setEditMode(false);
     setSelectedRow(null);
     setErrors({});
+    fetchBankCharges();
   };
   const handleAddUser = (newUsers) => {
-    fetchusersList();
+    fetchBankCharges();
     setOpen(false);
   };
   const handleEdit = (row) => {
@@ -73,15 +77,15 @@ const Tax = () => {
         if (item?._id) {
           try {
             let payload = {
-              userId: item?._id,
+              bankChargeId: item?._id,
             };
-            const response = await deleteUser(payload);
-            setMessage(response.message);
+            const response = await deleteBankCharge(payload);
+            setMessage("Bank Charge deleted successfully");
             setOpenPopUp(true);
-            fetchusersList();
+            fetchBankCharges();
           } catch (error) {
             Swal.fire("Error deleting Role");
-            fetchusersList();
+            fetchBankCharges();
           }
         }
       }
@@ -103,10 +107,9 @@ const Tax = () => {
   );
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 2 },
-    { field: "username", headerName: "Username", flex: 2 },
-    { field: "email", headerName: "Email", flex: 2 },
-    { field: "role", headerName: "Role", flex: 2 },
+    { field: "bank", headerName: "Bank", flex: 2 },
+    { field: "amount", headerName: "Amount", flex: 2 },
+    { field: "paymentDate", headerName: "Payment Date", flex: 2 },
 
     {
       field: "actions",
@@ -137,10 +140,10 @@ const Tax = () => {
           }}
           className="btn btna submit-button btnfsize"
         >
-          Add tax
+          Add Bank Charge
         </button>
       </div>
-      <AddTax
+      <AddBankCharges
         open={open}
         onAddUser={handleAddUser}
         onClose={handleClose}
@@ -151,16 +154,14 @@ const Tax = () => {
       />
       <div>
         <DataGrid
-          rows={UsersList.map((item) => ({
-            id: item._id,
-            name: item.name || "N/A",
-            username: item.username || "N/A",
-            email: item.email || "N/A",
-            role:
-              (item.userRole?.role && item.userRole.role?.designationName) ||
-              "N/A",
-
+          rows={otherIncomeList.map((item) => ({
             ...item,
+            id: item._id,
+            bank: item.bank?.bankName ?? "N/A",
+            amount: item.amount ?? "N/A",
+            paymentDate: item.paymentDate
+              ? moment(item.paymentDate).format("DD-MM-YYYY")
+              : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification
@@ -203,7 +204,7 @@ const Tax = () => {
           }}
         />
       </div>
-      {UsersList?.length === 0 && (
+      {otherIncomeList?.length === 0 && (
         <div className="no-data">
           <p>No Data Found</p>
         </div>
@@ -218,4 +219,4 @@ const Tax = () => {
   );
 };
 
-export default Tax;
+export default BankCharges;

@@ -202,6 +202,11 @@ const Payments = () => {
       state: {},
     });
   };
+  const viewBankCharges = () => {
+    navigate("/bank-charges", {
+      state: {},
+    });
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -368,6 +373,56 @@ const Payments = () => {
                   </div>
                 </>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="choosecargo-row p-3 ">
+        <div className="row ">
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="mb-3">
+              <>
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label customerpayment"
+                >
+                  Tax:
+                </label>
+                <div className="vessel-select ">
+                  <button
+                    className="btn btna submit-button mt-2"
+                    onClick={() => {
+                      navigate("/tax", {
+                        state: {},
+                      });
+                    }}
+                  >
+                    View Tax Details
+                  </button>
+                </div>
+              </>
+            </div>
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="mb-3">
+              <>
+                <label
+                  htmlFor="exampleFormControlInput1"
+                  className="form-label customerpayment"
+                >
+                  Bank Charges:
+                </label>
+                <div className="vessel-select ">
+                  <button
+                    className="btn btna submit-button mt-2"
+                    onClick={() => {
+                      viewBankCharges();
+                    }}
+                  >
+                    View Bank Charges
+                  </button>
+                </div>
+              </>
             </div>
           </div>
         </div>

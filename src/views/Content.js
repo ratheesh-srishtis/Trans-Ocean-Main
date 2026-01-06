@@ -35,7 +35,6 @@ import PasswordRequests from "../settings/PasswordRequests";
 import OpsList from "../pages/Operations/OpsList";
 import FinalReport from "../pages/Operations/FinalReport";
 import QQForm from "../pages/Operations/QQForm";
-import JobReport from "../pages/Operations/JobReport";
 import Employee from "../pages/Employees/Employees";
 import LeaveReports from "../pages/Hr/LeaveReports";
 import AddEmployee from "../pages/Employees/AddEmployee";
@@ -51,11 +50,9 @@ import PettyCashReport from "../pages/Reports/PettyCashReport";
 import ReceivableSummary from "../pages/Reports/ReceivableSummary";
 import BankSummaryReport from "../pages/Reports/BankSummaryReport";
 import Chats from "./Chats";
-import NotFound from "./NotFound";
 import GeneralDocuments from "../pages/Hr/GeneralDocuments";
 import StayCharge from "../settings/StayCharge";
 import DraggableTable from "../pages/DraggableTable";
-import CurrencyRate from "../settings/AEDConversionRate";
 import AEDConversionRate from "../settings/AEDConversionRate";
 import TestReport from "../pages/Reports/TestReport";
 import NewJobReport from "../pages/Operations/NewJobReport";
@@ -67,13 +64,12 @@ import EmployeeModification from "../pages/Hr/EmployeeModification";
 import ViewEmployeeDetails from "../pages/Hr/ViewEmployeeDetails";
 import LeaveRequests from "../pages/Hr/LeaveRequests";
 import Leave from "../pages/Hr/Leave";
-import Tax from "../pages/Payments/Tax";
-import Assets from "../pages/Payments/Assets";
-import AppreciationDepreciation from "../pages/Payments/AppreciationDepreciation";
-import Sales from "../pages/Payments/Sales";
+import OtherIncome from "../pages/Payments/Incomes/OtherIncome";
+import BankCharges from "../pages/Payments/bankCharges/BankCharges";
+import Tax from "../pages/Payments/Tax/Tax";
+import Assets from "../pages/Payments/Assets/Assets";
 const Content = ({ onNotFound }) => {
   const { loginResponse } = useAuth();
-
   const [vessels, setVessels] = useState([]);
   const [ports, setPorts] = useState([]);
   const [cargos, setCargos] = useState([]);
@@ -220,6 +216,8 @@ const Content = ({ onNotFound }) => {
     "/asset",
     "/appreciation-depreciation",
     "/sales",
+    "/other-income",
+    "/bank-charges",
   ];
 
   useEffect(() => {
@@ -408,13 +406,11 @@ const Content = ({ onNotFound }) => {
         path="/leave-requests"
         element={<LeaveRequests loginResponse={loginResponse} />}
       />
+      <Route path="/other-income" element={<OtherIncome />} />
       <Route path="/tax" element={<Tax />} />
-      <Route
-        path="/appreciation-depreciation"
-        element={<AppreciationDepreciation />}
-      />
       <Route path="/asset" element={<Assets />} />
-      <Route path="/sales" element={<Sales />} />
+
+      <Route path="/bank-charges" element={<BankCharges />} />
 
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>

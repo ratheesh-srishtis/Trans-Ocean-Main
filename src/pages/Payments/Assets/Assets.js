@@ -4,28 +4,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import Loader from "../Loader";
-import PopUp from "../PopUp";
-import AddUser from "../../settings/AddUser";
-import { getAllUsers, deleteUser } from "../../services/apiSettings";
-import { AddTask } from "@mui/icons-material";
-import AddTax from "./AddTax";
+import Loader from "../../Loader";
+import PopUp from "../../PopUp";
+import { getAssets, deleteOtherIncome } from "../../../services/apiSubPayments";
+import moment from "moment";
 import AddAssets from "./AddAssets";
+
 const Assets = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
-  const [UsersList, setUsersList] = useState([]);
+  const [assetsList, setAssetsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
-  const fetchusersList = async () => {
+  const fetchAssets = async () => {
     try {
       setIsLoading(true);
-      const listallusers = await getAllUsers();
-      //console.log("users:", listallusers);
-      setUsersList(listallusers?.users || []);
+      const response = await getAssets();
+      console.log("getAssets:", response?.assets);
+      setAssetsList(response?.assets);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -34,7 +33,7 @@ const Assets = () => {
   };
 
   useEffect(() => {
-    fetchusersList();
+    fetchAssets();
   }, []);
 
   const openDialog = () => {
@@ -50,9 +49,10 @@ const Assets = () => {
     setEditMode(false);
     setSelectedRow(null);
     setErrors({});
+    fetchAssets();
   };
   const handleAddUser = (newUsers) => {
-    fetchusersList();
+    fetchAssets();
     setOpen(false);
   };
   const handleEdit = (row) => {
@@ -74,15 +74,15 @@ const Assets = () => {
         if (item?._id) {
           try {
             let payload = {
-              userId: item?._id,
+              otherIncomeId: item?._id,
             };
-            const response = await deleteUser(payload);
-            setMessage(response.message);
+            const response = await deleteOtherIncome(payload);
+            setMessage("Other Income deleted successfully");
             setOpenPopUp(true);
-            fetchusersList();
+            fetchAssets();
           } catch (error) {
             Swal.fire("Error deleting Role");
-            fetchusersList();
+            fetchAssets();
           }
         }
       }
@@ -104,11 +104,8 @@ const Assets = () => {
   );
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 2 },
-    { field: "username", headerName: "Username", flex: 2 },
-    { field: "email", headerName: "Email", flex: 2 },
-    { field: "role", headerName: "Role", flex: 2 },
-
+    { field: "asset", headerName: "Asset", flex: 2 },
+    { field: "createdAt", headerName: "Created Date", flex: 2 },
     {
       field: "actions",
       headerName: "Action",
@@ -138,7 +135,7 @@ const Assets = () => {
           }}
           className="btn btna submit-button btnfsize"
         >
-          Add Assets
+          Add Asset
         </button>
       </div>
       <AddAssets
@@ -152,16 +149,13 @@ const Assets = () => {
       />
       <div>
         <DataGrid
-          rows={UsersList.map((item) => ({
-            id: item._id,
-            name: item.name || "N/A",
-            username: item.username || "N/A",
-            email: item.email || "N/A",
-            role:
-              (item.userRole?.role && item.userRole.role?.designationName) ||
-              "N/A",
-
+          rows={assetsList.map((item) => ({
             ...item,
+            id: item._id,
+            asset: item.asset || "N/A",
+            createdAt: item.createdAt
+              ? moment(item.createdAt).format("DD-MM-YYYY")
+              : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification
@@ -204,7 +198,7 @@ const Assets = () => {
           }}
         />
       </div>
-      {UsersList?.length === 0 && (
+      {assetsList?.length === 0 && (
         <div className="no-data">
           <p>No Data Found</p>
         </div>

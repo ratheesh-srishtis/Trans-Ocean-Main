@@ -4,29 +4,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import Loader from "../Loader";
-import PopUp from "../PopUp";
-import AddUser from "../../settings/AddUser";
-import { getAllUsers, deleteUser } from "../../services/apiSettings";
-import { AddTask } from "@mui/icons-material";
+import Loader from "../../Loader";
+import PopUp from "../../PopUp";
+import { getTaxDetails, deleteTax } from "../../../services/apiSubPayments";
+import moment from "moment";
 import AddTax from "./AddTax";
-import AddAssets from "./AddAssets";
-import AddAppreciation from "./AddAppreciation";
-const AppreciationDepreciation = () => {
+
+const Tax = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
-  const [UsersList, setUsersList] = useState([]);
+  const [otherIncomeList, setOtherIncomeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
-  const fetchusersList = async () => {
+  const fetchTaxDetails = async () => {
     try {
       setIsLoading(true);
-      const listallusers = await getAllUsers();
-      //console.log("users:", listallusers);
-      setUsersList(listallusers?.users || []);
+      const response = await getTaxDetails();
+      console.log("getTaxDetails:", response?.tax);
+      setOtherIncomeList(response?.tax);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -35,7 +33,7 @@ const AppreciationDepreciation = () => {
   };
 
   useEffect(() => {
-    fetchusersList();
+    fetchTaxDetails();
   }, []);
 
   const openDialog = () => {
@@ -51,9 +49,10 @@ const AppreciationDepreciation = () => {
     setEditMode(false);
     setSelectedRow(null);
     setErrors({});
+    fetchTaxDetails();
   };
   const handleAddUser = (newUsers) => {
-    fetchusersList();
+    fetchTaxDetails();
     setOpen(false);
   };
   const handleEdit = (row) => {
@@ -75,15 +74,15 @@ const AppreciationDepreciation = () => {
         if (item?._id) {
           try {
             let payload = {
-              userId: item?._id,
+              taxId: item?._id,
             };
-            const response = await deleteUser(payload);
-            setMessage(response.message);
+            const response = await deleteTax(payload);
+            setMessage("Tax deleted successfully");
             setOpenPopUp(true);
-            fetchusersList();
+            fetchTaxDetails();
           } catch (error) {
             Swal.fire("Error deleting Role");
-            fetchusersList();
+            fetchTaxDetails();
           }
         }
       }
@@ -105,11 +104,12 @@ const AppreciationDepreciation = () => {
   );
 
   const columns = [
-    { field: "name", headerName: "Name", flex: 2 },
-    { field: "username", headerName: "Username", flex: 2 },
-    { field: "email", headerName: "Email", flex: 2 },
-    { field: "role", headerName: "Role", flex: 2 },
-
+    { field: "year", headerName: "Year", flex: 2 },
+    { field: "bank", headerName: "Bank", flex: 2 },
+    { field: "modeofPayment", headerName: "Mode Of Payment", flex: 2 },
+    { field: "amount", headerName: "Amount", flex: 2 },
+    { field: "paymentDate", headerName: "Payment Date", flex: 2 },
+    { field: "isPaid", headerName: "Is Paid", flex: 2 },
     {
       field: "actions",
       headerName: "Action",
@@ -139,10 +139,10 @@ const AppreciationDepreciation = () => {
           }}
           className="btn btna submit-button btnfsize"
         >
-          Add Appreciation/Depreciation
+          Add Tax
         </button>
       </div>
-      <AddAppreciation
+      <AddTax
         open={open}
         onAddUser={handleAddUser}
         onClose={handleClose}
@@ -153,16 +153,23 @@ const AppreciationDepreciation = () => {
       />
       <div>
         <DataGrid
-          rows={UsersList.map((item) => ({
-            id: item._id,
-            name: item.name || "N/A",
-            username: item.username || "N/A",
-            email: item.email || "N/A",
-            role:
-              (item.userRole?.role && item.userRole.role?.designationName) ||
-              "N/A",
-
+          rows={otherIncomeList.map((item) => ({
             ...item,
+            id: item._id,
+            year: item.year || "N/A",
+            bank: item.bank?.bankName ?? "N/A",
+            modeofPayment: item.modeofPayment || "N/A",
+            amount: item.amount ?? "N/A",
+
+            paymentDate: item.paymentDate
+              ? moment(item.paymentDate).format("DD-MM-YYYY")
+              : "N/A",
+            isPaid:
+              item.isPaid === true
+                ? "Yes"
+                : item.isPaid === false
+                ? "No"
+                : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification
@@ -205,7 +212,7 @@ const AppreciationDepreciation = () => {
           }}
         />
       </div>
-      {UsersList?.length === 0 && (
+      {otherIncomeList?.length === 0 && (
         <div className="no-data">
           <p>No Data Found</p>
         </div>
@@ -220,4 +227,4 @@ const AppreciationDepreciation = () => {
   );
 };
 
-export default AppreciationDepreciation;
+export default Tax;

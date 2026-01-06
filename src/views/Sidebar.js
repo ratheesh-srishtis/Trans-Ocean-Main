@@ -103,6 +103,12 @@ const Sidebar = () => {
         break;
 
       // payments sub-items
+      case "other-income":
+        setActiveMenu("payments");
+        setActiveSubMenu("payments-other-income");
+        setShowSubmenu(true);
+        navigate("/other-income");
+        break;
       case "payments-tax":
         setActiveMenu("payments");
         setActiveSubMenu("payments-tax");
@@ -272,6 +278,7 @@ const Sidebar = () => {
       else if (finalPart === "appreciation-depreciation-asset")
         submenuKey = "payments-appreciation-asset";
       else if (finalPart === "sales") submenuKey = "payments-sales";
+      else if (finalPart === "income") submenuKey = "other-income";
 
       setActiveMenu("payments");
       setActiveSubMenu(submenuKey);
@@ -440,6 +447,10 @@ const Sidebar = () => {
                             <div className="submenu">
                               <ul className="settingsmenu">
                                 {[
+                                  {
+                                    label: "Other Income",
+                                    key: "other-income",
+                                  },
                                   { label: "Tax", key: "payments-tax" },
                                   { label: "Asset", key: "payments-asset" },
                                   {
