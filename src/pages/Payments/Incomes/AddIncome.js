@@ -50,6 +50,7 @@ const AddIncome = ({
   }, []);
 
   useEffect(() => {
+    console.log(userSet, "userSet");
     if (editMode && userSet && BankList.length) {
       const selectedBank = BankList.find((b) => b.bankName === userSet.bank);
       setFormData({
@@ -95,7 +96,7 @@ const AddIncome = ({
   const validateForm = () => {
     const newErrors = {};
     if (!formData.particulers)
-      newErrors.particulers = "Particulers is required";
+      newErrors.particulers = "Particulars is required";
     if (!formData.amount) newErrors.amount = "Amount is required";
     if (!formData.modeofPayment)
       newErrors.modeofPayment = "Mode Of Payment is required";
@@ -195,7 +196,7 @@ const AddIncome = ({
             <div className="row">
               <div className="col mb-3">
                 <label className="form-label">
-                  Particulers <span className="required">*</span>:
+                  Particulars <span className="required">*</span>:
                 </label>
                 <input
                   name="particulers"
@@ -231,7 +232,7 @@ const AddIncome = ({
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
                   >
-                    Mode of Payment <span className="required"> * </span> :
+                    Mode Of Payment <span className="required"> * </span> :
                   </label>
                   <div className="vessel-select">
                     <select
@@ -241,9 +242,9 @@ const AddIncome = ({
                       onChange={handleChange}
                       value={formData.modeofPayment}
                     >
-                      <option value="">Mode of payment </option>
-                      <option value="cash">Cash </option>
-                      <option value="bank">Bank</option>
+                      <option value="">Mode Of payment </option>
+                      <option value="Cash">Cash </option>
+                      <option value="Bank">Bank</option>
                     </select>
                     {errors.modeofPayment && (
                       <span className="invalid">{errors.modeofPayment}</span>
@@ -251,7 +252,7 @@ const AddIncome = ({
                   </div>
                 </div>
               </div>
-              {formData?.modeofPayment == "bank" && (
+              {formData?.modeofPayment == "Bank" && (
                 <>
                   <div className="col-6 mb-3 align-items-start">
                     <div className="">

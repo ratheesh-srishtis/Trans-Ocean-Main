@@ -55,6 +55,22 @@ export const getAssets = async () => {
     console.log("Error in payment", error);
   }
 };
+export const getAssetValues = async () => {
+  try {
+    const response = await axiosInstance.post("/getAssetValues");
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment", error);
+  }
+};
+export const getSales = async () => {
+  try {
+    const response = await axiosInstance.post("/getSales");
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment", error);
+  }
+};
 
 export const saveOtherIncome = async (paymentData) => {
   try {
@@ -92,6 +108,24 @@ export const saveAsset = async (paymentData) => {
     throw error;
   }
 };
+export const saveAssetValue = async (paymentData) => {
+  try {
+    const response = await axiosInstance.post("/saveAssetValue", paymentData);
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment save api", error);
+    throw error;
+  }
+};
+export const saveSale = async (paymentData) => {
+  try {
+    const response = await axiosInstance.post("/saveSale", paymentData);
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment save api", error);
+    throw error;
+  }
+};
 export const editOtherIncome = async (paymentData) => {
   try {
     const response = await axiosInstance.post("/editOtherIncome", paymentData);
@@ -119,9 +153,27 @@ export const editTax = async (paymentData) => {
     throw error;
   }
 };
+export const editSale = async (paymentData) => {
+  try {
+    const response = await axiosInstance.post("/editSale", paymentData);
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment save api", error);
+    throw error;
+  }
+};
 export const editAsset = async (paymentData) => {
   try {
     const response = await axiosInstance.post("/editAsset", paymentData);
+    return response.data;
+  } catch (error) {
+    console.log("Error in payment save api", error);
+    throw error;
+  }
+};
+export const editAssetValue = async (paymentData) => {
+  try {
+    const response = await axiosInstance.post("/editAssetValue", paymentData);
     return response.data;
   } catch (error) {
     console.log("Error in payment save api", error);
@@ -149,6 +201,30 @@ export const deleteBankCharge = async (payments) => {
 export const deleteTax = async (payments) => {
   try {
     const response = await axiosInstance.post("/deleteTax", payments);
+    return response.data;
+  } catch (error) {
+    console.log("Error in deleteOtherIncome", error);
+  }
+};
+export const deleteAsset = async (payments) => {
+  try {
+    const response = await axiosInstance.post("/deleteAsset", payments);
+    return response.data;
+  } catch (error) {
+    console.log("Error in deleteOtherIncome", error);
+  }
+};
+export const deleteAssetValue = async (payments) => {
+  try {
+    const response = await axiosInstance.post("/deleteAssetValue", payments);
+    return response.data;
+  } catch (error) {
+    console.log("Error in deleteOtherIncome", error);
+  }
+};
+export const deleteSale = async (payments) => {
+  try {
+    const response = await axiosInstance.post("/deleteSale", payments);
     return response.data;
   } catch (error) {
     console.log("Error in deleteOtherIncome", error);

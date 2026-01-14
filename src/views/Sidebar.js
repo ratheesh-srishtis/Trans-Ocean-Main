@@ -39,6 +39,7 @@ const Sidebar = () => {
     "quotations",
     "jobs",
     "payments",
+    "assets",
     "soa",
     "employee",
     "leave reports",
@@ -51,7 +52,7 @@ const Sidebar = () => {
     console.log(menuItem, "menuItem");
 
     // If top-level menu that has its own submenu, toggle it and set activeMenu
-    if (menuItem === "settings" || menuItem === "payments") {
+    if (menuItem === "settings" || menuItem === "assets") {
       if (activeMenu === menuItem && showSubmenu) {
         // close if already open
         setShowSubmenu(false);
@@ -103,33 +104,21 @@ const Sidebar = () => {
         break;
 
       // payments sub-items
-      case "other-income":
-        setActiveMenu("payments");
-        setActiveSubMenu("payments-other-income");
+      case "asset":
+        setActiveMenu("assets");
+        setActiveSubMenu("asset");
         setShowSubmenu(true);
-        navigate("/other-income");
+        navigate("/assets");
         break;
-      case "payments-tax":
-        setActiveMenu("payments");
-        setActiveSubMenu("payments-tax");
-        setShowSubmenu(true);
-        navigate("/tax");
-        break;
-      case "payments-asset":
-        setActiveMenu("payments");
-        setActiveSubMenu("payments-asset");
-        setShowSubmenu(true);
-        navigate("/asset");
-        break;
-      case "payments-appreciation-asset":
-        setActiveMenu("payments");
-        setActiveSubMenu("payments-appreciation-asset");
+      case "appreciation-depreciation":
+        setActiveMenu("assets");
+        setActiveSubMenu("appreciation-depreciation");
         setShowSubmenu(true);
         navigate("/appreciation-depreciation");
         break;
-      case "payments-sales":
-        setActiveMenu("payments");
-        setActiveSubMenu("payments-sales");
+      case "sales":
+        setActiveMenu("assets");
+        setActiveSubMenu("sales");
         setShowSubmenu(true);
         navigate("/sales");
         break;
@@ -236,6 +225,7 @@ const Sidebar = () => {
       "/quotations": "quotations",
       "/jobs": "jobs",
       "/payments": "payments",
+      "/assets": "assets",
       "/soa": "soa",
       "/profile": "profile",
       "/leave": "leave",
@@ -274,9 +264,9 @@ const Sidebar = () => {
       // finalPart will be 'tax', 'asset', or 'appreciation-depreciation-asset' for subroutes
       let submenuKey = "";
       if (finalPart === "tax") submenuKey = "payments-tax";
-      else if (finalPart === "asset") submenuKey = "payments-asset";
-      else if (finalPart === "appreciation-depreciation-asset")
-        submenuKey = "payments-appreciation-asset";
+      else if (finalPart === "assets") submenuKey = "payments-assets";
+      else if (finalPart === "appreciation-depreciation-assets")
+        submenuKey = "payments-appreciation-assets";
       else if (finalPart === "sales") submenuKey = "payments-sales";
       else if (finalPart === "income") submenuKey = "other-income";
 
@@ -312,6 +302,7 @@ const Sidebar = () => {
     quotations: { label: "Quotations", icon: "bi bi-receipt-cutoff" },
     jobs: { label: "Jobs", icon: "bi bi-briefcase" },
     payments: { label: "Payments", icon: "bi bi-cash-stack" },
+    assets: { label: "Assets", icon: "bi bi-bar-chart" },
     soa: { label: "SOA", icon: "bi bi-wallet" },
     settings: { label: "Settings", icon: "bi bi-gear" },
     employee: { label: "Employee", icon: "bi bi-people" },
@@ -331,12 +322,12 @@ const Sidebar = () => {
     },
   };
 
-  // useEffect(() => {
-  //   console.log(userPermissions, "userPermissions");
-  //   if (userPermissions.length > 0) {
-  //     setActiveMenu(userPermissions[0]); // Set the first permissible menu item as active
-  //   }
-  // }, [userPermissions]);
+  useEffect(() => {
+    console.log(userPermissions, "userPermissions");
+    // if (userPermissions.length > 0) {
+    //   setActiveMenu(userPermissions[0]); // Set the first permissible menu item as active
+    // }
+  }, [userPermissions]);
   useEffect(() => {
     console.log(userSettingsPermissions, "userSettingsPermissions");
     console.log(menuItems, "menuItems");
@@ -439,20 +430,15 @@ const Sidebar = () => {
                           </>
                         )}
 
-                      {/* <-- NEW: Payments submenu (static list) */}
-                      {/* {perm === "payments" &&
+                      {/* <-- NEW: Assets submenu (static list) */}
+                      {perm === "assets" &&
                         showSubmenu &&
-                        activeMenu === "payments" && (
+                        activeMenu === "assets" && (
                           <>
                             <div className="submenu">
                               <ul className="settingsmenu">
                                 {[
-                                  {
-                                    label: "Other Income",
-                                    key: "other-income",
-                                  },
-                                  { label: "Tax", key: "payments-tax" },
-                                  { label: "Asset", key: "payments-asset" },
+                                  { label: "Asset", key: "asset" },
                                   {
                                     label: (
                                       <>
@@ -461,11 +447,11 @@ const Sidebar = () => {
                                         Depreciation
                                       </>
                                     ),
-                                    key: "payments-appreciation-asset",
+                                    key: "appreciation-depreciation",
                                   },
                                   {
                                     label: <>Sales</>,
-                                    key: "payments-sales",
+                                    key: "sales",
                                   },
                                 ].map((p) => (
                                   <li
@@ -486,7 +472,7 @@ const Sidebar = () => {
                               </ul>
                             </div>
                           </>
-                        )} */}
+                        )}
                     </li>
                   )
               )}

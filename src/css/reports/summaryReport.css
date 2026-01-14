@@ -1,0 +1,42 @@
+/* ReportTable.css */
+.MuiDataGrid-root {
+  border: 1px solid #e0e0e0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.MuiDataGrid-columnHeaderTitle {
+  font-weight: 600 !important;
+  color: #333 !important;
+  font-size: 14px !important;
+}
+
+.MuiDataGrid-cellContent {
+  font-size: 13px !important;
+  color: #555;
+}
+
+.bold-text {
+  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+.even-row {
+  background-color: #fafbfc !important;
+}
+
+.odd-row {
+  background-color: #ffffff !important;
+}
+
+.MuiDataGrid-row.Mui-hovered {
+  background-color: #f0f4ff !important;
+}
+
+.MuiDataGrid-columnHeader {
+  background: linear-gradient(180deg, #f8f9fa 0%, #f1f3f4 100%) !important;
+  border-bottom: 2px solid #dee2e6 !important;
+}
+
+.MuiDataGrid-columnSeparator {
+  display: none !important;
+}

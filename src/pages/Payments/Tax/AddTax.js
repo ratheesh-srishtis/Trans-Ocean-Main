@@ -5,7 +5,8 @@ import { saveTax, editTax } from "../../../services/apiSubPayments";
 import PopUp from "../../PopUp";
 import Loader from "../../Loader";
 import moment from "moment";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const AddTax = ({
   open,
   onClose,
@@ -18,13 +19,17 @@ const AddTax = ({
   // State for form fields
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const [openPopUp, setOpenPopUp] = useState(false);
-  const years = Array.from({ length: 31 }, (_, i) => 2000 + i);
+  const startYear = 2020;
+  const currentYear = new Date().getFullYear();
 
+  const years = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
   const [formData, setFormData] = useState({
-    year: "",
+    year: currentYear,
     amount: 0,
     modeofPayment: "",
     bank: "",
@@ -59,16 +64,22 @@ const AddTax = ({
         amount: userSet.amount ?? "",
         modeofPayment: userSet.modeofPayment || "",
         bank: selectedBank ? selectedBank._id : "",
+
+        // convert "21-01-2026" → Date object
+        // paymentDate: userSet.paymentDate
+        //   ? moment(userSet.paymentDate, "DD-MM-YYYY").toDate()
+        //   : null,
         paymentDate: userSet.paymentDate
           ? moment(userSet.paymentDate, ["DD-MM-YYYY", moment.ISO_8601]).format(
               "YYYY-MM-DD"
             )
           : "",
+
         isPaid: userSet.isPaid === "Yes",
       });
     } else {
       setFormData({
-        year: "",
+        year: currentYear,
         amount: 0,
         modeofPayment: "",
         bank: "",
@@ -125,13 +136,28 @@ const AddTax = ({
       let response;
       if (editMode) {
         console.log("Edit mode formData:", formData);
-        formData.taxId = userSet?._id;
-        response = await editTax(formData);
+
+        const payload = {
+          ...formData,
+          taxId: userSet?._id,
+          paymentDate: formData.paymentDate
+            ? moment(formData.paymentDate).format("YYYY-MM-DD")
+            : "",
+        };
+
+        response = await editTax(payload);
         setIsLoading(false);
       } else {
-        // Add new role
         console.log("Add mode formData:", formData);
-        response = await saveTax(formData);
+
+        const payload = {
+          ...formData,
+          paymentDate: formData.paymentDate
+            ? moment(formData.paymentDate).format("YYYY-MM-DD")
+            : "",
+        };
+
+        response = await saveTax(payload);
         setIsLoading(false);
       }
       if (response.status === true) {
@@ -143,7 +169,7 @@ const AddTax = ({
 
         setOpenPopUp(true);
         setFormData({
-          year: "",
+          year: currentYear,
           amount: 0,
           modeofPayment: "",
           bank: "",
@@ -245,9 +271,9 @@ const AddTax = ({
                       onChange={handleChange}
                       value={formData.modeofPayment}
                     >
-                      <option value="">Mode of payment </option>
-                      <option value="cash">Cash </option>
-                      <option value="bank">Bank</option>
+                      <option value="">Mode Of payment </option>
+                      <option value="Cash">Cash </option>
+                      <option value="Bank">Bank</option>
                     </select>
                     {errors.modeofPayment && (
                       <span className="invalid">{errors.modeofPayment}</span>
@@ -255,7 +281,7 @@ const AddTax = ({
                   </div>
                 </div>
               </div>
-              {formData?.modeofPayment == "bank" && (
+              {formData?.modeofPayment == "Bank" && (
                 <>
                   <div className="col-6 mb-3 align-items-start">
                     <div className="">
@@ -291,6 +317,36 @@ const AddTax = ({
             </div>
             <div className="row">
               <div className="col-6 mb-3 align-items-start">
+                {/* <div className="">
+                  <label
+                    htmlFor="exampleFormControlInput1"
+                    className="form-label"
+                  >
+                    Payment Date <span className="required"> * </span> :
+                  </label>
+                  <div className="vessel-select">
+                    <DatePicker
+                      selected={formData.paymentDate}
+                      onChange={(date) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          paymentDate: date,
+                        }))
+                      }
+                      dateFormat="dd-MM-yyyy"
+                      className="form-control custom-picker-styles"
+                      placeholderText="dd-mm-yyyy"
+                      popperPlacement="bottom-start"
+                      popperContainer={({ children }) => (
+                        <div style={{ zIndex: 9999 }}>{children}</div>
+                      )}
+                      portalId="root"
+                    />
+                    {errors.paymentDate && (
+                      <span className="invalid">{errors.paymentDate}</span>
+                    )}
+                  </div>
+                </div> */}
                 <div className="">
                   <label
                     htmlFor="exampleFormControlInput1"
@@ -321,7 +377,7 @@ const AddTax = ({
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
                   >
-                    Is Paid:
+                    Is Paid <span className="required"> * </span> :
                   </label>
                   <div className="vessel-select">
                     <input

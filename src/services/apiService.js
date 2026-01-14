@@ -1006,3 +1006,12 @@ export const getDashbordDetails = async (data) => {
     throw error;
   }
 };
+export const generateSummarReport = async (data) => {
+  try {
+    const response = await axiosInstance.post("/generateSummarReport", data);
+    return response.data;
+  } catch (error) {
+    console.error("generateSummarReport API Error:", error);
+    throw error;
+  }
+};

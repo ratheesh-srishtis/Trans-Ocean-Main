@@ -91,7 +91,7 @@ const AddEmpPetty = ({
       newErrors.paymentDate = "Payment Date  is required";
     }
     if (!formData.modeofPayment)
-      newErrors.modeofPayment = "Mode of payment is required";
+      newErrors.modeofPayment = "Mode Of payment is required";
     if (formData.modeofPayment === "bank" && !formData.bank) {
       newErrors.bank = "Bank name is required";
     }
@@ -246,7 +246,7 @@ const AddEmpPetty = ({
                     htmlFor="exampleFormControlInput1"
                     className="form-label"
                   >
-                    Mode of Payment <span className="required"> * </span> :
+                    Mode Of Payment <span className="required"> * </span> :
                   </label>
                   <div className="vessel-select">
                     <select
@@ -256,7 +256,7 @@ const AddEmpPetty = ({
                       onChange={handleChange}
                       value={formData.modeofPayment}
                     >
-                      <option value="">Mode of payment </option>
+                      <option value="">Mode Of payment </option>
                       <option value="cash">Cash </option>
                       <option value="bank">Bank</option>
                     </select>

@@ -72,6 +72,7 @@ const Payments = () => {
   const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
   const currentroleType = loginResponse.data?.userRole?.roleType;
   const permissions = loginResponse.functionalityPermission;
+  console.log(permissions, "permissions");
   const fetchCustomerList = async () => {
     try {
       let payload = { sortByName: true };
@@ -377,54 +378,91 @@ const Payments = () => {
           </div>
         </div>
       </div>
+
       <div className="choosecargo-row p-3 ">
         <div className="row ">
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <div className="mb-3">
-              <>
-                <label
-                  htmlFor="exampleFormControlInput1"
-                  className="form-label customerpayment"
-                >
-                  Tax:
-                </label>
-                <div className="vessel-select ">
-                  <button
-                    className="btn btna submit-button mt-2"
-                    onClick={() => {
-                      navigate("/tax", {
-                        state: {},
-                      });
-                    }}
-                  >
-                    View Tax Details
-                  </button>
+          {permissions.includes("Other Income") && (
+            <>
+              <div className="col-lg-4 col-md-4 col-sm-12">
+                <div className="mb-3">
+                  <>
+                    <label
+                      htmlFor="exampleFormControlInput1"
+                      className="form-label customerpayment"
+                    >
+                      Other Income:
+                    </label>
+                    <div className="vessel-select ">
+                      <button
+                        className="btn btna submit-button mt-2"
+                        onClick={() => {
+                          navigate("/other-income", {
+                            state: {},
+                          });
+                        }}
+                      >
+                        View Other Income
+                      </button>
+                    </div>
+                  </>
                 </div>
-              </>
-            </div>
-          </div>
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <div className="mb-3">
-              <>
-                <label
-                  htmlFor="exampleFormControlInput1"
-                  className="form-label customerpayment"
-                >
-                  Bank Charges:
-                </label>
-                <div className="vessel-select ">
-                  <button
-                    className="btn btna submit-button mt-2"
-                    onClick={() => {
-                      viewBankCharges();
-                    }}
-                  >
-                    View Bank Charges
-                  </button>
+              </div>
+            </>
+          )}
+          {permissions.includes("tax") && (
+            <>
+              <div className="col-lg-4 col-md-4 col-sm-12">
+                <div className="mb-3">
+                  <>
+                    <label
+                      htmlFor="exampleFormControlInput1"
+                      className="form-label customerpayment"
+                    >
+                      Tax:
+                    </label>
+                    <div className="vessel-select ">
+                      <button
+                        className="btn btna submit-button mt-2"
+                        onClick={() => {
+                          navigate("/tax", {
+                            state: {},
+                          });
+                        }}
+                      >
+                        View Tax Details
+                      </button>
+                    </div>
+                  </>
                 </div>
-              </>
-            </div>
-          </div>
+              </div>
+            </>
+          )}
+          {permissions.includes("Bank Charge") && (
+            <>
+              <div className="col-lg-4 col-md-4 col-sm-12">
+                <div className="mb-3">
+                  <>
+                    <label
+                      htmlFor="exampleFormControlInput1"
+                      className="form-label customerpayment"
+                    >
+                      Bank Charges:
+                    </label>
+                    <div className="vessel-select ">
+                      <button
+                        className="btn btna submit-button mt-2"
+                        onClick={() => {
+                          viewBankCharges();
+                        }}
+                      >
+                        View Bank Charges
+                      </button>
+                    </div>
+                  </>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

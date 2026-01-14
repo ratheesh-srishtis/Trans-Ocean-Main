@@ -313,8 +313,6 @@
   font-size: 14px;
 }
 
-
-
 .buttons-wrapper {
   display: flex;
   margin-bottom: 35px;
@@ -333,6 +331,9 @@
 .date-input-small {
   height: 30px !important;
   width: 91px;
+}
+.react-datepicker-popper {
+  z-index: 9999 !important;
 }
 .date-input {
   height: 38px !important;

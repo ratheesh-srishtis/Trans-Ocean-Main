@@ -258,7 +258,7 @@ const EmployeePetty = () => {
     { field: "pettyNumber", headerName: "Petty Number", flex: 10 },
     { field: "dateofPay", headerName: "Payment Date", flex: 10 },
     { field: "amount", headerName: "Amount", flex: 10 },
-    { field: "modeofPayment", headerName: "Mode of Payment", flex: 10 },
+    { field: "modeofPayment", headerName: "Mode Of Payment", flex: 10 },
     { field: "banks", headerName: "Bank", flex: 10 },
     { field: "remark", headerName: "Remark", flex: 10 },
     {
@@ -346,7 +346,7 @@ const EmployeePetty = () => {
         "Petty Number": item?.pettyNumber || "N/A",
         "Payment Date": formattedDate || "N/A",
         Amount: item.amount || "N/A",
-        "Mode of Payment": modeofpay || "N/A",
+        "Mode Of Payment": modeofpay || "N/A",
         Bank: item.bank && item.bank.bankName ? item.bank.bankName : "N/A",
         Remark: item.remark || "N/A",
       };

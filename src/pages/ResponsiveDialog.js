@@ -382,7 +382,8 @@ const ResponsiveDialog = ({
       selectedSubhargesType &&
       selectedQuantity &&
       customerAmount &&
-      customerTotalUSD
+      customerTotalUSD &&
+      customerVatAmount
     ) {
       // Map vendorSections to payload fields
       let vendorFields = {};

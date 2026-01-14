@@ -379,7 +379,7 @@ const CustomerPayments = () => {
       field: "modeofPayment",
       headerName: (
         <span>
-          Mode of
+          Mode Of
           <br />
           Payment
         </span>

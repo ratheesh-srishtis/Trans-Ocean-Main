@@ -68,6 +68,9 @@ import OtherIncome from "../pages/Payments/Incomes/OtherIncome";
 import BankCharges from "../pages/Payments/bankCharges/BankCharges";
 import Tax from "../pages/Payments/Tax/Tax";
 import Assets from "../pages/Payments/Assets/Assets";
+import AppreciationDepreciation from "../pages/Payments/Appreciation-Depreciation/AppreciationDepreciation";
+import Sales from "../pages/Payments/Sales/Sales";
+import SummaryReport from "../pages/SummaryReport";
 const Content = ({ onNotFound }) => {
   const { loginResponse } = useAuth();
   const [vessels, setVessels] = useState([]);
@@ -213,11 +216,12 @@ const Content = ({ onNotFound }) => {
     "/leave-requests",
     "/leave",
     "/tax",
-    "/asset",
+    "/assets",
     "/appreciation-depreciation",
     "/sales",
     "/other-income",
     "/bank-charges",
+    "/summary-report",
   ];
 
   useEffect(() => {
@@ -408,9 +412,15 @@ const Content = ({ onNotFound }) => {
       />
       <Route path="/other-income" element={<OtherIncome />} />
       <Route path="/tax" element={<Tax />} />
-      <Route path="/asset" element={<Assets />} />
+      <Route path="/assets" element={<Assets />} />
+      <Route path="/sales" element={<Sales />} />
+      <Route
+        path="/appreciation-depreciation"
+        element={<AppreciationDepreciation />}
+      />
 
       <Route path="/bank-charges" element={<BankCharges />} />
+      <Route path="/summary-report" element={<SummaryReport />} />
 
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>

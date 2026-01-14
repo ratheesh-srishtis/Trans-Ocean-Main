@@ -46,10 +46,12 @@ const AddAssets = ({
       const selectedBank = BankList.find((b) => b.bankName === userSet.bank);
       setFormData({
         asset: userSet.asset || "",
+        amount: userSet.amount || "",
       });
     } else {
       setFormData({
         asset: "",
+        amount: 0,
       });
     }
   }, [editMode, userSet, BankList]);
@@ -73,6 +75,7 @@ const AddAssets = ({
   const validateForm = () => {
     const newErrors = {};
     if (!formData.asset) newErrors.asset = "Asset is required";
+    if (!formData.amount) newErrors.amount = "Amount is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -112,6 +115,7 @@ const AddAssets = ({
         setOpenPopUp(true);
         setFormData({
           asset: "",
+          amount: 0,
         });
         onClose();
         setIsLoading(false);
@@ -156,7 +160,7 @@ const AddAssets = ({
             <div className="row">
               <div className="col mb-3">
                 <label className="form-label">
-                  asset <span className="required">*</span>:
+                  Asset <span className="required">*</span>:
                 </label>
                 <input
                   name="asset"
@@ -167,6 +171,21 @@ const AddAssets = ({
                 />
                 {errors.asset && (
                   <span className="invalid">{errors.asset}</span>
+                )}
+              </div>
+              <div className="col mb-3">
+                <label className="form-label">
+                  Amount <span className="required">*</span>:
+                </label>
+                <input
+                  name="amount"
+                  type="number"
+                  className="form-control custom-input-styles"
+                  value={formData.amount}
+                  onChange={handleChange}
+                />
+                {errors.amount && (
+                  <span className="invalid">{errors.amount}</span>
                 )}
               </div>
             </div>

@@ -7,27 +7,27 @@ import Swal from "sweetalert2";
 import Loader from "../../Loader";
 import PopUp from "../../PopUp";
 import {
-  getOtherIncomes,
-  deleteOtherIncome,
+  getAssetValues,
+  deleteAssetValue,
 } from "../../../services/apiSubPayments";
 import moment from "moment";
-import AddIncome from "./AddIncome";
+import AddAppreciationDepreciation from "./AddAppreciationDepreciation";
 
-const OtherIncome = () => {
+const AppreciationDepreciation = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
-  const [otherIncomeList, setOtherIncomeList] = useState([]);
+  const [assetsList, setAssetsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [errors, setErrors] = useState({});
-  const fetchOtherIncomes = async () => {
+  const fetchAssets = async () => {
     try {
       setIsLoading(true);
-      const response = await getOtherIncomes();
-      console.log("getOtherIncomes:", response?.otherIncome);
-      setOtherIncomeList(response?.otherIncome);
+      const response = await getAssetValues();
+      console.log("getAssetValues:", response?.assetValues);
+      setAssetsList(response?.assetValues);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -36,7 +36,7 @@ const OtherIncome = () => {
   };
 
   useEffect(() => {
-    fetchOtherIncomes();
+    fetchAssets();
   }, []);
 
   const openDialog = () => {
@@ -52,10 +52,10 @@ const OtherIncome = () => {
     setEditMode(false);
     setSelectedRow(null);
     setErrors({});
-    fetchOtherIncomes();
+    fetchAssets();
   };
   const handleAddUser = (newUsers) => {
-    fetchOtherIncomes();
+    fetchAssets();
     setOpen(false);
   };
   const handleEdit = (row) => {
@@ -77,15 +77,15 @@ const OtherIncome = () => {
         if (item?._id) {
           try {
             let payload = {
-              otherIncomeId: item?._id,
+              assetValueId: item?._id,
             };
-            const response = await deleteOtherIncome(payload);
-            setMessage("Other Income deleted successfully");
+            const response = await deleteAssetValue(payload);
+            setMessage("Asset deleted successfully");
             setOpenPopUp(true);
-            fetchOtherIncomes();
+            fetchAssets();
           } catch (error) {
             Swal.fire("Error deleting Role");
-            fetchOtherIncomes();
+            fetchAssets();
           }
         }
       }
@@ -107,12 +107,11 @@ const OtherIncome = () => {
   );
 
   const columns = [
-    { field: "particulers", headerName: "Particulars", flex: 2 },
-    { field: "bank", headerName: "Bank", flex: 2 },
-    { field: "modeofPayment", headerName: "Mode Of Payment", flex: 2 },
-    { field: "amount", headerName: "Amount", flex: 2 },
-    { field: "paymentDate", headerName: "Payment Date", flex: 2 },
-
+    { field: "asset", headerName: "Asset", flex: 2 },
+    { field: "appreciation", headerName: "Appreciation", flex: 2 },
+    { field: "depreciation", headerName: "Depreciation", flex: 2 },
+    { field: "assessmentYear", headerName: "Assessment Year", flex: 2 },
+    // { field: "createdAt", headerName: "Created Date", flex: 2 },
     {
       field: "actions",
       headerName: "Action",
@@ -142,10 +141,10 @@ const OtherIncome = () => {
           }}
           className="btn btna submit-button btnfsize"
         >
-          Add Other Income
+          Add Appreciation/Depreciation
         </button>
       </div>
-      <AddIncome
+      <AddAppreciationDepreciation
         open={open}
         onAddUser={handleAddUser}
         onClose={handleClose}
@@ -154,18 +153,18 @@ const OtherIncome = () => {
         errors={errors}
         setErrors={setErrors}
       />
-      <div>
+      <div style={{ padding: "15px" }}>
         <DataGrid
-          rows={otherIncomeList.map((item) => ({
+          rows={assetsList.map((item) => ({
             ...item,
             id: item._id,
-            particulers: item.particulers || "N/A",
-            bank: item.bank?.bankName ?? "N/A",
-            modeofPayment: item.modeofPayment || "N/A",
-            amount: item.amount ?? "N/A",
-            paymentDate: item.paymentDate
-              ? moment(item.paymentDate).format("DD-MM-YYYY")
-              : "N/A",
+            asset: item.assetId?.asset || "N/A",
+            appreciation: item.appreciation || "N/A",
+            depreciation: item.depreciation || "N/A",
+            assessmentYear: item.assessmentYear || "N/A",
+            // createdAt: item.createdAt
+            //   ? moment(item.createdAt).format("DD-MM-YYYY")
+            //   : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification
@@ -208,7 +207,7 @@ const OtherIncome = () => {
           }}
         />
       </div>
-      {otherIncomeList?.length === 0 && (
+      {assetsList?.length === 0 && (
         <div className="no-data">
           <p>No Data Found</p>
         </div>
@@ -223,4 +222,4 @@ const OtherIncome = () => {
   );
 };
 
-export default OtherIncome;
+export default AppreciationDepreciation;

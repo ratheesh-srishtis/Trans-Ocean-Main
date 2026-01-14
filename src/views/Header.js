@@ -143,6 +143,12 @@ const Header = () => {
       return "Anchorage Stay Charges";
     } else if (location.pathname == "/other-income") {
       return "Other Income";
+    } else if (location.pathname == "/appreciation-depreciation") {
+      return "Appreciation/Depreciation";
+    } else if (location.pathname == "/bank-charges") {
+      return "Bank Charges";
+    } else if (location.pathname == "/summary-report") {
+      return "Summary Report";
     }
 
     // Add more conditions as needed for other routes
@@ -296,7 +302,7 @@ const Header = () => {
 
           <div className="header--title d-none d-md-block">
             <h5 className="mb-0">{getHeaderText()}</h5>
-            <div className="version">Version: 0.138</div>
+            <div className="version">Version: 0.140</div>
           </div>
 
           <div className="d-flex align-items-center flex-row-reverse marginnew ">

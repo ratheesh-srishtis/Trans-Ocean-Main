@@ -342,7 +342,7 @@ const VendorPayments = () => {
     { field: "currency", headerName: "Currency", flex: 2, minWidth: 100 },
     {
       field: "modeofPayment",
-      headerName: "Mode of Payment",
+      headerName: "Mode Of Payment",
       flex: 2,
       minWidth: 150,
     },

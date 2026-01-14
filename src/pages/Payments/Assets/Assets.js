@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import Loader from "../../Loader";
 import PopUp from "../../PopUp";
-import { getAssets, deleteOtherIncome } from "../../../services/apiSubPayments";
+import { getAssets, deleteAsset } from "../../../services/apiSubPayments";
 import moment from "moment";
 import AddAssets from "./AddAssets";
 
@@ -74,10 +74,10 @@ const Assets = () => {
         if (item?._id) {
           try {
             let payload = {
-              otherIncomeId: item?._id,
+              assetId: item?._id,
             };
-            const response = await deleteOtherIncome(payload);
-            setMessage("Other Income deleted successfully");
+            const response = await deleteAsset(payload);
+            setMessage("Asset deleted successfully");
             setOpenPopUp(true);
             fetchAssets();
           } catch (error) {
@@ -105,7 +105,8 @@ const Assets = () => {
 
   const columns = [
     { field: "asset", headerName: "Asset", flex: 2 },
-    { field: "createdAt", headerName: "Created Date", flex: 2 },
+    { field: "amount", headerName: "Amount", flex: 2 },
+    // { field: "createdAt", headerName: "Created Date", flex: 2 },
     {
       field: "actions",
       headerName: "Action",
@@ -115,12 +116,12 @@ const Assets = () => {
           <IconButton color="primary" onClick={() => handleEdit(params.row)}>
             <EditIcon sx={{ fontSize: "19px" }} />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="secondary"
             onClick={() => handleDelete(params.row)}
           >
             <DeleteIcon sx={{ fontSize: "19px" }} />
-          </IconButton>
+          </IconButton> */}
         </>
       ),
     },
@@ -147,15 +148,16 @@ const Assets = () => {
         errors={errors}
         setErrors={setErrors}
       />
-      <div>
+      <div style={{ padding: "15px" }}>
         <DataGrid
           rows={assetsList.map((item) => ({
             ...item,
             id: item._id,
             asset: item.asset || "N/A",
-            createdAt: item.createdAt
-              ? moment(item.createdAt).format("DD-MM-YYYY")
-              : "N/A",
+            amount: item.amount || "N/A",
+            // createdAt: item.createdAt
+            //   ? moment(item.createdAt).format("DD-MM-YYYY")
+            //   : "N/A",
           }))}
           columns={columns}
           getRowId={(row) => row._id} // Use id field for unique row identification

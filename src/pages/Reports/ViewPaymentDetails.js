@@ -326,7 +326,7 @@ const ViewPaymentDetails = ({ open, onClose, selectedRow }) => {
                   },
                   {
                     field: "modeofPayment",
-                    headerName: "Mode of Payment",
+                    headerName: "Mode Of Payment",
                     flex: 1,
                   },
                   { field: "paymentDate", headerName: "Payment Date", flex: 1 },
