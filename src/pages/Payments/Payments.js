@@ -381,7 +381,7 @@ const Payments = () => {
 
       <div className="choosecargo-row p-3 ">
         <div className="row ">
-          {permissions.includes("Other Income") && (
+          {permissions.includes("other income") && (
             <>
               <div className="col-lg-4 col-md-4 col-sm-12">
                 <div className="mb-3">
@@ -437,7 +437,7 @@ const Payments = () => {
               </div>
             </>
           )}
-          {permissions.includes("Bank Charge") && (
+          {permissions.includes("bank charge") && (
             <>
               <div className="col-lg-4 col-md-4 col-sm-12">
                 <div className="mb-3">

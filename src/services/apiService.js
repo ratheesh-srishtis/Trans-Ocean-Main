@@ -825,6 +825,18 @@ export const jobReportPDF = async (userData) => {
     throw error;
   }
 };
+export const generateSummaryReportPDF = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/generateSummaryReportPDF",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const payableSummaryReportPDF = async (userData) => {
   try {
     const response = await axiosInstance.post(
@@ -1006,12 +1018,12 @@ export const getDashbordDetails = async (data) => {
     throw error;
   }
 };
-export const generateSummarReport = async (data) => {
+export const generateSummaryReport = async (data) => {
   try {
-    const response = await axiosInstance.post("/generateSummarReport", data);
+    const response = await axiosInstance.post("/generateSummaryReport", data);
     return response.data;
   } catch (error) {
-    console.error("generateSummarReport API Error:", error);
+    console.error("generateSummaryReport API Error:", error);
     throw error;
   }
 };

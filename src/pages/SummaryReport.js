@@ -9,9 +9,10 @@ import {
   MenuItem,
   CircularProgress,
 } from "@mui/material";
-import { generateSummarReport } from "../services/apiService";
+import { generateSummaryReport } from "../services/apiService";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import { generateSummaryReportPDF } from "../services/apiService";
 const ReportTable = () => {
   const startYear = 2020;
   const currentYear = new Date().getFullYear();
@@ -35,7 +36,7 @@ const ReportTable = () => {
   const fetchReportData = useCallback(async (year) => {
     setIsLoading(true);
     try {
-      const response = await generateSummarReport({ year: year });
+      const response = await generateSummaryReport({ year: year });
       console.log(response, "response");
       if (response.status == true) {
         processReportData(response, year);
@@ -102,7 +103,12 @@ const ReportTable = () => {
         bold: false,
       },
       { key: "otherIncome", label: "Other Income", bold: false },
-      { key: "assetSales", label: "Loss on disposal of assets", bold: false },
+      { key: "exchangeLoss", label: "Exchange Loss", bold: false },
+      {
+        key: "assetSales",
+        label: "Profit/Loss on disposal of assets",
+        bold: false,
+      },
       { key: "ebitda", label: "EBITDA", bold: true },
       { key: "depreciation", label: "Depreciation", bold: false },
       { key: "appreciation", label: "Appreciation", bold: false },
@@ -346,6 +352,34 @@ const ReportTable = () => {
     saveAs(blob, `Summary Report_${selectedYear}.xlsx`);
   };
 
+  const getPDF = async () => {
+    const payload = { year: selectedYear };
+    console.log(payload, "payload_getReport");
+    try {
+      const response = await generateSummaryReportPDF(payload);
+      console.log("getPettyCashReport", response);
+
+      if (response?.pdfPath) {
+        const pdfUrl = `${process.env.REACT_APP_ASSET_URL}${response.pdfPath}`;
+        // Fetch the PDF as a Blob
+        const pdfResponse = await fetch(pdfUrl);
+        const pdfBlob = await pdfResponse.blob();
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Create a hidden anchor tag to trigger the download
+        const link = document.createElement("a");
+        link.href = pdfBlobUrl;
+        link.setAttribute("download", "Summary Report.pdf"); // Set the file name
+        document.body.appendChild(link);
+        link.click();
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfBlobUrl);
+      }
+    } catch (error) {
+      console.error("Failed to fetch quotations:", error);
+    }
+  };
+
   return (
     <Box sx={{ width: "100%", height: 650 }}>
       <Box
@@ -383,15 +417,22 @@ const ReportTable = () => {
         </Box>
 
         {/* Right side - Buttons */}
-        {/* <div className="d-flex gap-2">
+        <div className="d-flex gap-2">
           <button
             className="btn btn-info filbtnjob"
             onClick={handleExportExcel}
           >
             Download Excel
           </button>
-          <button className="btn btn-info filbtnjob">Download PDF</button>
-        </div> */}
+          <button
+            className="btn btn-info filbtnjob"
+            onClick={() => {
+              getPDF();
+            }}
+          >
+            Download PDF
+          </button>
+        </div>
       </Box>
       <DataGrid
         className="mx-2"

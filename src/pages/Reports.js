@@ -108,6 +108,7 @@ const Reports = ({ loginResponse }) => {
       path: "/payable-summary",
     },
     { name: "Bank Summary", key: "bank summary", path: "/bank-summary" },
+    { name: "Summary Report", key: "summary report", path: "/summary-report" },
   ];
 
   // Extract permission array
